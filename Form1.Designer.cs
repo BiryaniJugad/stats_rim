@@ -92,6 +92,8 @@
             lbl_11 = new Label();
             txt_StatFlee = new TextBox();
             txt_StatPoint = new TextBox();
+            panel1 = new Panel();
+            txt_StatGuild = new TextBox();
             pnl_Stats.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)num_Str).BeginInit();
             ((System.ComponentModel.ISupportInitialize)num_Agi).BeginInit();
@@ -183,6 +185,7 @@
             // 
             // pnl_Stats
             // 
+            pnl_Stats.Controls.Add(txt_StatGuild);
             pnl_Stats.Controls.Add(txt_StatPoint);
             pnl_Stats.Controls.Add(txt_StatFlee2);
             pnl_Stats.Controls.Add(lbl_11);
@@ -291,11 +294,11 @@
             // 
             lbl_8.AutoSize = true;
             lbl_8.Font = new Font("Sylfaen", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            lbl_8.Location = new Point(472, 72);
+            lbl_8.Location = new Point(473, 77);
             lbl_8.Name = "lbl_8";
             lbl_8.Size = new Size(18, 22);
             lbl_8.TabIndex = 45;
-            lbl_8.Text = "+";
+            lbl_8.Text = "~";
             // 
             // lbl_7
             // 
@@ -409,6 +412,7 @@
             txt_PtsDex.ReadOnly = true;
             txt_PtsDex.Size = new Size(53, 23);
             txt_PtsDex.TabIndex = 33;
+            txt_PtsDex.Text = "1";
             txt_PtsDex.TextAlign = HorizontalAlignment.Center;
             // 
             // txt_PtsInt
@@ -420,6 +424,7 @@
             txt_PtsInt.ReadOnly = true;
             txt_PtsInt.Size = new Size(53, 23);
             txt_PtsInt.TabIndex = 32;
+            txt_PtsInt.Text = "1";
             txt_PtsInt.TextAlign = HorizontalAlignment.Center;
             // 
             // txt_PtsLuk
@@ -431,6 +436,7 @@
             txt_PtsLuk.ReadOnly = true;
             txt_PtsLuk.Size = new Size(53, 23);
             txt_PtsLuk.TabIndex = 31;
+            txt_PtsLuk.Text = "1";
             txt_PtsLuk.TextAlign = HorizontalAlignment.Center;
             // 
             // txt_PtsVit
@@ -442,6 +448,7 @@
             txt_PtsVit.ReadOnly = true;
             txt_PtsVit.Size = new Size(53, 23);
             txt_PtsVit.TabIndex = 28;
+            txt_PtsVit.Text = "1";
             txt_PtsVit.TextAlign = HorizontalAlignment.Center;
             // 
             // txt_PtsAgi
@@ -453,6 +460,7 @@
             txt_PtsAgi.ReadOnly = true;
             txt_PtsAgi.Size = new Size(53, 23);
             txt_PtsAgi.TabIndex = 27;
+            txt_PtsAgi.Text = "1";
             txt_PtsAgi.TextAlign = HorizontalAlignment.Center;
             // 
             // txt_PtsStr
@@ -464,6 +472,7 @@
             txt_PtsStr.ReadOnly = true;
             txt_PtsStr.Size = new Size(53, 23);
             txt_PtsStr.TabIndex = 26;
+            txt_PtsStr.Text = "1";
             txt_PtsStr.TextAlign = HorizontalAlignment.Center;
             // 
             // lbl_PtsReq
@@ -633,6 +642,7 @@
             txt_StatHit.ReadOnly = true;
             txt_StatHit.Size = new Size(110, 23);
             txt_StatHit.TabIndex = 55;
+            txt_StatHit.Text = "1";
             txt_StatHit.TextAlign = HorizontalAlignment.Center;
             // 
             // txt_StatCrit
@@ -644,6 +654,7 @@
             txt_StatCrit.ReadOnly = true;
             txt_StatCrit.Size = new Size(110, 23);
             txt_StatCrit.TabIndex = 56;
+            txt_StatCrit.Text = "1";
             txt_StatCrit.TextAlign = HorizontalAlignment.Center;
             // 
             // lbl_Def
@@ -688,13 +699,14 @@
             // 
             // txt_StatAspd
             // 
-            txt_StatAspd.Location = new Point(601, 125);
+            txt_StatAspd.Location = new Point(601, 124);
             txt_StatAspd.Margin = new Padding(3, 2, 3, 2);
             txt_StatAspd.Name = "txt_StatAspd";
             txt_StatAspd.PlaceholderText = "0";
             txt_StatAspd.ReadOnly = true;
             txt_StatAspd.Size = new Size(110, 23);
             txt_StatAspd.TabIndex = 68;
+            txt_StatAspd.Text = "150";
             txt_StatAspd.TextAlign = HorizontalAlignment.Center;
             // 
             // txt_StatMDef2
@@ -723,7 +735,7 @@
             // 
             lbl_10.AutoSize = true;
             lbl_10.Font = new Font("Sylfaen", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            lbl_10.Location = new Point(646, 72);
+            lbl_10.Location = new Point(646, 71);
             lbl_10.Name = "lbl_10";
             lbl_10.Size = new Size(18, 22);
             lbl_10.TabIndex = 64;
@@ -741,7 +753,7 @@
             // 
             // txt_StatMDef
             // 
-            txt_StatMDef.Location = new Point(601, 73);
+            txt_StatMDef.Location = new Point(601, 71);
             txt_StatMDef.Margin = new Padding(3, 2, 3, 2);
             txt_StatMDef.Name = "txt_StatMDef";
             txt_StatMDef.PlaceholderText = "0";
@@ -763,20 +775,21 @@
             // 
             // txt_StatFlee2
             // 
-            txt_StatFlee2.Location = new Point(667, 98);
+            txt_StatFlee2.Location = new Point(667, 97);
             txt_StatFlee2.Margin = new Padding(3, 2, 3, 2);
             txt_StatFlee2.Name = "txt_StatFlee2";
             txt_StatFlee2.PlaceholderText = "0";
             txt_StatFlee2.ReadOnly = true;
             txt_StatFlee2.Size = new Size(44, 23);
             txt_StatFlee2.TabIndex = 71;
+            txt_StatFlee2.Text = "1";
             txt_StatFlee2.TextAlign = HorizontalAlignment.Center;
             // 
             // lbl_11
             // 
             lbl_11.AutoSize = true;
             lbl_11.Font = new Font("Sylfaen", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            lbl_11.Location = new Point(646, 98);
+            lbl_11.Location = new Point(646, 97);
             lbl_11.Name = "lbl_11";
             lbl_11.Size = new Size(18, 22);
             lbl_11.TabIndex = 70;
@@ -784,31 +797,51 @@
             // 
             // txt_StatFlee
             // 
-            txt_StatFlee.Location = new Point(601, 99);
+            txt_StatFlee.Location = new Point(601, 98);
             txt_StatFlee.Margin = new Padding(3, 2, 3, 2);
             txt_StatFlee.Name = "txt_StatFlee";
             txt_StatFlee.PlaceholderText = "0";
             txt_StatFlee.ReadOnly = true;
             txt_StatFlee.Size = new Size(44, 23);
             txt_StatFlee.TabIndex = 69;
+            txt_StatFlee.Text = "1";
             txt_StatFlee.TextAlign = HorizontalAlignment.Center;
             // 
             // txt_StatPoint
             // 
-            txt_StatPoint.Location = new Point(427, 152);
+            txt_StatPoint.Location = new Point(427, 150);
             txt_StatPoint.Margin = new Padding(3, 2, 3, 2);
             txt_StatPoint.Name = "txt_StatPoint";
             txt_StatPoint.PlaceholderText = "0";
             txt_StatPoint.ReadOnly = true;
             txt_StatPoint.Size = new Size(110, 23);
             txt_StatPoint.TabIndex = 72;
+            txt_StatPoint.Text = "60";
             txt_StatPoint.TextAlign = HorizontalAlignment.Center;
+            // 
+            // panel1
+            // 
+            panel1.Location = new Point(26, 112);
+            panel1.Name = "panel1";
+            panel1.Size = new Size(731, 69);
+            panel1.TabIndex = 15;
+            // 
+            // txt_StatGuild
+            // 
+            txt_StatGuild.Location = new Point(427, 175);
+            txt_StatGuild.Margin = new Padding(3, 2, 3, 2);
+            txt_StatGuild.Name = "txt_StatGuild";
+            txt_StatGuild.ReadOnly = true;
+            txt_StatGuild.Size = new Size(110, 23);
+            txt_StatGuild.TabIndex = 73;
+            txt_StatGuild.TextAlign = HorizontalAlignment.Center;
             // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1025, 567);
+            Controls.Add(panel1);
             Controls.Add(lbl_JobBonus);
             Controls.Add(lbl_Stats);
             Controls.Add(lbl_Luk);
@@ -898,5 +931,7 @@
         private Label lbl_11;
         private TextBox txt_StatFlee;
         private TextBox txt_StatPoint;
+        private Panel panel1;
+        private TextBox txt_StatGuild;
     }
 }
