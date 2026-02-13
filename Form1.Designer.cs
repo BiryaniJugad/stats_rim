@@ -89,7 +89,23 @@ namespace stats_rim
             lbl_6 = new Label();
             lbl_2 = new Label();
             lbl_1 = new Label();
-            panel1 = new System.Windows.Forms.Panel();
+            pnl_Buffs = new System.Windows.Forms.Panel();
+            lbl_Buffs = new Label();
+            lbl_Blessings = new Label();
+            lbl_Increase = new Label();
+            lbl_Angelus = new Label();
+            lbl_Impo = new Label();
+            lbl_Wind = new Label();
+            lbl_Gloria = new Label();
+            check_Gloria = new System.Windows.Forms.CheckBox();
+            lbl_Items = new Label();
+            label1 = new Label();
+            cmb_Blessings = new ComboBox();
+            comboBox1 = new ComboBox();
+            comboBox2 = new ComboBox();
+            comboBox3 = new ComboBox();
+            comboBox4 = new ComboBox();
+            comboBox5 = new ComboBox();
             pnl_Stats.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)num_Luk).BeginInit();
             ((System.ComponentModel.ISupportInitialize)num_Dex).BeginInit();
@@ -97,6 +113,7 @@ namespace stats_rim
             ((System.ComponentModel.ISupportInitialize)num_Vit).BeginInit();
             ((System.ComponentModel.ISupportInitialize)num_Agi).BeginInit();
             ((System.ComponentModel.ISupportInitialize)num_Str).BeginInit();
+            pnl_Buffs.SuspendLayout();
             SuspendLayout();
             // 
             // lbl_Str
@@ -181,7 +198,7 @@ namespace stats_rim
             // 
             // pnl_Stats
             // 
-            pnl_Stats.BackColor = SystemColors.ActiveCaption;
+            pnl_Stats.BackColor = SystemColors.ActiveBorder;
             pnl_Stats.Controls.Add(txt_ResStr);
             pnl_Stats.Controls.Add(lbl_Luk);
             pnl_Stats.Controls.Add(lbl_Stats);
@@ -812,20 +829,203 @@ namespace stats_rim
             lbl_1.TabIndex = 15;
             lbl_1.Text = "+";
             // 
-            // panel1
+            // pnl_Buffs
             // 
-            panel1.Location = new Point(30, 149);
-            panel1.Margin = new Padding(3, 4, 3, 4);
-            panel1.Name = "panel1";
-            panel1.Size = new Size(835, 92);
-            panel1.TabIndex = 15;
+            pnl_Buffs.BackColor = SystemColors.ActiveBorder;
+            pnl_Buffs.Controls.Add(comboBox5);
+            pnl_Buffs.Controls.Add(comboBox4);
+            pnl_Buffs.Controls.Add(comboBox3);
+            pnl_Buffs.Controls.Add(comboBox2);
+            pnl_Buffs.Controls.Add(comboBox1);
+            pnl_Buffs.Controls.Add(cmb_Blessings);
+            pnl_Buffs.Controls.Add(label1);
+            pnl_Buffs.Controls.Add(lbl_Items);
+            pnl_Buffs.Controls.Add(check_Gloria);
+            pnl_Buffs.Controls.Add(lbl_Gloria);
+            pnl_Buffs.Controls.Add(lbl_Wind);
+            pnl_Buffs.Controls.Add(lbl_Impo);
+            pnl_Buffs.Controls.Add(lbl_Angelus);
+            pnl_Buffs.Controls.Add(lbl_Increase);
+            pnl_Buffs.Controls.Add(lbl_Blessings);
+            pnl_Buffs.Controls.Add(lbl_Buffs);
+            pnl_Buffs.Location = new Point(31, 160);
+            pnl_Buffs.Margin = new Padding(3, 4, 3, 4);
+            pnl_Buffs.Name = "pnl_Buffs";
+            pnl_Buffs.Size = new Size(1003, 94);
+            pnl_Buffs.TabIndex = 15;
+            // 
+            // lbl_Buffs
+            // 
+            lbl_Buffs.AutoSize = true;
+            lbl_Buffs.Font = new Font("Sylfaen", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            lbl_Buffs.Location = new Point(4, 4);
+            lbl_Buffs.Name = "lbl_Buffs";
+            lbl_Buffs.Size = new Size(60, 26);
+            lbl_Buffs.TabIndex = 76;
+            lbl_Buffs.Text = "Buffs";
+            lbl_Buffs.TextAlign = ContentAlignment.MiddleLeft;
+            // 
+            // lbl_Blessings
+            // 
+            lbl_Blessings.AutoSize = true;
+            lbl_Blessings.Font = new Font("Sylfaen", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            lbl_Blessings.Location = new Point(4, 34);
+            lbl_Blessings.Name = "lbl_Blessings";
+            lbl_Blessings.Size = new Size(93, 26);
+            lbl_Blessings.TabIndex = 77;
+            lbl_Blessings.Text = "Blessings:";
+            lbl_Blessings.TextAlign = ContentAlignment.MiddleLeft;
+            // 
+            // lbl_Increase
+            // 
+            lbl_Increase.AutoSize = true;
+            lbl_Increase.Font = new Font("Sylfaen", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            lbl_Increase.Location = new Point(119, 34);
+            lbl_Increase.Name = "lbl_Increase";
+            lbl_Increase.Size = new Size(124, 26);
+            lbl_Increase.TabIndex = 78;
+            lbl_Increase.Text = "Increase Agi:";
+            lbl_Increase.TextAlign = ContentAlignment.MiddleLeft;
+            // 
+            // lbl_Angelus
+            // 
+            lbl_Angelus.AutoSize = true;
+            lbl_Angelus.Font = new Font("Sylfaen", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            lbl_Angelus.Location = new Point(262, 34);
+            lbl_Angelus.Name = "lbl_Angelus";
+            lbl_Angelus.Size = new Size(87, 26);
+            lbl_Angelus.TabIndex = 79;
+            lbl_Angelus.Text = "Angelus:";
+            lbl_Angelus.TextAlign = ContentAlignment.MiddleLeft;
+            // 
+            // lbl_Impo
+            // 
+            lbl_Impo.AutoSize = true;
+            lbl_Impo.Font = new Font("Sylfaen", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            lbl_Impo.Location = new Point(382, 34);
+            lbl_Impo.Name = "lbl_Impo";
+            lbl_Impo.Size = new Size(164, 26);
+            lbl_Impo.TabIndex = 80;
+            lbl_Impo.Text = "Impositio Manus:";
+            lbl_Impo.TextAlign = ContentAlignment.MiddleLeft;
+            // 
+            // lbl_Wind
+            // 
+            lbl_Wind.AutoSize = true;
+            lbl_Wind.Font = new Font("Sylfaen", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            lbl_Wind.Location = new Point(572, 34);
+            lbl_Wind.Name = "lbl_Wind";
+            lbl_Wind.Size = new Size(115, 26);
+            lbl_Wind.TabIndex = 81;
+            lbl_Wind.Text = "Wind Walk";
+            lbl_Wind.TextAlign = ContentAlignment.MiddleLeft;
+            // 
+            // lbl_Gloria
+            // 
+            lbl_Gloria.AutoSize = true;
+            lbl_Gloria.Font = new Font("Sylfaen", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            lbl_Gloria.Location = new Point(721, 34);
+            lbl_Gloria.Name = "lbl_Gloria";
+            lbl_Gloria.Size = new Size(74, 26);
+            lbl_Gloria.TabIndex = 82;
+            lbl_Gloria.Text = "Gloria?";
+            lbl_Gloria.TextAlign = ContentAlignment.MiddleLeft;
+            // 
+            // check_Gloria
+            // 
+            check_Gloria.AutoSize = true;
+            check_Gloria.Location = new Point(746, 60);
+            check_Gloria.Name = "check_Gloria";
+            check_Gloria.Size = new Size(31, 24);
+            check_Gloria.TabIndex = 83;
+            check_Gloria.Text = "\r\n";
+            check_Gloria.UseVisualStyleBackColor = true;
+            // 
+            // lbl_Items
+            // 
+            lbl_Items.AutoSize = true;
+            lbl_Items.Font = new Font("Sylfaen", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            lbl_Items.Location = new Point(842, 9);
+            lbl_Items.Name = "lbl_Items";
+            lbl_Items.Size = new Size(72, 26);
+            lbl_Items.TabIndex = 84;
+            lbl_Items.Text = "Items:";
+            lbl_Items.TextAlign = ContentAlignment.MiddleLeft;
+            // 
+            // label1
+            // 
+            label1.AutoSize = true;
+            label1.Font = new Font("Sylfaen", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            label1.Location = new Point(843, 35);
+            label1.Name = "label1";
+            label1.Size = new Size(142, 26);
+            label1.TabIndex = 85;
+            label1.Text = "Speed Position:";
+            label1.TextAlign = ContentAlignment.MiddleLeft;
+            // 
+            // cmb_Blessings
+            // 
+            cmb_Blessings.FormattingEnabled = true;
+            cmb_Blessings.Location = new Point(7, 60);
+            cmb_Blessings.Name = "cmb_Blessings";
+            cmb_Blessings.RightToLeft = RightToLeft.No;
+            cmb_Blessings.Size = new Size(90, 28);
+            cmb_Blessings.TabIndex = 86;
+            cmb_Blessings.Text = "    Level ";
+            // 
+            // comboBox1
+            // 
+            comboBox1.FormattingEnabled = true;
+            comboBox1.Location = new Point(266, 60);
+            comboBox1.Name = "comboBox1";
+            comboBox1.Size = new Size(90, 28);
+            comboBox1.TabIndex = 87;
+            comboBox1.Text = "    Level ";
+            // 
+            // comboBox2
+            // 
+            comboBox2.FormattingEnabled = true;
+            comboBox2.Location = new Point(124, 61);
+            comboBox2.Name = "comboBox2";
+            comboBox2.RightToLeft = RightToLeft.No;
+            comboBox2.Size = new Size(90, 28);
+            comboBox2.TabIndex = 88;
+            comboBox2.Text = "    Level ";
+            // 
+            // comboBox3
+            // 
+            comboBox3.FormattingEnabled = true;
+            comboBox3.Location = new Point(388, 59);
+            comboBox3.Name = "comboBox3";
+            comboBox3.Size = new Size(90, 28);
+            comboBox3.TabIndex = 87;
+            comboBox3.Text = "    Level ";
+            // 
+            // comboBox4
+            // 
+            comboBox4.FormattingEnabled = true;
+            comboBox4.Location = new Point(579, 59);
+            comboBox4.Name = "comboBox4";
+            comboBox4.Size = new Size(90, 28);
+            comboBox4.TabIndex = 89;
+            comboBox4.Text = "    Level ";
+            // 
+            // comboBox5
+            // 
+            comboBox5.FormattingEnabled = true;
+            comboBox5.Location = new Point(849, 59);
+            comboBox5.Name = "comboBox5";
+            comboBox5.Size = new Size(136, 28);
+            comboBox5.TabIndex = 90;
+            comboBox5.Text = "   Position Type ";
             // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
+            BackColor = SystemColors.Control;
             ClientSize = new Size(1171, 756);
-            Controls.Add(panel1);
+            Controls.Add(pnl_Buffs);
             Controls.Add(pnl_Stats);
             Margin = new Padding(3, 4, 3, 4);
             Name = "Form1";
@@ -840,6 +1040,8 @@ namespace stats_rim
             ((System.ComponentModel.ISupportInitialize)num_Vit).EndInit();
             ((System.ComponentModel.ISupportInitialize)num_Agi).EndInit();
             ((System.ComponentModel.ISupportInitialize)num_Str).EndInit();
+            pnl_Buffs.ResumeLayout(false);
+            pnl_Buffs.PerformLayout();
             ResumeLayout(false);
         }
 
@@ -921,8 +1123,24 @@ namespace stats_rim
         private NumericUpDown num_Vit;
         private NumericUpDown num_Agi;
         private NumericUpDown num_Str;
-        private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.Panel pnl_Buffs;
         private TextBox txt_ResStr;
         private TextBox txt_ResAgi;
+        private Label lbl_Buffs;
+        private Label lbl_Increase;
+        private Label lbl_Blessings;
+        private ComboBox comboBox5;
+        private ComboBox comboBox4;
+        private ComboBox comboBox3;
+        private ComboBox comboBox2;
+        private ComboBox comboBox1;
+        private ComboBox cmb_Blessings;
+        private Label label1;
+        private Label lbl_Items;
+        private System.Windows.Forms.CheckBox check_Gloria;
+        private Label lbl_Gloria;
+        private Label lbl_Wind;
+        private Label lbl_Impo;
+        private Label lbl_Angelus;
     }
 }
