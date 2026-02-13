@@ -37,6 +37,30 @@
             lbl_Stats = new Label();
             lbl_JobBonus = new Label();
             pnl_Stats = new Panel();
+            txt_StatPoint = new TextBox();
+            txt_StatFlee2 = new TextBox();
+            lbl_11 = new Label();
+            txt_StatFlee = new TextBox();
+            txt_StatAspd = new TextBox();
+            txt_StatMDef2 = new TextBox();
+            txt_StatDef2 = new TextBox();
+            lbl_10 = new Label();
+            lbl_9 = new Label();
+            lbl_Guild = new Label();
+            txt_StatMDef = new TextBox();
+            txt_StatDef = new TextBox();
+            lbl_Aspd = new Label();
+            txt_Flee = new Label();
+            lbl_Mdef = new Label();
+            lbl_Def = new Label();
+            txt_StatCrit = new TextBox();
+            txt_StatHit = new TextBox();
+            num_Luk = new NumericUpDown();
+            num_Dex = new NumericUpDown();
+            num_Int = new NumericUpDown();
+            num_Vit = new NumericUpDown();
+            num_Agi = new NumericUpDown();
+            num_Str = new NumericUpDown();
             txt_StatMatk2 = new TextBox();
             txt_StatAtk2 = new TextBox();
             lbl_4 = new Label();
@@ -45,7 +69,6 @@
             lbl_7 = new Label();
             txt_StatMatk = new TextBox();
             txt_StatAtk = new TextBox();
-            lbl_Guild = new Label();
             lbl_StatP = new Label();
             lbl_Crit = new Label();
             lbl_Matk = new Label();
@@ -69,36 +92,13 @@
             lbl_6 = new Label();
             lbl_2 = new Label();
             lbl_1 = new Label();
-            num_Str = new NumericUpDown();
-            num_Agi = new NumericUpDown();
-            num_Vit = new NumericUpDown();
-            num_Int = new NumericUpDown();
-            num_Dex = new NumericUpDown();
-            num_Luk = new NumericUpDown();
-            txt_StatHit = new TextBox();
-            txt_StatCrit = new TextBox();
-            lbl_Def = new Label();
-            lbl_Mdef = new Label();
-            txt_Flee = new Label();
-            lbl_Aspd = new Label();
-            txt_StatAspd = new TextBox();
-            txt_StatMDef2 = new TextBox();
-            txt_StatDef2 = new TextBox();
-            lbl_10 = new Label();
-            lbl_9 = new Label();
-            txt_StatMDef = new TextBox();
-            txt_StatDef = new TextBox();
-            txt_StatFlee2 = new TextBox();
-            lbl_11 = new Label();
-            txt_StatFlee = new TextBox();
-            txt_StatPoint = new TextBox();
             pnl_Stats.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)num_Str).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)num_Agi).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)num_Vit).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)num_Int).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)num_Dex).BeginInit();
             ((System.ComponentModel.ISupportInitialize)num_Luk).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)num_Dex).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)num_Int).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)num_Vit).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)num_Agi).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)num_Str).BeginInit();
             SuspendLayout();
             // 
             // lbl_Str
@@ -244,6 +244,258 @@
             pnl_Stats.Size = new Size(731, 207);
             pnl_Stats.TabIndex = 14;
             // 
+            // txt_StatPoint
+            // 
+            txt_StatPoint.Location = new Point(427, 152);
+            txt_StatPoint.Margin = new Padding(3, 2, 3, 2);
+            txt_StatPoint.Name = "txt_StatPoint";
+            txt_StatPoint.PlaceholderText = "0";
+            txt_StatPoint.ReadOnly = true;
+            txt_StatPoint.Size = new Size(110, 23);
+            txt_StatPoint.TabIndex = 72;
+            txt_StatPoint.Text = "48";
+            txt_StatPoint.TextAlign = HorizontalAlignment.Center;
+            // 
+            // txt_StatFlee2
+            // 
+            txt_StatFlee2.Location = new Point(667, 98);
+            txt_StatFlee2.Margin = new Padding(3, 2, 3, 2);
+            txt_StatFlee2.Name = "txt_StatFlee2";
+            txt_StatFlee2.PlaceholderText = "0";
+            txt_StatFlee2.ReadOnly = true;
+            txt_StatFlee2.Size = new Size(44, 23);
+            txt_StatFlee2.TabIndex = 71;
+            txt_StatFlee2.Text = "1";
+            txt_StatFlee2.TextAlign = HorizontalAlignment.Center;
+            // 
+            // lbl_11
+            // 
+            lbl_11.AutoSize = true;
+            lbl_11.Font = new Font("Sylfaen", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            lbl_11.Location = new Point(646, 98);
+            lbl_11.Name = "lbl_11";
+            lbl_11.Size = new Size(18, 22);
+            lbl_11.TabIndex = 70;
+            lbl_11.Text = "+";
+            // 
+            // txt_StatFlee
+            // 
+            txt_StatFlee.Location = new Point(601, 99);
+            txt_StatFlee.Margin = new Padding(3, 2, 3, 2);
+            txt_StatFlee.Name = "txt_StatFlee";
+            txt_StatFlee.PlaceholderText = "0";
+            txt_StatFlee.ReadOnly = true;
+            txt_StatFlee.Size = new Size(44, 23);
+            txt_StatFlee.TabIndex = 69;
+            txt_StatFlee.Text = "2";
+            txt_StatFlee.TextAlign = HorizontalAlignment.Center;
+            // 
+            // txt_StatAspd
+            // 
+            txt_StatAspd.Location = new Point(601, 125);
+            txt_StatAspd.Margin = new Padding(3, 2, 3, 2);
+            txt_StatAspd.Name = "txt_StatAspd";
+            txt_StatAspd.PlaceholderText = "0";
+            txt_StatAspd.ReadOnly = true;
+            txt_StatAspd.Size = new Size(110, 23);
+            txt_StatAspd.TabIndex = 68;
+            txt_StatAspd.Text = "150";
+            txt_StatAspd.TextAlign = HorizontalAlignment.Center;
+            // 
+            // txt_StatMDef2
+            // 
+            txt_StatMDef2.Location = new Point(667, 72);
+            txt_StatMDef2.Margin = new Padding(3, 2, 3, 2);
+            txt_StatMDef2.Name = "txt_StatMDef2";
+            txt_StatMDef2.PlaceholderText = "0";
+            txt_StatMDef2.ReadOnly = true;
+            txt_StatMDef2.Size = new Size(44, 23);
+            txt_StatMDef2.TabIndex = 66;
+            txt_StatMDef2.Text = "1";
+            txt_StatMDef2.TextAlign = HorizontalAlignment.Center;
+            // 
+            // txt_StatDef2
+            // 
+            txt_StatDef2.Location = new Point(667, 44);
+            txt_StatDef2.Margin = new Padding(3, 2, 3, 2);
+            txt_StatDef2.Name = "txt_StatDef2";
+            txt_StatDef2.PlaceholderText = "0";
+            txt_StatDef2.ReadOnly = true;
+            txt_StatDef2.Size = new Size(44, 23);
+            txt_StatDef2.TabIndex = 65;
+            txt_StatDef2.Text = "1";
+            txt_StatDef2.TextAlign = HorizontalAlignment.Center;
+            // 
+            // lbl_10
+            // 
+            lbl_10.AutoSize = true;
+            lbl_10.Font = new Font("Sylfaen", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            lbl_10.Location = new Point(646, 72);
+            lbl_10.Name = "lbl_10";
+            lbl_10.Size = new Size(18, 22);
+            lbl_10.TabIndex = 64;
+            lbl_10.Text = "+";
+            // 
+            // lbl_9
+            // 
+            lbl_9.AutoSize = true;
+            lbl_9.Font = new Font("Sylfaen", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            lbl_9.Location = new Point(647, 41);
+            lbl_9.Name = "lbl_9";
+            lbl_9.Size = new Size(18, 22);
+            lbl_9.TabIndex = 63;
+            lbl_9.Text = "+";
+            // 
+            // lbl_Guild
+            // 
+            lbl_Guild.AutoSize = true;
+            lbl_Guild.Font = new Font("Sylfaen", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            lbl_Guild.Location = new Point(337, 173);
+            lbl_Guild.Name = "lbl_Guild";
+            lbl_Guild.Size = new Size(47, 22);
+            lbl_Guild.TabIndex = 41;
+            lbl_Guild.Text = "Guild";
+            // 
+            // txt_StatMDef
+            // 
+            txt_StatMDef.Location = new Point(601, 73);
+            txt_StatMDef.Margin = new Padding(3, 2, 3, 2);
+            txt_StatMDef.Name = "txt_StatMDef";
+            txt_StatMDef.PlaceholderText = "0";
+            txt_StatMDef.ReadOnly = true;
+            txt_StatMDef.Size = new Size(44, 23);
+            txt_StatMDef.TabIndex = 62;
+            txt_StatMDef.TextAlign = HorizontalAlignment.Center;
+            // 
+            // txt_StatDef
+            // 
+            txt_StatDef.Location = new Point(601, 44);
+            txt_StatDef.Margin = new Padding(3, 2, 3, 2);
+            txt_StatDef.Name = "txt_StatDef";
+            txt_StatDef.PlaceholderText = "0";
+            txt_StatDef.ReadOnly = true;
+            txt_StatDef.Size = new Size(44, 23);
+            txt_StatDef.TabIndex = 61;
+            txt_StatDef.TextAlign = HorizontalAlignment.Center;
+            // 
+            // lbl_Aspd
+            // 
+            lbl_Aspd.AutoSize = true;
+            lbl_Aspd.Font = new Font("Sylfaen", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            lbl_Aspd.Location = new Point(553, 124);
+            lbl_Aspd.Name = "lbl_Aspd";
+            lbl_Aspd.Size = new Size(43, 22);
+            lbl_Aspd.TabIndex = 60;
+            lbl_Aspd.Text = "Aspd";
+            // 
+            // txt_Flee
+            // 
+            txt_Flee.AutoSize = true;
+            txt_Flee.Font = new Font("Sylfaen", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            txt_Flee.Location = new Point(553, 99);
+            txt_Flee.Name = "txt_Flee";
+            txt_Flee.Size = new Size(38, 22);
+            txt_Flee.TabIndex = 59;
+            txt_Flee.Text = "Flee";
+            // 
+            // lbl_Mdef
+            // 
+            lbl_Mdef.AutoSize = true;
+            lbl_Mdef.Font = new Font("Sylfaen", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            lbl_Mdef.Location = new Point(552, 73);
+            lbl_Mdef.Name = "lbl_Mdef";
+            lbl_Mdef.Size = new Size(45, 22);
+            lbl_Mdef.TabIndex = 58;
+            lbl_Mdef.Text = "Mdef";
+            // 
+            // lbl_Def
+            // 
+            lbl_Def.AutoSize = true;
+            lbl_Def.Font = new Font("Sylfaen", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            lbl_Def.Location = new Point(552, 45);
+            lbl_Def.Name = "lbl_Def";
+            lbl_Def.Size = new Size(34, 22);
+            lbl_Def.TabIndex = 57;
+            lbl_Def.Text = "Def";
+            // 
+            // txt_StatCrit
+            // 
+            txt_StatCrit.Location = new Point(427, 125);
+            txt_StatCrit.Margin = new Padding(3, 2, 3, 2);
+            txt_StatCrit.Name = "txt_StatCrit";
+            txt_StatCrit.PlaceholderText = "0";
+            txt_StatCrit.ReadOnly = true;
+            txt_StatCrit.Size = new Size(110, 23);
+            txt_StatCrit.TabIndex = 56;
+            txt_StatCrit.Text = "1";
+            txt_StatCrit.TextAlign = HorizontalAlignment.Center;
+            // 
+            // txt_StatHit
+            // 
+            txt_StatHit.Location = new Point(427, 99);
+            txt_StatHit.Margin = new Padding(3, 2, 3, 2);
+            txt_StatHit.Name = "txt_StatHit";
+            txt_StatHit.PlaceholderText = "0";
+            txt_StatHit.ReadOnly = true;
+            txt_StatHit.Size = new Size(110, 23);
+            txt_StatHit.TabIndex = 55;
+            txt_StatHit.Text = "2";
+            txt_StatHit.TextAlign = HorizontalAlignment.Center;
+            // 
+            // num_Luk
+            // 
+            num_Luk.Location = new Point(59, 176);
+            num_Luk.Name = "num_Luk";
+            num_Luk.Size = new Size(53, 23);
+            num_Luk.TabIndex = 51;
+            num_Luk.Tag = "";
+            num_Luk.Value = new decimal(new int[] { 1, 0, 0, 0 });
+            // 
+            // num_Dex
+            // 
+            num_Dex.Location = new Point(59, 149);
+            num_Dex.Name = "num_Dex";
+            num_Dex.Size = new Size(53, 23);
+            num_Dex.TabIndex = 54;
+            num_Dex.Tag = "";
+            num_Dex.Value = new decimal(new int[] { 1, 0, 0, 0 });
+            // 
+            // num_Int
+            // 
+            num_Int.Location = new Point(59, 123);
+            num_Int.Name = "num_Int";
+            num_Int.Size = new Size(53, 23);
+            num_Int.TabIndex = 53;
+            num_Int.Tag = "";
+            num_Int.Value = new decimal(new int[] { 1, 0, 0, 0 });
+            // 
+            // num_Vit
+            // 
+            num_Vit.Location = new Point(59, 97);
+            num_Vit.Name = "num_Vit";
+            num_Vit.Size = new Size(53, 23);
+            num_Vit.TabIndex = 52;
+            num_Vit.Tag = "";
+            num_Vit.Value = new decimal(new int[] { 1, 0, 0, 0 });
+            // 
+            // num_Agi
+            // 
+            num_Agi.Location = new Point(59, 70);
+            num_Agi.Name = "num_Agi";
+            num_Agi.Size = new Size(53, 23);
+            num_Agi.TabIndex = 51;
+            num_Agi.Tag = "";
+            num_Agi.Value = new decimal(new int[] { 1, 0, 0, 0 });
+            // 
+            // num_Str
+            // 
+            num_Str.Location = new Point(59, 43);
+            num_Str.Name = "num_Str";
+            num_Str.Size = new Size(53, 23);
+            num_Str.TabIndex = 50;
+            num_Str.Tag = "";
+            num_Str.Value = new decimal(new int[] { 1, 0, 0, 0 });
+            // 
             // txt_StatMatk2
             // 
             txt_StatMatk2.Location = new Point(493, 72);
@@ -253,6 +505,7 @@
             txt_StatMatk2.ReadOnly = true;
             txt_StatMatk2.Size = new Size(44, 23);
             txt_StatMatk2.TabIndex = 49;
+            txt_StatMatk2.Text = "1";
             txt_StatMatk2.TextAlign = HorizontalAlignment.Center;
             // 
             // txt_StatAtk2
@@ -275,7 +528,6 @@
             lbl_4.Size = new Size(18, 22);
             lbl_4.TabIndex = 47;
             lbl_4.Text = "+";
-            lbl_4.Click += lbl_4_Click;
             // 
             // lbl_3
             // 
@@ -291,7 +543,7 @@
             // 
             lbl_8.AutoSize = true;
             lbl_8.Font = new Font("Sylfaen", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            lbl_8.Location = new Point(472, 72);
+            lbl_8.Location = new Point(474, 72);
             lbl_8.Name = "lbl_8";
             lbl_8.Size = new Size(18, 22);
             lbl_8.TabIndex = 45;
@@ -316,6 +568,7 @@
             txt_StatMatk.ReadOnly = true;
             txt_StatMatk.Size = new Size(44, 23);
             txt_StatMatk.TabIndex = 43;
+            txt_StatMatk.Text = "1";
             txt_StatMatk.TextAlign = HorizontalAlignment.Center;
             // 
             // txt_StatAtk
@@ -327,18 +580,8 @@
             txt_StatAtk.ReadOnly = true;
             txt_StatAtk.Size = new Size(44, 23);
             txt_StatAtk.TabIndex = 42;
+            txt_StatAtk.Text = "1";
             txt_StatAtk.TextAlign = HorizontalAlignment.Center;
-            // 
-            // lbl_Guild
-            // 
-            lbl_Guild.AutoSize = true;
-            lbl_Guild.Font = new Font("Sylfaen", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            lbl_Guild.Location = new Point(337, 173);
-            lbl_Guild.Name = "lbl_Guild";
-            lbl_Guild.Size = new Size(47, 22);
-            lbl_Guild.TabIndex = 41;
-            lbl_Guild.Text = "Guild";
-            lbl_Guild.Click += lbl_Guild_Click;
             // 
             // lbl_StatP
             // 
@@ -409,6 +652,7 @@
             txt_PtsDex.ReadOnly = true;
             txt_PtsDex.Size = new Size(53, 23);
             txt_PtsDex.TabIndex = 33;
+            txt_PtsDex.Text = "2";
             txt_PtsDex.TextAlign = HorizontalAlignment.Center;
             // 
             // txt_PtsInt
@@ -420,6 +664,7 @@
             txt_PtsInt.ReadOnly = true;
             txt_PtsInt.Size = new Size(53, 23);
             txt_PtsInt.TabIndex = 32;
+            txt_PtsInt.Text = "2";
             txt_PtsInt.TextAlign = HorizontalAlignment.Center;
             // 
             // txt_PtsLuk
@@ -431,6 +676,7 @@
             txt_PtsLuk.ReadOnly = true;
             txt_PtsLuk.Size = new Size(53, 23);
             txt_PtsLuk.TabIndex = 31;
+            txt_PtsLuk.Text = "2";
             txt_PtsLuk.TextAlign = HorizontalAlignment.Center;
             // 
             // txt_PtsVit
@@ -442,6 +688,7 @@
             txt_PtsVit.ReadOnly = true;
             txt_PtsVit.Size = new Size(53, 23);
             txt_PtsVit.TabIndex = 28;
+            txt_PtsVit.Text = "2";
             txt_PtsVit.TextAlign = HorizontalAlignment.Center;
             // 
             // txt_PtsAgi
@@ -453,6 +700,7 @@
             txt_PtsAgi.ReadOnly = true;
             txt_PtsAgi.Size = new Size(53, 23);
             txt_PtsAgi.TabIndex = 27;
+            txt_PtsAgi.Text = "2";
             txt_PtsAgi.TextAlign = HorizontalAlignment.Center;
             // 
             // txt_PtsStr
@@ -464,6 +712,7 @@
             txt_PtsStr.ReadOnly = true;
             txt_PtsStr.Size = new Size(53, 23);
             txt_PtsStr.TabIndex = 26;
+            txt_PtsStr.Text = "2";
             txt_PtsStr.TextAlign = HorizontalAlignment.Center;
             // 
             // lbl_PtsReq
@@ -582,228 +831,6 @@
             lbl_1.TabIndex = 15;
             lbl_1.Text = "+";
             // 
-            // num_Str
-            // 
-            num_Str.Location = new Point(59, 43);
-            num_Str.Name = "num_Str";
-            num_Str.Size = new Size(53, 23);
-            num_Str.TabIndex = 50;
-            // 
-            // num_Agi
-            // 
-            num_Agi.Location = new Point(59, 70);
-            num_Agi.Name = "num_Agi";
-            num_Agi.Size = new Size(53, 23);
-            num_Agi.TabIndex = 51;
-            // 
-            // num_Vit
-            // 
-            num_Vit.Location = new Point(59, 97);
-            num_Vit.Name = "num_Vit";
-            num_Vit.Size = new Size(53, 23);
-            num_Vit.TabIndex = 52;
-            // 
-            // num_Int
-            // 
-            num_Int.Location = new Point(59, 123);
-            num_Int.Name = "num_Int";
-            num_Int.Size = new Size(53, 23);
-            num_Int.TabIndex = 53;
-            // 
-            // num_Dex
-            // 
-            num_Dex.Location = new Point(59, 149);
-            num_Dex.Name = "num_Dex";
-            num_Dex.Size = new Size(53, 23);
-            num_Dex.TabIndex = 54;
-            // 
-            // num_Luk
-            // 
-            num_Luk.Location = new Point(59, 176);
-            num_Luk.Name = "num_Luk";
-            num_Luk.Size = new Size(53, 23);
-            num_Luk.TabIndex = 51;
-            // 
-            // txt_StatHit
-            // 
-            txt_StatHit.Location = new Point(427, 99);
-            txt_StatHit.Margin = new Padding(3, 2, 3, 2);
-            txt_StatHit.Name = "txt_StatHit";
-            txt_StatHit.PlaceholderText = "0";
-            txt_StatHit.ReadOnly = true;
-            txt_StatHit.Size = new Size(110, 23);
-            txt_StatHit.TabIndex = 55;
-            txt_StatHit.TextAlign = HorizontalAlignment.Center;
-            // 
-            // txt_StatCrit
-            // 
-            txt_StatCrit.Location = new Point(427, 125);
-            txt_StatCrit.Margin = new Padding(3, 2, 3, 2);
-            txt_StatCrit.Name = "txt_StatCrit";
-            txt_StatCrit.PlaceholderText = "0";
-            txt_StatCrit.ReadOnly = true;
-            txt_StatCrit.Size = new Size(110, 23);
-            txt_StatCrit.TabIndex = 56;
-            txt_StatCrit.TextAlign = HorizontalAlignment.Center;
-            // 
-            // lbl_Def
-            // 
-            lbl_Def.AutoSize = true;
-            lbl_Def.Font = new Font("Sylfaen", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            lbl_Def.Location = new Point(552, 45);
-            lbl_Def.Name = "lbl_Def";
-            lbl_Def.Size = new Size(34, 22);
-            lbl_Def.TabIndex = 57;
-            lbl_Def.Text = "Def";
-            // 
-            // lbl_Mdef
-            // 
-            lbl_Mdef.AutoSize = true;
-            lbl_Mdef.Font = new Font("Sylfaen", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            lbl_Mdef.Location = new Point(552, 73);
-            lbl_Mdef.Name = "lbl_Mdef";
-            lbl_Mdef.Size = new Size(45, 22);
-            lbl_Mdef.TabIndex = 58;
-            lbl_Mdef.Text = "Mdef";
-            // 
-            // txt_Flee
-            // 
-            txt_Flee.AutoSize = true;
-            txt_Flee.Font = new Font("Sylfaen", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            txt_Flee.Location = new Point(553, 99);
-            txt_Flee.Name = "txt_Flee";
-            txt_Flee.Size = new Size(38, 22);
-            txt_Flee.TabIndex = 59;
-            txt_Flee.Text = "Flee";
-            // 
-            // lbl_Aspd
-            // 
-            lbl_Aspd.AutoSize = true;
-            lbl_Aspd.Font = new Font("Sylfaen", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            lbl_Aspd.Location = new Point(553, 124);
-            lbl_Aspd.Name = "lbl_Aspd";
-            lbl_Aspd.Size = new Size(43, 22);
-            lbl_Aspd.TabIndex = 60;
-            lbl_Aspd.Text = "Aspd";
-            // 
-            // txt_StatAspd
-            // 
-            txt_StatAspd.Location = new Point(601, 125);
-            txt_StatAspd.Margin = new Padding(3, 2, 3, 2);
-            txt_StatAspd.Name = "txt_StatAspd";
-            txt_StatAspd.PlaceholderText = "0";
-            txt_StatAspd.ReadOnly = true;
-            txt_StatAspd.Size = new Size(110, 23);
-            txt_StatAspd.TabIndex = 68;
-            txt_StatAspd.TextAlign = HorizontalAlignment.Center;
-            // 
-            // txt_StatMDef2
-            // 
-            txt_StatMDef2.Location = new Point(667, 72);
-            txt_StatMDef2.Margin = new Padding(3, 2, 3, 2);
-            txt_StatMDef2.Name = "txt_StatMDef2";
-            txt_StatMDef2.PlaceholderText = "0";
-            txt_StatMDef2.ReadOnly = true;
-            txt_StatMDef2.Size = new Size(44, 23);
-            txt_StatMDef2.TabIndex = 66;
-            txt_StatMDef2.TextAlign = HorizontalAlignment.Center;
-            // 
-            // txt_StatDef2
-            // 
-            txt_StatDef2.Location = new Point(667, 44);
-            txt_StatDef2.Margin = new Padding(3, 2, 3, 2);
-            txt_StatDef2.Name = "txt_StatDef2";
-            txt_StatDef2.PlaceholderText = "0";
-            txt_StatDef2.ReadOnly = true;
-            txt_StatDef2.Size = new Size(44, 23);
-            txt_StatDef2.TabIndex = 65;
-            txt_StatDef2.TextAlign = HorizontalAlignment.Center;
-            // 
-            // lbl_10
-            // 
-            lbl_10.AutoSize = true;
-            lbl_10.Font = new Font("Sylfaen", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            lbl_10.Location = new Point(646, 72);
-            lbl_10.Name = "lbl_10";
-            lbl_10.Size = new Size(18, 22);
-            lbl_10.TabIndex = 64;
-            lbl_10.Text = "+";
-            // 
-            // lbl_9
-            // 
-            lbl_9.AutoSize = true;
-            lbl_9.Font = new Font("Sylfaen", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            lbl_9.Location = new Point(647, 41);
-            lbl_9.Name = "lbl_9";
-            lbl_9.Size = new Size(18, 22);
-            lbl_9.TabIndex = 63;
-            lbl_9.Text = "+";
-            // 
-            // txt_StatMDef
-            // 
-            txt_StatMDef.Location = new Point(601, 73);
-            txt_StatMDef.Margin = new Padding(3, 2, 3, 2);
-            txt_StatMDef.Name = "txt_StatMDef";
-            txt_StatMDef.PlaceholderText = "0";
-            txt_StatMDef.ReadOnly = true;
-            txt_StatMDef.Size = new Size(44, 23);
-            txt_StatMDef.TabIndex = 62;
-            txt_StatMDef.TextAlign = HorizontalAlignment.Center;
-            // 
-            // txt_StatDef
-            // 
-            txt_StatDef.Location = new Point(601, 44);
-            txt_StatDef.Margin = new Padding(3, 2, 3, 2);
-            txt_StatDef.Name = "txt_StatDef";
-            txt_StatDef.PlaceholderText = "0";
-            txt_StatDef.ReadOnly = true;
-            txt_StatDef.Size = new Size(44, 23);
-            txt_StatDef.TabIndex = 61;
-            txt_StatDef.TextAlign = HorizontalAlignment.Center;
-            // 
-            // txt_StatFlee2
-            // 
-            txt_StatFlee2.Location = new Point(667, 98);
-            txt_StatFlee2.Margin = new Padding(3, 2, 3, 2);
-            txt_StatFlee2.Name = "txt_StatFlee2";
-            txt_StatFlee2.PlaceholderText = "0";
-            txt_StatFlee2.ReadOnly = true;
-            txt_StatFlee2.Size = new Size(44, 23);
-            txt_StatFlee2.TabIndex = 71;
-            txt_StatFlee2.TextAlign = HorizontalAlignment.Center;
-            // 
-            // lbl_11
-            // 
-            lbl_11.AutoSize = true;
-            lbl_11.Font = new Font("Sylfaen", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            lbl_11.Location = new Point(646, 98);
-            lbl_11.Name = "lbl_11";
-            lbl_11.Size = new Size(18, 22);
-            lbl_11.TabIndex = 70;
-            lbl_11.Text = "+";
-            // 
-            // txt_StatFlee
-            // 
-            txt_StatFlee.Location = new Point(601, 99);
-            txt_StatFlee.Margin = new Padding(3, 2, 3, 2);
-            txt_StatFlee.Name = "txt_StatFlee";
-            txt_StatFlee.PlaceholderText = "0";
-            txt_StatFlee.ReadOnly = true;
-            txt_StatFlee.Size = new Size(44, 23);
-            txt_StatFlee.TabIndex = 69;
-            txt_StatFlee.TextAlign = HorizontalAlignment.Center;
-            // 
-            // txt_StatPoint
-            // 
-            txt_StatPoint.Location = new Point(427, 152);
-            txt_StatPoint.Margin = new Padding(3, 2, 3, 2);
-            txt_StatPoint.Name = "txt_StatPoint";
-            txt_StatPoint.PlaceholderText = "0";
-            txt_StatPoint.ReadOnly = true;
-            txt_StatPoint.Size = new Size(110, 23);
-            txt_StatPoint.TabIndex = 72;
-            txt_StatPoint.TextAlign = HorizontalAlignment.Center;
-            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -820,15 +847,14 @@
             Controls.Add(pnl_Stats);
             Name = "Form1";
             Text = "Ragnarok";
-            Load += Form1_Load;
             pnl_Stats.ResumeLayout(false);
             pnl_Stats.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)num_Str).EndInit();
-            ((System.ComponentModel.ISupportInitialize)num_Agi).EndInit();
-            ((System.ComponentModel.ISupportInitialize)num_Vit).EndInit();
-            ((System.ComponentModel.ISupportInitialize)num_Int).EndInit();
-            ((System.ComponentModel.ISupportInitialize)num_Dex).EndInit();
             ((System.ComponentModel.ISupportInitialize)num_Luk).EndInit();
+            ((System.ComponentModel.ISupportInitialize)num_Dex).EndInit();
+            ((System.ComponentModel.ISupportInitialize)num_Int).EndInit();
+            ((System.ComponentModel.ISupportInitialize)num_Vit).EndInit();
+            ((System.ComponentModel.ISupportInitialize)num_Agi).EndInit();
+            ((System.ComponentModel.ISupportInitialize)num_Str).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
