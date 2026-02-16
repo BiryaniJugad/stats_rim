@@ -14,7 +14,7 @@ namespace stats_rim
         private async void Form1_Load(object sender, EventArgs e)
         {
             await webView1.EnsureCoreWebView2Async(null);
-            webView1.ZoomFactor = 0.75;
+            webView1.ZoomFactor = .95;
             webView1.CoreWebView2.Settings.IsZoomControlEnabled = false;
             string htmlPath = Path.Combine(Application.StartupPath, "UI", "index.html");
 

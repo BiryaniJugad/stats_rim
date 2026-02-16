@@ -353,12 +353,13 @@ input:focus {
 }
 
 /* I-force ang puti sa tanang numbers ug values */
-    .status-info-value, .res-item, .weapon-row select, .weapon-row span, .b-item, .stat-row, .vital-node, .regen-node, .hud-item, .operator {
-        color: #ffffff !important;
-        background-color: transparent;
-    }
-.val {
-   font-size: 10px;
+.status-info-value, .res-item, .weapon-row select, .weapon-row span, .b-item, .stat-row, .vital-node, .regen-node, .hud-item, .operator {
+    color: #ffffff !important;
+    background-color: transparent;
+    font-size: 15px;
+}
+.val, .lbl{
+   font-size: 15px;
 }
 .res-item, .b-item, span, .vital-node, .regen-node {
     font-family: 'Orbitron', sans-serif;
