@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Rajdhani:wght@500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="bg.css">
+    <link rel="stylesheet" href="stats.css">
+</head>
+<body>
+    <!-- header -->
+    <div class="main-wrapper">
+        <div class="glass-container">
+            <header class="hud-header-block">
+                <div class="hud-top-row">
+                    <div class="hud-item"><span class="lbl">Job:</span> <span class="val highlight">Novice</span></div>
+                    <div class="hud-item"><span class="lbl">TK Ranker?</span> <input type="checkbox"></div>
+                    <div class="hud-item"><span class="lbl">Base Level:</span> <input type="number" value="1" class="small-input"></div>
+                    <div class="hud-item">
+                        <span>Job Level</span>
+                        <select name="levels" id="level-select">
+                            <option value="">-Level-</option>
+                            <option value="1">Level 1</option>
+                            <option value="2">Level 2</option>
+                            <option value="3">Level 3</option>
+                            <option value="4">Level 4</option>
+                            <option value="5">Level 5</option>
+                            <option value="6">Level 6</option>
+                            <option value="7">Level 7</option>
+                        </select>
+                    </div>
+                    <div class="hud-item"><span class="lbl">Weight:</span> <span class="val">2030</span></div>
+                </div>
+                <div class="hud-bottom-row">
+                    <div class="vital-group">
+                        <div class="vital-node">HP: <span class="val cyan">40</span></div>
+                        <div class="vital-node">SP: <span class="val cyan">11</span></div>
+                    </div>
+                    <div class="regen-group">
+                        <div class="regen-node">Natural HP Regen: <span class="val">1</span> <small>per 6s</small></div>
+                        <div class="regen-node">Natural SP Regen: <span class="val">1</span> <small>per 8s</small></div>
+                    </div>
+                </div>
+            </header>
+            <!-- sub-header -->
+            <section class="hud-module">
+                <h3 class="label main-title">Active Enhancements</h3>
+
+                <div class="enhancement-row">
+                    <div class="group-container">
+                        <h3 class="label sub-label">Buffs</h3>
+                        <div class="buffs-flex">
+                            <div class="b-item">
+                                <span>Blessings</span>
+                                <select name="levels" id="level-select">
+                                    < <option value="">- Level -</option>
+                                     <option value="1">Level 1</option>
+                                     <option value="2">Level 2</option>
+                                     <option value="3">Level 3</option>
+                                     <option value="4">Level 4</option>
+                                     <option value="5">Level 5</option>
+                                     <option value="6">Level 6</option>
+                                     <option value="7">Level 7</option>
+                                     <option value="8">Level 8</option>
+                                     <option value="9">Level 9</option>
+                                     <option value="10">Level 10</option>
+                                </select>
+                            </div>
+                            <div class="b-item">
+                                <span>Increase AGI</span>
+                                <select name="levels" id="level-select">
+                                    <option value="">- Level -</option>
+                                    <option value="1">Level 1</option>
+                                    <option value="2">Level 2</option>
+                                    <option value="3">Level 3</option>
+                                    <option value="4">Level 4</option>
+                                    <option value="5">Level 5</option>
+                                    <option value="6">Level 6</option>
+                                    <option value="7">Level 7</option>
+                                    <option value="8">Level 8</option>
+                                    <option value="9">Level 9</option>
+                                    <option value="10">Level 10</option>
+                                </select>
+                            </div>
+                            <div class="b-item">
+                                <span>Angelus</span>
+                                <select name="levels" id="level-select">
+                                    <option value="">- Level -</option>
+                                    <option value="1">Level 1</option>
+                                    <option value="2">Level 2</option>
+                                    <option value="3">Level 3</option>
+                                    <option value="4">Level 4</option>
+                                    <option value="5">Level 5</option>
+                                    <option value="6">Level 6</option>
+                                    <option value="7">Level 7</option>
+                                    <option value="8">Level 8</option>
+                                    <option value="9">Level 9</option>
+                                    <option value="10">Level 10</option>
+                                </select>
+                            </div>
+                            <div class="b-item">
+                                <span>Impositio Manus</span>
+                                <select name="levels" id="level-select">
+                                    <option value="">- Level -</option>
+                                    <option value="1">Level 1</option>
+                                    <option value="2">Level 2</option>
+                                    <option value="3">Level 3</option>
+                                    <option value="4">Level 4</option>
+                                    <option value="5">Level 5</option>
+                                </select>
+                            </div>
+                            <div class="b-item">
+                                <span>Wind Walk</span>
+                                <select name="levels" id="level-select">
+                                    <option value="">- Level -</option>
+                                    <option value="1">Level 1</option>
+                                    <option value="2">Level 2</option>
+                                    <option value="3">Level 3</option>
+                                    <option value="4">Level 4</option>
+                                    <option value="5">Level 5</option>
+                                    <option value="6">Level 6</option>
+                                    <option value="7">Level 7</option>
+                                    <option value="8">Level 8</option>
+                                    <option value="9">Level 9</option>
+                                    <option value="10">Level 10</option>
+                                </select>
+                            </div>
+                            <div class="b-item"><span>Gloria?</span> <input type="checkbox"></div>
+                        </div>
+                    </div>
+
+                    <div class="active-enhancements">
+                        <div class="items-group">
+                            <h4 class="sub-label">ITEMS</h4>
+                            <div class="items-row">
+                                <div class="b-item">
+                                    <span>SPEED POTIONS</span>
+                                    <select name="levels" id="level-select">
+                                        <option value="">- Potion Type -</option>
+                                        <option value="1">Concentration Potion</option>
+                                        <option value="2">Awakening Potion</option>
+                                        <option value="3">Berserk Potion</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- body -->
+            </section>
+            <div class="content-grid">
+                <div class="stats-box">
+                    <h3 class="label">Attributes</h3>
+                    <div class="stat-row"><span>STR</span> <input type="number" value="1"> <span class="bonus">+0</span> <span class="req">2</span></div>
+                    <div class="stat-row"><span>AGI</span> <input type="number" value="1"> <span class="bonus">+0</span> <span class="req">2</span></div>
+                    <div class="stat-row"><span>VIT</span> <input type="number" value="1"> <span class="bonus">+0</span> <span class="req">2</span></div>
+                    <div class="stat-row"><span>INT</span> <input type="number" value="1"> <span class="bonus">+0</span> <span class="req">2</span></div>
+                    <div class="stat-row"><span>DEX</span> <input type="number" value="1"> <span class="bonus">+0</span> <span class="req">2</span></div>
+                    <div class="stat-row"><span>LUK</span> <input type="number" value="1"> <span class="bonus">+0</span> <span class="req">2</span></div>
+                    <div class="weapon-selector">
+                        <span class="label">Weapon Type</span>
+                        <div class="weapon-row">
+                            <span>Right:</span>
+                            <select><option>Hand</option></select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="info-box">
+                    <h3 class="label">Status Information</h3>
+                    <div class="data-list">
+                        <div class="data-node">
+                            <span>ATK</span>
+                            <div class="dual-box">
+                                <span class="val">1</span><span class="operator">+</span><span class="val">0</span>
+                            </div>
+                        </div>
+                        <div class="data-node">
+                            <span>MATK</span>
+                            <div class="dual-box">
+                                <span class="val">1</span><span class="operator">~</span><span class="val">1</span>
+                            </div>
+                        </div>
+                        <div class="data-node">
+                            <span>DEF</span>
+                            <div class="dual-box">
+                                <span class="val">0</span><span class="operator">+</span><span class="val">1</span>
+                            </div>
+                        </div>
+                        <div class="data-node">
+                            <span>MDEF</span>
+                            <div class="dual-box">
+                                <span class="val">0</span><span class="operator">+</span><span class="val">1</span>
+                            </div>
+                        </div>
+                        <div class="data-node">
+                            <span>FLEE</span>
+                            <div class="dual-box">
+                                <span class="val">2</span><span class="operator">+</span><span class="val">1</span>
+                            </div>
+                        </div>
+                        <div class="data-node"><span>HIT</span> <span class="val">2</span></div>
+                        <div class="data-node"><span>CRITICAL</span> <span class="val">1</span></div>
+                        <div class="data-node"><span>ASPD</span> <span class="val">150</span></div>
+                        <div class="data-node"><span>STATUS POINT</span> <span class="val">48</span></div>
+                        <div class="data-node"><span>GUILD</span> <span class="val">-</span></div>
+                    </div>
+                </div>
+            </div>
+        <!-- footer side/status -->
+        <footer class="resistance-area">
+            <h3 class="label">Status Change Resistances</h3>
+            <div class="res-row">
+                <div class="res-item">STUN<span>4%</span></div>
+                <div class="res-item">POISON<span>4%</span></div>
+                <div class="res-item">SILENCE<span>4%</span></div>
+                <div class="res-item">BLEEDING<span>4%</span></div>
+                <div class="res-item">SLEEP<span>4%</span></div>
+                <div class="res-item">STONE COURSE<span>4%</span></div>
+                <div class="res-item">FREEZE<span>4%</span></div>
+                <div class="res-item">CURSE<span>4%</span></div>
+                <div class="res-item">BLIND<span>4%</span></div>
+                <div class="res-item">CONFUSION<span>4%</span></div>
+            </div>
+        </footer>
+    </div>
+    </div>
+
+</body>
+</html>
