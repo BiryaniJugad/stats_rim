@@ -8,7 +8,6 @@
 </head>
 <body>
     <!-- header -->
-    <div class="main-wrapper">
         <div class="glass-container">
             <header class="hud-header-block">
                 <div class="hud-top-row">
@@ -44,7 +43,6 @@
             <!-- sub-header -->
             <section class="hud-module">
                 <h3 class="label main-title">Active Enhancements</h3>
-
                 <div class="enhancement-row">
                     <div class="group-container">
                         <h3 class="label sub-label">Buffs</h3>
@@ -127,7 +125,6 @@
                             <div class="b-item"><span>Gloria?</span> <input type="checkbox"></div>
                         </div>
                     </div>
-
                     <div class="active-enhancements">
                         <div class="items-group">
                             <h4 class="sub-label">ITEMS</h4>
@@ -160,7 +157,17 @@
                         <span class="label">Weapon Type</span>
                         <div class="weapon-row">
                             <span>Right:</span>
-                            <select><option>Hand</option></select>
+                            <!--<select><option>Hand</option></select>-->
+                                <select name="Weapon" id="Weapon-Type">
+                                    <option value="">Hand</option>
+                                    <option value="1">Dagger</option>
+                                    <option value="2">One-handed Sword</option>
+                                    <option value="3">One-handed Axe</option>
+                                    <option value="4">One-handed Mace</option>
+                                    <option value="5">Two-handed Mace</option>
+                                    <option value="6">Rod & Staff</option>
+                                    <option value="7">Two-handed Staff</option>
+                                </select>
                         </div>
                     </div>
                 </div>
@@ -206,7 +213,7 @@
                     </div>
                 </div>
             </div>
-        <!-- footer side/status -->
+         <!--footer side/status--> 
         <footer class="resistance-area">
             <h3 class="label">Status Change Resistances</h3>
             <div class="res-row">
@@ -222,7 +229,6 @@
                 <div class="res-item">CONFUSION<span>4%</span></div>
             </div>
         </footer>
-    </div>
     </div>
 
 </body>

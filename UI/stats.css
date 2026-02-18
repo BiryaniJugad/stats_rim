@@ -15,21 +15,22 @@
 }
 
 .glass-container {
-    zoom: .80;
-    display: flex;
+    zoom: .75;
+    display: flow-root;
+    min-height: auto;
     flex-direction: column;
     width: 90%;
-    max-width: 950px;
+    max-width: 1000px;
+    overflow: hidden;
     height: auto;
     background: var(--glass-bg);
     backdrop-filter: blur(15px); /* Frosty glass effect */
     border: 1px solid rgba(255, 106, 0, 0.3);
     border-radius: 20px; /* Corner radius */
-    width: 95vw;
-    height: 95vh;
+    width: 90%;
     flex-direction: column;
     gap: 20px;
-    padding: 20px;
+    padding: 30px;
     margin: 20px auto;
     text-align: center; /* Center all text */
     box-shadow: 0 0 40px rgba(0,0,0,0.5);
