@@ -38,8 +38,8 @@ namespace stats_rim
             txt_StatAtk2.Text = secondary.GetATK().ToString();
 
             // ===== MATK =====
-            txt_StatMatk.Text = secondary.GetMATK().ToString();
-            txt_StatMatk2.Text = secondary.GetMATK().ToString();
+            txt_StatMatk.Text = secondary.GetMATKMin().ToString();
+            txt_StatMatk2.Text = secondary.GetMATKMax().ToString();
 
             // ===== DEF =====
             txt_StatDef.Text = secondary.GetDEF().ToString();
