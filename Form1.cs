@@ -8,7 +8,9 @@ namespace stats_rim
         {
             InitializeComponent();
             WireEvents();
+            Recalculate(null, EventArgs.Empty); // ← ensures stats show on startup
         }
+
         private void WireEvents()
         {
             num_Str.ValueChanged += Recalculate;
@@ -17,7 +19,6 @@ namespace stats_rim
             num_Int.ValueChanged += Recalculate;
             num_Dex.ValueChanged += Recalculate;
             num_Luk.ValueChanged += Recalculate;
-            //num_BaseLevel.ValueChanged += Recalculate;
         }
 
         private void Recalculate(object sender, EventArgs e)
@@ -28,7 +29,6 @@ namespace stats_rim
             int intel = (int)num_Int.Value;
             int dex = (int)num_Dex.Value;
             int luk = (int)num_Luk.Value;
-            //int baseLevel = (int)num_BaseLevel.Value;
 
             Primary primary = new Primary(str, agi, vit, intel, dex, luk);
             Secondary secondary = new Secondary(primary);
@@ -61,6 +61,17 @@ namespace stats_rim
 
             // ===== ASPD =====
             txt_StatAspd.Text = secondary.GetASPD().ToString("0.00");
+
+            // ===== STAT POINTS (optional if you implement cost formula later) =====
+            txt_StatPoint.Text = CalculateRemainingPoints(str, agi, vit, intel, dex, luk).ToString();
+        }
+
+        // Optional helper — change formula if your stat system differs
+        private int CalculateRemainingPoints(int str, int agi, int vit, int intel, int dex, int luk)
+        {
+            int totalSpent = str + agi + vit + intel + dex + luk;
+            int maxPoints = 48; // adjust if your game uses different base pool
+            return Math.Max(0, maxPoints - totalSpent);
         }
     }
 }
