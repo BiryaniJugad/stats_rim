@@ -1,3 +1,5 @@
+using Microsoft.Web.WebView2.Core;
+using System.IO;
 using stats_rim.Stats;
 
 namespace stats_rim
@@ -7,6 +9,24 @@ namespace stats_rim
         public Form1()
         {
             InitializeComponent();
+        }
+
+        // KINI RA DAPAT ANG NAA:
+        private async void Form1_Load(object sender, EventArgs e)
+        {
+            await webView1.EnsureCoreWebView2Async(null);
+            webView1.ZoomFactor = .95;
+            webView1.CoreWebView2.Settings.IsZoomControlEnabled = false;
+            string htmlPath = Path.Combine(Application.StartupPath, "UI", "index.html");
+
+            if (File.Exists(htmlPath))
+            {
+                webView1.CoreWebView2.Navigate(htmlPath);
+            }
+            else
+            {
+                MessageBox.Show("File not found: " + htmlPath);
+            }
             WireEvents();
             Recalculate(null, EventArgs.Empty); // ← ensures stats show on startup
         }

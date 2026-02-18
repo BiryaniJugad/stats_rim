@@ -1,10 +1,9 @@
-﻿namespace stats_rim
+﻿
+namespace stats_rim
 {
    partial class Form1
     {
-        /// <summary>
-        ///  Required designer variable.
-        /// </summary>
+   
         private System.ComponentModel.IContainer components = null;
 
         /// <summary>
@@ -22,10 +21,6 @@
 
         #region Windows Form Designer generated code
 
-        /// <summary>
-        ///  Required method for Designer support - do not modify   
-        ///  the contents of this method with the code editor.
-        /// </summary>
         private void InitializeComponent()
         {
             lbl_Str = new Label();
@@ -833,18 +828,12 @@
             // 
             // Form1
             // 
-            AutoScaleDimensions = new SizeF(7F, 15F);
+            AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1025, 567);
-            Controls.Add(lbl_JobBonus);
-            Controls.Add(lbl_Stats);
-            Controls.Add(lbl_Luk);
-            Controls.Add(lbl_Dex);
-            Controls.Add(lbl_Int);
-            Controls.Add(lbl_Vit);
-            Controls.Add(lbl_Agi);
-            Controls.Add(lbl_Str);
-            Controls.Add(pnl_Stats);
+            BackColor = SystemColors.Control;
+            ClientSize = new Size(982, 653);
+            Controls.Add(webView1);
+            Margin = new Padding(3, 4, 3, 4);
             Name = "Form1";
             Text = "Ragnarok";
             pnl_Stats.ResumeLayout(false);
@@ -856,73 +845,20 @@
             ((System.ComponentModel.ISupportInitialize)num_Agi).EndInit();
             ((System.ComponentModel.ISupportInitialize)num_Str).EndInit();
             ResumeLayout(false);
-            PerformLayout();
+        }
+
+
+        private void lbl_Guild_Click(object sender, EventArgs e)
+        {
+            throw new NotImplementedException();
+        }
+
+        private void lbl_4_Click(object sender, EventArgs e)
+        {
+            throw new NotImplementedException();
         }
 
         #endregion
-        private Label lbl_Str;
-        private Label lbl_Agi;
-        private Label lbl_Vit;
-        private Label lbl_Int;
-        private Label lbl_Dex;
-        private Label lbl_Luk;
-        private Label lbl_Stats;
-        private Label lbl_JobBonus;
-        private Panel pnl_Stats;
-        private Label lbl_Mdef;
-        private Label lbl_2;
-        private Label lbl_1;
-        private TextBox txt_ResLuk;
-        private TextBox txt_ResDex;
-        private TextBox txt_ResInt;
-        private TextBox txt_ResVit;
-        private TextBox txt_ResAgi;
-        private TextBox txt_ResStr;
-        private Label lbl_PtsReq;
-        private TextBox txt_PtsLuk;
-        private TextBox txt_StatMDef;
-        private TextBox txt_StatDef2;
-        private TextBox txt_PtsVit;
-        private TextBox txt_PtsAgi;
-        private TextBox txt_PtsStr;
-        private TextBox txt_PtsInt;
-        private TextBox txt_PtsDex;
-        private Label lbl_StatInfo;
-        private Label lbl_7;
-        private Label lbl_Atk;
-        private Label lbl_Hit;
-        private Label lbl_Guild;
-        private Label lbl_StatP;
-        private Label lbl_Crit;
-        private Label lbl_Matk;
-        private Label lbl_8;
-        private TextBox txt_StatMatk;
-        private TextBox txt_StatAtk;
-        private Label lbl_4;
-        private Label lbl_3;
-        private Label lbl_5;
-        private Label lbl_6;
-        private TextBox txt_StatAtk2;
-        private TextBox txt_StatMatk2;
-        private NumericUpDown num_Luk;
-        private NumericUpDown num_Dex;
-        private NumericUpDown num_Int;
-        private NumericUpDown num_Vit;
-        private NumericUpDown num_Agi;
-        private NumericUpDown num_Str;
-        private TextBox txt_StatHit;
-        private Label lbl_Def;
-        private TextBox txt_StatCrit;
-        private TextBox txt_StatAspd;
-        private TextBox txt_StatMDef2;
-        private Label lbl_10;
-        private Label lbl_9;
-        private TextBox txt_StatDef;
-        private Label lbl_Aspd;
-        private Label txt_Flee;
-        private TextBox txt_StatFlee2;
-        private Label lbl_11;
-        private TextBox txt_StatFlee;
-        private TextBox txt_StatPoint;
+        private Microsoft.Web.WebView2.WinForms.WebView2 webView1;
     }
 }

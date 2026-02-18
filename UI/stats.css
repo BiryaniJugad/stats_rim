@@ -1,0 +1,367 @@
+:root {
+    --neon-orange: #ff6a00;
+    --neon-cyan: #00f2ff;
+    --bright-white: #ffffff;
+    --glass-bg: rgba(0, 0, 0, 0.75); /* Transparency */
+}
+
+/* Centering Logic */
+.main-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    width: 100vw;
+}
+
+.glass-container {
+    zoom: .80;
+    display: flex;
+    flex-direction: column;
+    width: 90%;
+    max-width: 950px;
+    height: auto;
+    background: var(--glass-bg);
+    backdrop-filter: blur(15px); /* Frosty glass effect */
+    border: 1px solid rgba(255, 106, 0, 0.3);
+    border-radius: 20px; /* Corner radius */
+    width: 95vw;
+    height: 95vh;
+    flex-direction: column;
+    gap: 20px;
+    padding: 20px;
+    margin: 20px auto;
+    text-align: center; /* Center all text */
+    box-shadow: 0 0 40px rgba(0,0,0,0.5);
+}
+.main-stats-row {
+    display: flex;
+    justify-content: space-between; /* I-distribute ang space sa tunga */
+    align-items: flex-start;
+    flex-wrap: wrap; /* Mo-adjust kon gamay ang window */
+}
+
+/* Text Styling */
+body {
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center; /* Center horizontally */
+    align-items: center; /* Center vertically */
+    min-height: 100vh;
+    background-color: #000 !important; /* Itom nga background para dili makita ang space */
+    overflow: hidden; /* Para walay scrollbar */
+}
+h1, .label {
+    font-family: 'Orbitron', sans-serif;
+    color: #ff8c00 !important;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    text-shadow: 0 0 10px rgba(255, 106, 0, 0.5);
+}
+
+/* Grid for the Middle Phase */
+.content-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 30px;
+    margin: 20px 0;
+}
+
+.stat-row, .data-node {
+ display: grid;
+    /* Column 1: Name, Column 2: Input, Column 3: Bonus, Column 4: Req */
+    grid-template-columns: 80px 100px 80px 40px; 
+    align-items: center;
+    padding: 10px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05); /* Subtle separator line */
+}
+.stat-name {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 0.85rem;
+    color: #ffffff !important;
+    text-align: left;
+}
+.themed-input {
+    background-color: rgba(0, 0, 0, 0.7) !important;
+    border: 1px solid #00f2ff !important; /* Cyan border */
+    color: #00f2ff !important;
+    border-radius: 4px;
+    width: 60px;
+    text-align: center;
+    font-family: 'Orbitron', sans-serif;
+    font-weight: bold;
+}
+.bonus, .req {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 0.9rem;
+    color: #ffffff !important;
+    text-align: center;
+}
+input[type="number"] {
+    background: #000;
+    border: 1px solid var(--neon-cyan);
+    color: var(--neon-cyan) !important;
+    border-radius: 4px;
+    padding: 5px;
+    width: 50px;
+    text-align: center;
+    font-weight: bold;
+}
+
+.val {
+    color: var(--neon-cyan) !important;
+    font-weight: bold;
+}
+/* Container Spacing */
+.hud-header-block {
+    border-bottom: 1px solid rgba(255, 140, 0, 0.3);
+    padding-bottom: 25px;
+    margin-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.hud-top-row {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap;
+    font-family: 'Orbitron', sans-serif;
+}
+
+.hud-bottom-row {
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+    background: rgba(255, 255, 255, 0.05);
+    padding: 12px;
+    border-radius: 8px;
+    font-size: 0.85rem;
+}
+
+.label {
+    color: var(--neon-orange) !important;
+    font-size: 0.75rem;
+    letter-spacing: 2px;
+    text-align: center;
+    margin-bottom: 15px;
+}
+
+.val {
+    color: #ffffff !important;
+    text-shadow: 0 0 8px rgba(255, 255, 255, 0.4);
+}
+
+.cyan { color: #00f2ff !important; text-shadow: 0 0 10px #00f2ff; }
+
+.res-row {
+    display: flex;
+    justify-content: center;
+    gap: 25px;
+    text-align: center;
+}
+
+.res-item span {
+    display: block;
+    color: #ff8c00 !important;
+    font-weight: bold;
+}
+
+/* Module Styling */
+.hud-module {
+    background: rgba(255, 255, 255, 0.02);
+    padding: 15px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+}
+
+.enhancement-row {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 30px;
+    width: 100%;
+    flex-wrap: nowrap; /* Prevents items from jumping to the next line */
+}
+.buffs-flex {
+    display: flex;
+    justify-content: center; /* Centers items within the group */
+    align-items: flex-end;
+    gap: 8px; 
+    flex-wrap: nowrap; /* Prevents pushing Items to a new row */
+}
+.enhancement-container {
+    display: flex;
+    flex-direction: column; /* I-stack ang BUFFS ug ITEMS para dili mag-overlap */
+    align-items: center;
+    gap: 20px;
+    padding: 20px;
+    background: rgba(20, 5, 0, 0.95); /* Imong dark theme background */
+    border-radius: 8px;
+}
+.buffs-row, .items-row {
+    display: flex;
+    flex-wrap: nowrap; /* Pugngan ang pag-wrap sa text */
+    justify-content: center;
+    gap: 15px;
+    width: 100%;
+}
+.themed-select {
+    font-size: 0.7rem;
+    padding: 2px 4px;
+    width: auto; 
+    min-width: 130px;
+}
+
+.group-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.sub-label {
+    color: #ff6a00 !important;
+    font-family: 'Orbitron', sans-serif;
+    font-size: 0.75rem;
+    border-bottom: 1px solid rgba(255, 106, 0, 0.3);
+    margin-bottom: 15px;
+    text-align: center;
+}
+.b-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-width: 100px; /* Hatagan og saktong space ang taas nga ngalan */
+}
+.b-item span {
+    white-space: nowrap; /* Forces text to stay on one line */
+    font-size: 0.7rem;
+    margin-bottom: 5px;
+    display: block;
+    text-align: center;
+}
+.items-group {
+    width: 100%;
+    flex-shrink: 0;
+    border-left: 1px solid rgba(255, 106, 0, 0.2); /* Visual separator */
+    padding-left: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 15px; /* Hatagan og space gikan sa Buffs */
+}
+.items-row {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    min-width: 130px;
+    max-width: 400px; /* Limitahan ang width para dili mo-lapas sa container */
+}
+/* Creates the 2-column row */
+.content-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* Two equal columns */
+    gap: 30px;
+    align-items: start;
+    margin-top: 20px;
+}
+
+/* Individual list styling for Status Information */
+.data-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.data-node {
+    display: flex;
+    justify-content: space-between; /* Labal on left, value on right */
+    padding: 8px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+    .data-node span:first-child {
+        font-family: 'Orbitron', sans-serif;
+        font-size: 0.8rem;
+        color: white !important;
+    }
+
+    .data-node .val {
+        font-family: 'Orbitron', sans-serif;
+        font-weight: bold;
+        color: white !important;
+    }
+
+/* Weapon Selector Tweaks */
+.weapon-selector {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Centers the "Weapon Type" title */
+    justify-content: center;
+    width: 100%;
+    margin-top: 25px;
+    padding: 15px;
+    box-sizing: border-box;
+}
+
+.weapon-row {
+    display: flex;
+    justify-content: center; /* Centers the group horizontally */
+    align-items: center;     /* Aligns "Right:" vertically with the box */
+    gap: 12px;               /* Clean spacing between text and box */
+    width: 100%;
+}
+.weapon-row span {
+    white-space: nowrap;
+    font-family: 'Orbitron', sans-serif;
+    font-size: 0.8rem;
+}
+select, 
+input[type="number"], 
+input[type="text"] {
+    background-color: rgba(0, 0, 0, 0.7) !important; /* Deep dark background */
+    color: #ffffff !important; /* Sharp white text for readability */
+    border: 1px solid var(--neon-cyan) !important; /* Neon cyan border to match HUD */
+    border-radius: 4px;
+    padding: 2px 5px;
+    font-family: 'Orbitron', sans-serif;
+    outline: none;
+    transition: all 0.2s ease-in-out;
+}
+
+select:focus, 
+input:focus {
+    border-color: var(--neon-orange) !important; /* Glows orange when clicking */
+    box-shadow: 0 0 8px rgba(255, 106, 0, 0.4);
+}
+
+    select option {
+        background-color: #1a1a1a !important;
+        color: #00f2ff;
+    }
+.res-item{
+    font-size: 0.75rem;
+    border-left: 1px solid rgba(255, 106, 0, 0.3);
+    border-right: 1px solid rgba(255, 106, 0, 0.3);
+    padding-left: 10px;
+    padding-right: 10px;
+}
+.label, .status-info-label, .res-item, .weapon-selector span {
+    color: #ff8c00 !important; 
+    text-shadow: 0 0 5px rgba(255, 140, 0, 0.3);
+}
+
+/* I-force ang puti sa tanang numbers ug values */
+.status-info-value, .res-item, .weapon-row select, .weapon-row span, .b-item, .stat-row, .vital-node, .regen-node, .hud-item, .operator {
+    color: #ffffff !important;
+    background-color: transparent;
+    font-size: 15px;
+}
+.val, .lbl{
+   font-size: 15px;
+}
+.res-item, .b-item, span, .vital-node, .regen-node {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 10px;
+}
