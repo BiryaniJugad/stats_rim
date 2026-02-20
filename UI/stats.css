@@ -83,11 +83,6 @@ body {
   cursor: not-allowed;
 }
 
-.value {
-  font-weight: bold;
-  color: #ffd166;
-}
-
 .vital-stats {
   margin-top: 25px;
 }

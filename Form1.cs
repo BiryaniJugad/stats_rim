@@ -14,10 +14,12 @@ namespace stats_rim
         private async void Form1_Load(object sender, EventArgs e)
         {
             await webView1.EnsureCoreWebView2Async(null);
+            // Siguroha nga ang Settings nagtugot sa Scripts
+            webView1.CoreWebView2.Settings.IsScriptEnabled = true;
+            webView1.CoreWebView2.Settings.AreDefaultContextMenusEnabled = true;
             //webView1.ZoomFactor = .60;
             //webView1.CoreWebView2.Settings.IsZoomControlEnabled = false;
             string htmlPath = Path.Combine(Application.StartupPath, "UI", "index.html");
-
             if (File.Exists(htmlPath))
             {
                 webView1.CoreWebView2.Navigate(htmlPath);

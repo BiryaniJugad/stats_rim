@@ -12,6 +12,7 @@
 
 /* CENTER THE CONTAINER & SET BACKGROUND */
 body {
+    zoom: .57;
     background: radial-gradient(circle at center, #1a1f2e 0%, #05070a 100%);
     background-attachment: fixed;
     display: flex;
@@ -50,6 +51,19 @@ body {
 }
 .hud-tag {
     margin-right: 10px;
+}
+.value {
+    width: auto !important;
+    max-width: 35px; /* Limits width so they don't grow too large */
+    background: transparent !important;
+    border: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    text-align: right;
+    font-size: 1.05rem;
+    font-weight: bold;
+    color: var(--accent-gold);
+    text-shadow: 0 0 10px rgba(0, 242, 255, 0.6);
 }
 
 
