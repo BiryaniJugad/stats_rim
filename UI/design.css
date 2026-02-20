@@ -44,11 +44,14 @@ body {
 /* BALANCED TYPOGRAPHY: LABELS */
 .label, .hud-tag, .stat-name, .panel-title, .header-row span, .combat-row span {
     font-family: 'Orbitron', sans-serif;
-    color: var(--text-muted);
     font-size: 0.75rem;
     letter-spacing: 1.5px;
     text-transform: uppercase;
 }
+.hud-tag {
+    margin-right: 10px;
+}
+
 
 /* BALANCED TYPOGRAPHY: VALUES */
 .stat-input, .lvl-value-input, .bar-text-input, .cost-display, .atk-value {
@@ -66,6 +69,7 @@ input[readonly],
     box-shadow: none !important;
     padding: 0 !important;
     cursor: default;
+    color: var(--cyan-stat);
     outline: none;
     font-family: 'Orbitron', sans-serif;
     font-weight: 700;
@@ -196,7 +200,7 @@ input[readonly],
     margin: 0 !important;
     text-align: right;
     font-size: 1.05rem;
-    color: var(--cyan-stat);
+    color: var(--accent-gold);
     text-shadow: 0 0 10px rgba(0, 242, 255, 0.6);
 }
 
@@ -205,6 +209,7 @@ input[readonly],
     font-family: 'Orbitron', sans-serif;
     font-weight: 900;
     font-size: 0.9rem;
+    color: var(--accent-gold);
     color: #ffffff;
     padding: 0 4px; /* Gives the '+' or '~' a little breathing room */
     display: inline-block;
@@ -372,11 +377,10 @@ input[readonly],
 input[readonly] {
     background: transparent !important;
     border: none !important;
-    color: var(--cyan-stat);
+    color: var(--accent-gold);
     text-shadow: 0 0 8px rgba(0, 242, 255, 0.5);
     font-family: 'Orbitron', sans-serif;
     font-weight: 700;
-    width: 40px;
     text-align: right;
     outline: none;
 }
@@ -384,8 +388,8 @@ input[readonly] {
 .symbol {
     font-family: 'Orbitron', sans-serif;
     font-weight: 900;
+    color: var(--accent-gold);
     font-size: 1.1rem;
-    color: #ffffff;
     padding: 0 2px;
 }
 
@@ -394,4 +398,142 @@ input[readonly] {
     from { border-color: rgba(255, 204, 0, 0.3); box-shadow: 0 0 50px rgba(0, 0, 0, 0.9), 0 0 10px rgba(255, 204, 0, 0.1); }
     to { border-color: rgba(255, 204, 0, 0.6); box-shadow: 0 0 50px rgba(0, 0, 0, 0.9), 0 0 25px rgba(255, 204, 0, 0.3); }
 }
+.tactical-header-console {
+    width: 100% !important;
+    border-bottom: 1px solid rgba(255, 204, 0, 0.2) !important;
+    margin-bottom: 5px !important;
+    min-height: auto !important; /* Pugson nato nga dili mo-stretch */
+    padding: 10px 0 !important; 
+}
+.unified-status-panel {
+      width: 1100px; /* I-adjust depende sa imong design */
+      margin: 20px auto;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden; /* Mo-follow ang sulod sa rounded corners */  
+      padding: 20px;
+}
+.console-buffs {
+    display: flex;
+    align-items: center; /* Siguradohon nga pantay ang alignment sa tunga */
+    width: 100%; /* Gamiton ang tibuok gilapdon sa container */
+    padding: 10px 0;
+    border-top: 1px solid rgba(255, 204, 0, 0.2); /* Tactical divider */
+}
+.console-buffs .hud-tag:last-of-type, 
+.console-buffs .console-select:last-of-type {
+    margin-left: auto; /* I-duso ang Items section padulong sa tuo */
+    padding-left: 0px;
+}
+.console-select {
+    height: 28px !important;
+    background: rgba(0, 0, 0, 0.5);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: #fff;
+    padding: 0 8px;
+    margin-right: 12px; /* Distansya tali sa matag dropdown */
+    border-radius: 3px;
+}
+
+/* Checkbox Styling */
+.hud-checkbox2 {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-family: 'Orbitron', sans-serif;
+    font-size: 0.8rem;
+    color: #fff;
+    margin-right: 20px; /* Space pagkahuman sa Gloria */
+}
+.console-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 5px 10px 5px; 
+    border-bottom: 2px solid rgba(255, 204, 0, 0.3);
+    margin-bottom: 15px;
+}
+
+.console-grid {
+    display: grid;
+    grid-template-columns: repeat(1, 1fr);
+    gap: 15px;
+    margin-bottom: 10px;
+}
+
+.console-panel {
+    background: rgba(0, 0, 0, 0.3);
+    border-left: 3px solid var(--accent-gold);
+    padding: 12px;
+    border-radius: 4px;
+    transition: 0.3s;
+}
+
+.console-panel:hover {
+    background: rgba(255, 204, 0, 0.05);
+    box-shadow: inset 0 0 10px rgba(255, 204, 0, 0.1);
+}
+
+.console-select {
+    background: var(--input-bg);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: #fff;
+    font-family: 'Rajdhani', sans-serif;
+    padding: 2px 8px;
+    border-radius: 3px;
+    outline: none;
+}
+
+.btn-execute {
+    background: var(--accent-gold);
+    border: none;
+    color: #000;
+    font-family: 'Orbitron', sans-serif;
+    font-weight: 900;
+    font-size: 0.7rem;
+    padding: 5px 15px;
+    cursor: pointer;
+    box-shadow: 0 0 10px rgba(255, 204, 0, 0.3);
+}
+
+
+.val-gold { color: var(--accent-gold); text-shadow: 0 0 8px rgba(255, 204, 0, 0.5); }
+.val-cyan { color: var(--cyan-stat); text-shadow: 0 0 8px rgba(0, 242, 255, 0.5); }
+
+
+
+.character-side {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center; 
+    overflow: hidden; 
+}
+
+.novice-sprite {
+    /* --- RESIZE CONTROL --- */
+    width: 90%; 
+    max-width: 250px; 
+    height: auto;
+
+    /* --- TACTICAL LOOK --- */
+    filter: drop-shadow(0 0 20px rgba(0, 242, 255, 0.6));
+    image-rendering: pixelated;
+    
+    /* --- ANIMATION (Optional) --- */
+    animation: idleFloat 4s ease-in-out infinite;
+}
+
+@keyframes idleFloat {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+}
+.main-console-wrapper {
+    display: flex;
+    gap: 20px;
+    align-items: flex-start;
+}
+
+.stats-area { flex: 2; } /* Imong stats ug buffs */
+.character-side { flex: 1; } /* Imong Novice SVG */
 

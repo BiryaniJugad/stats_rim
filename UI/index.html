@@ -2,22 +2,118 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Status Window</title>
+  <title>Fused Status Window</title>
   <link rel="stylesheet" href="stats.css">
   <link rel="stylesheet" href="design.css">
   <link rel="stylesheet" href="bg.css">
-
 </head>
 <body>
 
-  <div class="unified-status-panel">
+<div class="unified-status-panel">
+
+  <header class="tactical-header-console">
+    <div class="console-nav">
+      <div class="nav-left">
+        <a href="#" class="reset-link"><span class="val-gold">« RESET_SYSTEM</span></a>
+      </div>
+      <div class="nav-right">
+        <span class="hud-tag">SELECT JOB:</span><select class="console-select"><option>NOVICE</option></select>
+        <label class="hud-checkbox"><span>BABY?</span><input type="checkbox"></label>
+        <label class="hud-checkbox"><span>RANKER?</span><input type="checkbox"></label>
+        <span class="hud-tag">LIMITER:</span>
+        <select class="console-select narrow"><option>190 ASPD</option></select>
+        <button class="btn-execute">INITIALIZE</button>  
+      </div>
+    </div>
+
+    <div class="console-grid">
+      <div class="console-panel">
+        <div class="table-row">CURRENT JOB</span> <span class="val-gold">NOVICE</span></div>
+        <div class="table-row">REGEN STATE</span> <span class="val-gold">ACTIVE</span></div>
+         <div class="table-row">WEIGHT</span> <span class="val-gold">2030</span></div>
+        <div class="table-row">JOB LVL</span> <select class="console-select"><option>1</option></select></div>
+      </div>
+    <div class="console-buffs">
+      <span class="hud-tag">BUFFS:</span>
+      <div class="input-stack"><span class="stack-label">BLESSINGS:</span><select class="console-select">
+        <option>Level</option>
+        <option>Level 1</option>
+        <option>Level 2</option>
+        <option>Level 3</option>
+        <option>Level 4</option>
+        <option>Level 5</option>
+        <option>Level 6</option>
+        <option>Level 7</option>
+        <option>Level 8</option>
+        <option>Level 9</option>
+        <option>Level 10</option>
+      </select></div>
+      <div class="input-stack"><span class="stack-label">INCREASE AGI:</span><select class="console-select">
+        <option>Level</option>
+        <option>Level 1</option>
+        <option>Level 2</option>
+        <option>Level 3</option>
+        <option>Level 4</option>
+        <option>Level 5</option>
+        <option>Level 6</option>
+        <option>Level 7</option>
+        <option>Level 8</option>
+        <option>Level 9</option>
+        <option>Level 10</option>
+      </select></div>
+      <div class="input-stack"><span class="stack-label">ANGELUS:</span><select class="console-select">
+        <option>Level</option>
+        <option>Level 1</option>
+        <option>Level 2</option>
+        <option>Level 3</option>
+        <option>Level 4</option>
+        <option>Level 5</option>
+        <option>Level 6</option>
+        <option>Level 7</option>
+        <option>Level 8</option>
+        <option>Level 9</option>
+        <option>Level 10</option>
+      </select></div>
+       <div class="input-stack"><span class="stack-label">IMPOSITIO MANUS:</span><select class="console-select">
+        <option>Level</option>
+        <option>Level 1</option>
+        <option>Level 2</option>
+        <option>Level 3</option>
+        <option>Level 4</option>
+        <option>Level 5</option>
+      </select></div>
+       <div class="input-stack"><span class="stack-label">WIND WALK:</span><select class="console-select">
+        <option>Level</option>
+        <option>Level 1</option>
+        <option>Level 2</option>
+        <option>Level 3</option>
+        <option>Level 4</option>
+        <option>Level 5</option>  
+        <option>Level 6</option>
+        <option>Level 7</option>
+        <option>Level 8</option>
+        <option>Level 9</option>
+        <option>Level 10</option>
+      </select></div>
+      <label class="hud-checkbox2"><span>GLORIA</span><input type="checkbox"> </label>
+      <span class="hud-tag">ITEMS:</span>
+     <div class="input-stack"><span class="stack-label">SPEED POTIONS:</span><select class="console-select">
+        <option>- POTION TYPE -</option>
+        <option>CONCENTRATION POTION</option>
+        <option>AWAKENING POTION</option>
+        <option>BERSERK POTION</option>
+      </select></div>
+    </div>
+
+  </header>
+
+  <div class="character-and-stats-wrapper" style="display: flex; padding: 20px;">
     
     <div class="character-side">
-       <img src="your-character.gif" alt="Character Design" class="rotating-char">
+    <img src="../images/novice.svg" alt="Novice Character" class="novice-sprite">
     </div>
 
     <div class="status-content">
-      
       <div class="vital-stats">
         <div class="bar-row">
           <div class="bar"><div class="hp-fill"></div></div>
@@ -45,21 +141,8 @@
           <div class="table-row"><span>MATK</span><div class="dikit-group"><input readonly value="1"><span class="symbol">~</span><input readonly value="1"></div></div>
           <div class="table-row"><span>HIT</span><div class="dikit-group"><input readonly value="2"></div></div>
           <div class="table-row"><span>CRIT</span><div class="dikit-group"><input readonly value="1"></div></div>
-          
-          <div class="table-row">
-            <span>DEF</span>
-            <div class="dikit-group">
-              <input readonly value="0"> <span class="symbol">+</span>
-              <input readonly value="1"> </div>
-          </div>
-
-          <div class="table-row">
-            <span>MDEF</span>
-            <div class="dikit-group">
-              <input readonly value="0"> <span class="symbol">+</span>
-              <input readonly value="1"> </div>
-          </div>
-
+          <div class="table-row"><span>DEF</span><div class="dikit-group"><input readonly value="0"><span class="symbol">+</span><input readonly value="1"></div></div>
+          <div class="table-row"><span>MDEF</span><div class="dikit-group"><input readonly value="0"><span class="symbol">+</span><input readonly value="1"></div></div>
           <div class="table-row"><span>FLEE</span><div class="dikit-group"><input readonly value="2"><span class="symbol">+</span><input readonly value="1"></div></div>
           <div class="table-row"><span>ASPD</span><div class="dikit-group"><input readonly value="150"></div></div>
         </div>
@@ -74,7 +157,9 @@
         </div>
       </div>
     </div> 
+
   </div>
+</div>
 
   <script src="../Stats/combat.js"></script>
   <script src="../Stats/stats.js"></script>
