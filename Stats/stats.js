@@ -83,7 +83,7 @@ function initializeElements() {
         int: statRows[3], dex: statRows[4], luk: statRows[5]
     };
 
-    elements.ptsReqDisplays = document.querySelectorAll(".column:nth-child(3) .table-row .value");
+    elements.ptsReqDisplays = document.querySelectorAll(".column:nth-child(2) .table-row .value");
 }
 
 // ===================================================================
