@@ -62,7 +62,7 @@ function getPointsForLevel(level) {
    
   function initializeElements() {
     // Base Level input
-    elements.levelInput = document.querySelector(".small-input");
+    elements.levelInput = document.getElementById("base-level");
   
     // Status Point display
     elements.statusPointInput = Array.from(
@@ -72,30 +72,60 @@ function getPointsForLevel(level) {
   
     // Attribute rows
     const statRows = document.querySelectorAll(".stats-box .stat-row");
-  
-    elements.statRows = {
-      str: statRows[0],
-      agi: statRows[1],
-      vit: statRows[2],
-      int: statRows[3],
-      dex: statRows[4],
-      luk: statRows[5],
-    };
+
+    elements.statRows = {};
+    
+    statRows.forEach(row => {
+      const name = row.querySelector("span").textContent.trim().toLowerCase();
+      elements.statRows[name] = row;
+    });
   
     // Info box values
-    const dataNodes = document.querySelectorAll(".info-box .data-node");
-  
-    elements.attackInput = dataNodes[0].querySelectorAll(".val")[0];
-    elements.matkMinInput = dataNodes[1].querySelectorAll(".val")[0];
-    elements.matkMaxInput = dataNodes[1].querySelectorAll(".val")[1];
-    elements.defenseInput = dataNodes[2].querySelectorAll(".val")[1];
-    elements.magicDefenseInput = dataNodes[3].querySelectorAll(".val")[1];
-    elements.fleeBaseInput = dataNodes[4].querySelectorAll(".val")[0];
-    elements.fleeLukInput = dataNodes[4].querySelectorAll(".val")[1];
-    elements.hitRateInput = dataNodes[5].querySelector(".val");
-    elements.critInput = dataNodes[6].querySelector(".val");
-    elements.attackSpeedInput = dataNodes[7].querySelector(".val");
+const dataNodes = document.querySelectorAll(".info-box .data-node");
+
+dataNodes.forEach(node => {
+  const label = node.children[0].textContent.trim();
+
+  switch (label) {
+    case "ATK":
+      elements.attackInput = node.querySelector(".val");
+      break;
+
+    case "MATK":
+      elements.matkMinInput = node.querySelectorAll(".val")[0];
+      elements.matkMaxInput = node.querySelectorAll(".val")[1];
+      break;
+
+    case "DEF":
+      elements.defenseInput = node.querySelectorAll(".val")[1];
+      break;
+
+    case "MDEF":
+      elements.magicDefenseInput = node.querySelectorAll(".val")[1];
+      break;
+
+    case "FLEE":
+      elements.fleeBaseInput = node.querySelectorAll(".val")[0];
+      elements.fleeLukInput = node.querySelectorAll(".val")[1];
+      break;
+
+    case "HIT":
+      elements.hitRateInput = node.querySelector(".val");
+      break;
+
+    case "CRITICAL":
+      elements.critInput = node.querySelector(".val");
+      break;
+
+    case "ASPD":
+      elements.attackSpeedInput = node.querySelector(".val");
+      break;
+
+    case "STATUS POINT":
+      elements.statusPointInput = node.querySelector(".val");
+      break;
   }
+})};
   
   // ===================================================================
   // CORE LOGIC
@@ -149,65 +179,56 @@ function getPointsForLevel(level) {
   // ===================================================================
   
   function updateUI() {
-    // Use the external combat-system.js formulas
     const combatStats = calculateCombatStats(character);
   
-    // ================= STAT VALUES =================
-    elements.attackInput.value = combatStats.attack;
-    elements.MinmagicAttackInput.value = combatStats.matkMin;
-    elements.MaxmagicAttackInput.value = combatStats.matkMax;
-    elements.critInput.value = combatStats.crit;
-    elements.defenseInput.value = combatStats.defense;
-    elements.magicDefenseInput.value = combatStats.mdefBase; // or mdefMax, they are the same in this approximation
-    elements.attackSpeedInput.value = combatStats.attackSpeed;
-    elements.hitRateInput.value = combatStats.hit;
+    elements.attackInput.textContent = combatStats.attack;
+    elements.matkMinInput.textContent = combatStats.matkMin;
+    elements.matkMaxInput.textContent = combatStats.matkMax;
+    elements.critInput.textContent = combatStats.crit;
+    elements.defenseInput.textContent = combatStats.defense;
+    elements.magicDefenseInput.textContent = combatStats.mdefBase;
+    elements.attackSpeedInput.textContent = combatStats.attackSpeed;
+    elements.hitRateInput.textContent = combatStats.hit;
   
-    // ================= FLEE RATE =================
-    // Base flee (level + AGI), minimum 1
     if (elements.fleeBaseInput) {
-      elements.fleeBaseInput.value = Math.max(
-        1,
-        character.baseLevel + character.stats.agi,
-      );
+      elements.fleeBaseInput.textContent =
+        Math.max(1, character.baseLevel + character.stats.agi);
     }
-    // Flee bonus from LUK (starts at 1, +1 per 10 LUK)
+  
     if (elements.fleeLukInput) {
       const fleeLukBonus = 1 + Math.floor(character.stats.luk / 10);
-      elements.fleeLukInput.value = fleeLukBonus;
+      elements.fleeLukInput.textContent = fleeLukBonus;
     }
   
-    // ================= LEVEL & STATUS POINT =================
-    elements.levelInput.value = character.baseLevel;
-    if (elements.statusPointInput) {
-        elements.statusPointInput.textContent = character.availablePoints;
-      }
+    if (document.activeElement !== elements.levelInput) {
+      elements.levelInput.value = character.baseLevel;
+    }
   
-    // ================= STATS ROWS =================
+    if (elements.statusPointInput) {
+      elements.statusPointInput.textContent = character.availablePoints;
+    }
+  
     const statOrder = ["str", "agi", "vit", "int", "dex", "luk"];
-
-    statOrder.forEach((statName) => {
+  
+    statOrder.forEach(statName => {
       const row = elements.statRows[statName];
       const input = row.querySelector("input");
       const reqDisplay = row.querySelector(".req");
-    
+  
       const currentValue = character.stats[statName];
       const cost = getStatIncreaseCost(currentValue);
-    
+  
       input.value = currentValue;
       reqDisplay.textContent = cost;
     });
   
-    // ================= HP BAR =================
     const maxHP = combatStats.maxHP;
-    const currentHP = Math.min(maxHP, Math.floor(maxHP * 0.85)); // simulate current HP
+    const currentHP = Math.min(maxHP, Math.floor(maxHP * 0.85));
   
     const hpFill = document.querySelector(".hp-fill");
-    hpFill.style.width = `${Math.floor((currentHP / maxHP) * 100)}%`;
-  
-    const hpText = document.querySelector(
-      ".vital-stats .bar-row:first-child .bar-text-input",
-    );
-    hpText.value = `${currentHP.toLocaleString()} / ${maxHP.toLocaleString()}`;
+    if (hpFill) {
+      hpFill.style.width = `${Math.floor((currentHP / maxHP) * 100)}%`;
+    }
   }
   
   // ===================================================================
@@ -220,10 +241,8 @@ function getPointsForLevel(level) {
     statOrder.forEach((statName) => {
       const row = elements.statRows[statName];
       const input = row.querySelector(".stat-input");
-      const plusBtn = row.querySelector(".stat-btn.plus");
-      const minusBtn = row.querySelector(".stat-btn.minus");
-  
-      input.setAttribute("maxlength", "2");
+
+        input.setAttribute("maxlength", "2");
   
       input.addEventListener("input", (e) => {
         let raw = e.target.value.replace(/\D/g, "");
@@ -272,13 +291,6 @@ function getPointsForLevel(level) {
         }
       });
   
-      plusBtn.addEventListener("click", () => {
-        trySetStat(statName, character.stats[statName] + 1);
-      });
-  
-      minusBtn.addEventListener("click", () => {
-        trySetStat(statName, character.stats[statName] - 1);
-      });
     });
   
     elements.levelInput.addEventListener("input", (e) => {
