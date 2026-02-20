@@ -1,6 +1,5 @@
 using Microsoft.Web.WebView2.Core;
 using System.IO;
-using stats_rim.Stats;
 
 namespace stats_rim
 {
@@ -15,8 +14,8 @@ namespace stats_rim
         private async void Form1_Load(object sender, EventArgs e)
         {
             await webView1.EnsureCoreWebView2Async(null);
-            webView1.ZoomFactor = .95;
-            webView1.CoreWebView2.Settings.IsZoomControlEnabled = false;
+            //webView1.ZoomFactor = .60;
+            //webView1.CoreWebView2.Settings.IsZoomControlEnabled = false;
             string htmlPath = Path.Combine(Application.StartupPath, "UI", "index.html");
 
             if (File.Exists(htmlPath))
@@ -27,71 +26,6 @@ namespace stats_rim
             {
                 MessageBox.Show("File not found: " + htmlPath);
             }
-            WireEvents();
-            Recalculate(null, EventArgs.Empty); // ← ensures stats show on startup
-        }
-
-        private void WireEvents()
-        {
-            num_Str.ValueChanged += Recalculate;
-            num_Agi.ValueChanged += Recalculate;
-            num_Vit.ValueChanged += Recalculate;
-            num_Int.ValueChanged += Recalculate;
-            num_Dex.ValueChanged += Recalculate;
-            num_Luk.ValueChanged += Recalculate;
-        }
-
-        private void Recalculate(object sender, EventArgs e)
-        {
-            int str = (int)num_Str.Value;
-            int agi = (int)num_Agi.Value;
-            int vit = (int)num_Vit.Value;
-            int intel = (int)num_Int.Value;
-            int dex = (int)num_Dex.Value;
-            int luk = (int)num_Luk.Value;
-
-            Primary primary = new Primary(str, agi, vit, intel, dex, luk);
-            Secondary secondary = new Secondary(primary);
-
-            // ===== ATK =====
-            txt_StatAtk.Text = secondary.GetATK().ToString();
-            txt_StatAtk2.Text = secondary.GetATK().ToString();
-
-            // ===== MATK =====
-            txt_StatMatk.Text = secondary.GetMATKMin().ToString();
-            txt_StatMatk2.Text = secondary.GetMATKMax().ToString();
-
-            // ===== DEF =====
-            txt_StatDef.Text = secondary.GetDEF().ToString();
-            txt_StatDef2.Text = secondary.GetDEF().ToString();
-
-            // ===== MDEF =====
-            txt_StatMDef.Text = secondary.GetMDEF().ToString();
-            txt_StatMDef2.Text = secondary.GetMDEF().ToString();
-
-            // ===== HIT =====
-            txt_StatHit.Text = secondary.GetHIT().ToString();
-
-            // ===== FLEE =====
-            txt_StatFlee.Text = secondary.GetFLEE().ToString();
-            txt_StatFlee2.Text = secondary.GetFLEE().ToString();
-
-            // ===== CRIT =====
-            txt_StatCrit.Text = secondary.GetCRIT().ToString();
-
-            // ===== ASPD =====
-            txt_StatAspd.Text = secondary.GetASPD().ToString("0.00");
-
-            // ===== STAT POINTS (optional if you implement cost formula later) =====
-            txt_StatPoint.Text = CalculateRemainingPoints(str, agi, vit, intel, dex, luk).ToString();
-        }
-
-        // Optional helper — change formula if your stat system differs
-        private int CalculateRemainingPoints(int str, int agi, int vit, int intel, int dex, int luk)
-        {
-            int totalSpent = str + agi + vit + intel + dex + luk;
-            int maxPoints = 48; // adjust if your game uses different base pool
-            return Math.Max(0, maxPoints - totalSpent);
         }
     }
 }
