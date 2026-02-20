@@ -50,7 +50,7 @@ function playSound(type) {
 // DOM ELEMENT SELECTION
 // ===================================================================
 function initializeElements() {
-    const derivedCol = document.querySelector(".status-columns .column:nth-child(2)");
+    const derivedCol = document.querySelector(".status-columns .column:nth-child(3)");
     const rows = derivedCol.querySelectorAll(".table-row");
 
     elements.attackInput = rows[0].querySelector("input"); 
