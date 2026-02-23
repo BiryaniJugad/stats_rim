@@ -63,10 +63,10 @@ function initializeElements() {
     elements.critInput = rows[3].querySelector("input");
 
     const defInputs = rows[4].querySelectorAll("input");
-    elements.defenseInput = defInputs[0]; 
+    elements.defenseInput = defInputs[1]; 
 
     const mdefInputs = rows[5].querySelectorAll("input");
-    elements.magicDefenseInput = mdefInputs[0];
+    elements.magicDefenseInput = mdefInputs[1];
 
     const fleeInputs = rows[6].querySelectorAll("input");
     elements.fleeBaseInput = fleeInputs[0];
