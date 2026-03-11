@@ -1,222 +1,334 @@
 ﻿// ===================================================================
-// UTILITY FORMULAS
+// RAGNAROK STAT SYSTEM - PROFESSIONAL VERSION
+// Auto-disable buttons instead of alert()
 // ===================================================================
+
+// ===================================================================
+// FORMULAS
+// ===================================================================
+
 function getPointsForLevel(level) {
     if (level <= 4) return 3;
     if (level >= 95) return 22;
     return Math.floor((level - 1) / 5) + 3;
-}
-
-function getTotalStatPointsForLevel(level) {
+  }
+  
+  function getTotalStatPointsForLevel(level) {
     const STARTING_STATUS_POINTS = 48;
+  
     if (level === 1) return STARTING_STATUS_POINTS;
+  
     let total = STARTING_STATUS_POINTS;
     for (let i = 2; i <= level; i++) {
-        total += getPointsForLevel(i);
+      total += getPointsForLevel(i);
     }
     return total;
-}
-
-function getStatIncreaseCost(currentStatValue) {
+  }
+  
+  function getStatIncreaseCost(currentStatValue) {
     return Math.min(Math.floor((currentStatValue - 1) / 10) + 2, 11);
-}
-
-function getTotalCostToReachStat(currentStat, targetStat) {
+  }
+  
+  function getTotalCostToReachStat(currentStat, targetStat) {
     let totalCost = 0;
     for (let i = currentStat; i < targetStat; i++) {
-        totalCost += getStatIncreaseCost(i);
+      totalCost += getStatIncreaseCost(i);
     }
     return totalCost;
-}
-
-// ===================================================================
-// CHARACTER STATE
-// ===================================================================
-const character = {
+  }
+  
+  // ===================================================================
+  // CHARACTER STATE
+  // ===================================================================
+  
+  const character = {
     baseLevel: 1,
-    stats: { str: 1, agi: 1, vit: 1, int: 1, dex: 1, luk: 1 },
+    stats: {
+      str: 1,
+      agi: 1,
+      vit: 1,
+      int: 1,
+      dex: 1,
+      luk: 1,
+    },
     availablePoints: 0,
-};
+  };
+  
+  // ===================================================================
+  // DOM ELEMENTS
+  // ===================================================================
+  
+  let elements = {};
+   
+  function initializeElements() {
+    // Base Level input
+    elements.levelInput = document.getElementById("base-level");
+  
+    // Status Point display
+    elements.statusPointInput = Array.from(
+      document.querySelectorAll(".data-node")
+    ).find(node => node.textContent.includes("STATUS POINT"))
+      ?.querySelector(".val");
+  
+    // Attribute rows
+    const statRows = document.querySelectorAll(".stats-box .stat-row");
 
-let elements = {};
-
-// Optional: SFX Helper
-function playSound(type) {
-    // If you have audio files, uncomment below
-    // new Audio(`assets/${type}.mp3`).play().catch(()=>{});
-}
-
-// ===================================================================
-// DOM ELEMENT SELECTION
-// ===================================================================
-function initializeElements() {
-    const derivedCol = document.querySelector(".status-columns .column:nth-child(3)");
-    const rows = derivedCol.querySelectorAll(".table-row");
-
-    elements.attackInput = rows[0].querySelector("input"); 
+    elements.statRows = {};
     
-    const matkInputs = rows[1].querySelectorAll("input");
-    elements.MinmagicAttackInput = matkInputs[0];
-    elements.MaxmagicAttackInput = matkInputs[1];
-
-    elements.hitRateInput = rows[2].querySelector("input");
-    elements.critInput = rows[3].querySelector("input");
-
-    const defInputs = rows[4].querySelectorAll("input");
-    elements.defenseInput = defInputs[1]; 
-
-    const mdefInputs = rows[5].querySelectorAll("input");
-    elements.magicDefenseInput = mdefInputs[1];
-
-    const fleeInputs = rows[6].querySelectorAll("input");
-    elements.fleeBaseInput = fleeInputs[0];
-    elements.fleeLukInput = fleeInputs[1];
-
-    elements.attackSpeedInput = rows[7].querySelector("input");
-
-    elements.levelInput = document.querySelector(".lvl-value-input");
-    elements.statusPointInput = document.querySelector(".status-value");
-
-    const statRows = document.querySelectorAll(".column:first-child .table-row");
-    elements.statRows = {
-        str: statRows[0], agi: statRows[1], vit: statRows[2],
-        int: statRows[3], dex: statRows[4], luk: statRows[5]
-    };
-
-    elements.ptsReqDisplays = document.querySelectorAll(".column:nth-child(2) .table-row .value");
-}
-
-// ===================================================================
-// LOGIC & UI UPDATES
-// ===================================================================
-function updateUI() {
-    if (typeof calculateCombatStats !== 'function') {
-        console.error("calculateCombatStats is not defined. Is combat.js loaded?");
-        return;
-    }
-    
-    const combatStats = calculateCombatStats(character);
-
-    elements.attackInput.value = combatStats.attack;
-    elements.MinmagicAttackInput.value = combatStats.matkMin;
-    elements.MaxmagicAttackInput.value = combatStats.matkMax;
-    elements.critInput.value = combatStats.crit;
-    elements.defenseInput.value = combatStats.defense;
-    elements.magicDefenseInput.value = combatStats.mdefBase;
-    elements.attackSpeedInput.value = combatStats.attackSpeed;
-    elements.hitRateInput.value = combatStats.hit;
-
-    if (elements.fleeBaseInput) elements.fleeBaseInput.value = character.baseLevel + character.stats.agi;
-    if (elements.fleeLukInput) elements.fleeLukInput.value = 1 + Math.floor(character.stats.luk / 10);
-
-    elements.levelInput.value = character.baseLevel;
-    elements.statusPointInput.value = character.availablePoints;
-
-    const statOrder = ["str", "agi", "vit", "int", "dex", "luk"];
-    statOrder.forEach((statName, index) => {
-        const row = elements.statRows[statName];
-        if (!row) return;
-        const input = row.querySelector(".stat-input");
-        const cost = getStatIncreaseCost(character.stats[statName]);
-
-        input.value = character.stats[statName];
-        if (elements.ptsReqDisplays[index]) elements.ptsReqDisplays[index].textContent = cost;
-
-        row.querySelector(".stat-btn.plus").disabled = character.stats[statName] >= 99 || character.availablePoints < cost;
-        row.querySelector(".stat-btn.minus").disabled = character.stats[statName] <= 1;
+    statRows.forEach(row => {
+      const name = row.querySelector("span").textContent.trim().toLowerCase();
+      elements.statRows[name] = row;
     });
+  
+    // Info box values
+const dataNodes = document.querySelectorAll(".info-box .data-node");
 
-    const hpFill = document.querySelector(".hp-fill");
-    const hpText = document.querySelector(".bar-text-input");
-    const maxHP = combatStats.maxHP || 100;
-    if (hpFill) hpFill.style.width = "85%"; 
-    if (hpText) hpText.value = `${Math.floor(maxHP * 0.85).toLocaleString()} / ${maxHP.toLocaleString()}`;
-}
+dataNodes.forEach(node => {
+  const label = node.children[0].textContent.trim();
 
-function trySetStat(statName, newValue) {
-    newValue = Math.max(1, Math.min(99, parseInt(newValue) || 1));
+  switch (label) {
+    case "ATK":
+      elements.attackInput = node.querySelector(".val");
+      break;
+
+    case "MATK":
+      elements.matkMinInput = node.querySelectorAll(".val")[0];
+      elements.matkMaxInput = node.querySelectorAll(".val")[1];
+      break;
+
+    case "DEF":
+      elements.defenseInput = node.querySelectorAll(".val")[1];
+      break;
+
+    case "MDEF":
+      elements.magicDefenseInput = node.querySelectorAll(".val")[1];
+      break;
+
+    case "FLEE":
+      elements.fleeBaseInput = node.querySelectorAll(".val")[0];
+      elements.fleeLukInput = node.querySelectorAll(".val")[1];
+      break;
+
+    case "HIT":
+      elements.hitRateInput = node.querySelector(".val");
+      break;
+
+    case "CRITICAL":
+      elements.critInput = node.querySelector(".val");
+      break;
+
+    case "ASPD":
+      elements.attackSpeedInput = node.querySelector(".val");
+      break;
+
+    case "STATUS POINT":
+      elements.statusPointInput = node.querySelector(".val");
+      break;
+  }
+})};
+  
+  // ===================================================================
+  // CORE LOGIC
+  // ===================================================================
+  
+  function calculateRemainingPointsWithChange(statName, newValue) {
     const totalPoints = getTotalStatPointsForLevel(character.baseLevel);
-    
-    // Calculate total cost if this change were applied
-    const spentPoints = Object.keys(character.stats).reduce((sum, s) => {
-        const val = s === statName ? newValue : character.stats[s];
-        return sum + getTotalCostToReachStat(1, val);
+  
+    const spentPoints = Object.keys(character.stats).reduce((sum, stat) => {
+      const value = stat === statName ? newValue : character.stats[stat];
+      return sum + getTotalCostToReachStat(1, value);
     }, 0);
-
-    if (totalPoints - spentPoints >= 0) {
-        character.stats[statName] = newValue;
-        character.availablePoints = totalPoints - spentPoints;
-        updateUI();
-        return true;
-    }
-    return false;
-}
-
-function updateLevel(newLevel) {
-    character.baseLevel = Math.max(1, Math.min(99, parseInt(newLevel) || 1));
-    const totalPoints = getTotalStatPointsForLevel(character.baseLevel);
-    const spentPoints = Object.values(character.stats).reduce((sum, val) => sum + getTotalCostToReachStat(1, val), 0);
-    character.availablePoints = Math.max(0, totalPoints - spentPoints);
+  
+    return totalPoints - spentPoints;
+  }
+  
+  function trySetStat(statName, newValue) {
+    newValue = Math.max(1, Math.min(99, parseInt(newValue) || 1));
+  
+    const remaining = calculateRemainingPointsWithChange(statName, newValue);
+  
+    if (remaining < 0) return;
+  
+    character.stats[statName] = newValue;
+    character.availablePoints = remaining;
+  
     updateUI();
-}
-
-// ===================================================================
-// EVENT LISTENERS (CLICK + TYPE)
-// ===================================================================
-function attachEventListeners() {
-    Object.keys(character.stats).forEach((statName) => {
-        const row = elements.statRows[statName];
-        const input = row.querySelector(".stat-input");
-        const plusBtn = row.querySelector(".stat-btn.plus");
-        const minusBtn = row.querySelector(".stat-btn.minus");
-
-        // Typing logic
-        input.oninput = (e) => {
-            let val = e.target.value.replace(/\D/g, ""); // Only numbers
-            if (val !== "") {
-                const requestedValue = parseInt(val);
-                const success = trySetStat(statName, requestedValue);
-                
-                if (!success) {
-                    // Revert UI if points insufficient
-                    e.target.value = character.stats[statName];
-                    row.classList.add("stat-error");
-                    setTimeout(() => row.classList.remove("stat-error"), 300);
-                }
-            }
-        };
-
-        input.onblur = (e) => {
-            if (e.target.value === "") e.target.value = character.stats[statName];
-        };
-
-        // Button logic
-        plusBtn.onclick = () => {
-            playSound('click');
-            trySetStat(statName, character.stats[statName] + 1);
-        };
-
-        minusBtn.onclick = () => {
-            playSound('click');
-            trySetStat(statName, character.stats[statName] - 1);
-        };
+  }
+  
+  // ===================================================================
+  // LEVEL UPDATE
+  // ===================================================================
+  
+  function updateLevel(newLevel) {
+    newLevel = Math.max(1, Math.min(99, parseInt(newLevel) || 1));
+    character.baseLevel = newLevel;
+  
+    const totalPoints = getTotalStatPointsForLevel(newLevel);
+  
+    const spentPoints = Object.values(character.stats).reduce((sum, value) => {
+      return sum + getTotalCostToReachStat(1, value);
+    }, 0);
+  
+    character.availablePoints = Math.max(0, totalPoints - spentPoints);
+  
+    updateUI();
+  }
+  
+  // ===================================================================
+  // UI UPDATE
+  // ===================================================================
+  
+  function updateUI() {
+    const combatStats = calculateCombatStats(character);
+  
+    elements.attackInput.textContent = combatStats.attack;
+    elements.matkMinInput.textContent = combatStats.matkMin;
+    elements.matkMaxInput.textContent = combatStats.matkMax;
+    elements.critInput.textContent = combatStats.crit;
+    elements.defenseInput.textContent = combatStats.defense;
+    elements.magicDefenseInput.textContent = combatStats.mdefBase;
+    elements.attackSpeedInput.textContent = combatStats.attackSpeed;
+    elements.hitRateInput.textContent = combatStats.hit;
+  
+    if (elements.fleeBaseInput) {
+      elements.fleeBaseInput.textContent =
+        Math.max(1, character.baseLevel + character.stats.agi);
+    }
+  
+    if (elements.fleeLukInput) {
+      const fleeLukBonus = 1 + Math.floor(character.stats.luk / 10);
+      elements.fleeLukInput.textContent = fleeLukBonus;
+    }
+  
+    if (document.activeElement !== elements.levelInput) {
+      elements.levelInput.value = character.baseLevel;
+    }
+  
+    if (elements.statusPointInput) {
+      elements.statusPointInput.textContent = character.availablePoints;
+    }
+  
+    const statOrder = ["str", "agi", "vit", "int", "dex", "luk"];
+  
+    statOrder.forEach(statName => {
+      const row = elements.statRows[statName];
+      const input = row.querySelector("input");
+      const reqDisplay = row.querySelector(".req");
+  
+      const currentValue = character.stats[statName];
+      const cost = getStatIncreaseCost(currentValue);
+  
+      input.value = currentValue;
+      reqDisplay.textContent = cost;
     });
+  
+    const maxHP = combatStats.maxHP;
+    const currentHP = Math.min(maxHP, Math.floor(maxHP * 0.85));
+  
+    const hpFill = document.querySelector(".hp-fill");
+    if (hpFill) {
+      hpFill.style.width = `${Math.floor((currentHP / maxHP) * 100)}%`;
+    }
+  }
+  
+  // ===================================================================
+  // EVENTS
+  // ===================================================================
+  
+  function attachEventListeners() {
+    const statOrder = ["str", "agi", "vit", "int", "dex", "luk"];
+  
+    statOrder.forEach((statName) => {
+      const row = elements.statRows[statName];
+      const input = row.querySelector(".stat-input");
 
-    elements.levelInput.oninput = (e) => {
-        let val = e.target.value.replace(/\D/g, "");
-        if (val !== "") {
-            updateLevel(val);
+        input.setAttribute("maxlength", "2");
+  
+      input.addEventListener("input", (e) => {
+        let raw = e.target.value.replace(/\D/g, "");
+        if (raw === "") {
+          e.target.value = "";
+          return;
         }
-    };
-}
-
-// ===================================================================
-// INITIALIZE
-// ===================================================================
-function initialize() {
+  
+        let requestedValue = parseInt(raw);
+        requestedValue = Math.max(1, Math.min(99, requestedValue));
+  
+        const totalPoints = getTotalStatPointsForLevel(character.baseLevel);
+        const spentPointsExcludingThis = Object.keys(character.stats).reduce(
+          (sum, stat) =>
+            stat === statName
+              ? sum
+              : sum + getTotalCostToReachStat(1, character.stats[stat]),
+          0,
+        );
+  
+        let maxAllowed = 1;
+        for (let i = 1; i <= 99; i++) {
+          if (
+            spentPointsExcludingThis + getTotalCostToReachStat(1, i) <=
+            totalPoints
+          ) {
+            maxAllowed = i;
+          } else {
+            break;
+          }
+        }
+  
+        if (requestedValue > maxAllowed) {
+          requestedValue = maxAllowed;
+          row.classList.add("stat-error");
+          setTimeout(() => row.classList.remove("stat-error"), 500);
+        }
+  
+        e.target.value = requestedValue;
+        trySetStat(statName, requestedValue);
+      });
+  
+      input.addEventListener("blur", () => {
+        if (!input.value || parseInt(input.value) < 1) {
+          trySetStat(statName, 1);
+        }
+      });
+  
+    });
+  
+    elements.levelInput.addEventListener("input", (e) => {
+      // Remove everything that is not a number
+      let cleaned = e.target.value.replace(/[^0-9]/g, "");
+  
+      // If user deleted everything
+      if (cleaned === "") {
+        e.target.value = "";
+        return;
+      }
+  
+      let numericValue = parseInt(cleaned, 10);
+  
+      // Clamp between 1 and 99
+      numericValue = Math.max(1, Math.min(99, numericValue));
+  
+      // Force cleaned + clamped value back into input
+      e.target.value = numericValue;
+  
+      updateLevel(numericValue);
+    });
+  
+    elements.levelInput.addEventListener("blur", () => {
+      if (!elements.levelInput.value || parseInt(elements.levelInput.value) < 1) {
+        updateLevel(1);
+      }
+    });
+  }
+  
+  // ===================================================================
+  // INIT
+  // ===================================================================
+  
+  function initialize() {
     initializeElements();
     updateLevel(1);
     attachEventListeners();
-}
-
-document.addEventListener("DOMContentLoaded", initialize);
+  }
+  
+  document.addEventListener("DOMContentLoaded", initialize);

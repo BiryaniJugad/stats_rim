@@ -9,12 +9,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="images\novice.svg" />
-    <None Remove="Stats\combat.js" />
-    <None Remove="Stats\stats.js" />
-    <None Remove="UI\bg.css" />
-    <None Remove="UI\design.css" />
-    <None Remove="UI\stats.css" />
+    <Compile Include="Stats\Secondary.js" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Web.WebView2" Version="1.0.3719.77" />
   </ItemGroup>
 
   <ItemGroup>
