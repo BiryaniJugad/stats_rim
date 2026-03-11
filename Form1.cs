@@ -17,7 +17,6 @@ namespace stats_rim
             //webView1.ZoomFactor = .60;
             //webView1.CoreWebView2.Settings.IsZoomControlEnabled = false;
             string htmlPath = Path.Combine(Application.StartupPath, "UI", "index.html");
-
             if (File.Exists(htmlPath))
             {
                 webView1.CoreWebView2.Navigate(htmlPath);
