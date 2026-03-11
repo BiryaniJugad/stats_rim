@@ -15,7 +15,17 @@
         <div class="glass-container">
             <header class="hud-header-block">
                 <div class="hud-top-row">
-                    <div class="hud-item"><span class="lbl">Job:</span> <span class="val highlight">Novice</span></div>
+                    <div class="hud-item"><span class="lbl">Job:</span>
+                        <select name="classes" class="job-select">
+                            <option value="">Novice</option>
+                            <option value="1">Swordsman</option>
+                            <option value="2">Magician</option>
+                            <option value="3">Archer</option>
+                            <option value="4">Acolyte</option>
+                            <option value="5">Merchant</option>
+                            <option value="6">Thief</option>
+                        </select>
+                    </div>
                     <div class="hud-item"><span class="lbl">TK Ranker?</span> <input type="checkbox"></div>
                     <div class="hud-item"><span class="lbl">Base Level:</span> <input type="number" id="base-level" value="1" class="small-input"></div>
                     <div class="hud-item">
@@ -194,7 +204,7 @@
     </div>
     </div>
 
-    <script src="../Stats/combat.js"></script>
     <script src="../Stats/stats.js"></script>
+    <script src="../Stats/HPCalc.js"></script>
 </body>
 </html>
