@@ -1,5 +1,5 @@
 ﻿function calculateCombatStats(character) {
-  const { str, agi, vit, int, dex, luk } = character.stats;
+  const { str, agi, vit, int, dex, luk } = getFinalStats(character);
   const level = character.baseLevel;
 
   // ----------------------------

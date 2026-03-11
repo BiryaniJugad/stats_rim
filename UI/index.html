@@ -17,7 +17,14 @@
                     <a href="#" class="reset-link"><span class="val-gold">« RESET</span></a>
                 </div>
                 <div class="nav-right">
-                    <span class="hud-tag">SELECT JOB:</span><select class="console-select"><option>NOVICE</option></select>
+                    <span class="hud-tag">SELECT JOB:</span><select class="console-select" id="jobSelect">
+                        <option>NOVICE</option>
+                        <option>SWORDSMAN</option>
+                        <option>ARCHER</option>
+                        <option>MERCHANT</option>
+                        <option>THIEF</option>
+                        <option>ACOLYTE</option>
+                    </select>
                     <label class="hud-checkbox"><span>BABY?</span><input type="checkbox"></label>
                     <label class="hud-checkbox"><span>RANKER?</span><input type="checkbox"></label>
                     <span class="hud-tag">LIMITER:</span>
@@ -28,7 +35,10 @@
 
             <div class="console-grid">
                 <div class="console-panel">
-                    <div class="table-row">CURRENT JOB<span class="val-gold">NOVICE</span></div>
+                    <div class="table-row">
+                        <span class="label">CURRENT JOB</span>
+                        <span class="value job-display" id="currentJob">NOVICE</span>
+                    </div>
                     <div class="table-row">REGEN STATE <span class="val-gold">ACTIVE</span></div>
                     <div class="table-row">WEIGHT<span class="val-gold">2030</span></div>
                     <div class="table-row">JOB LVL<select class="console-select"><option>1</option></select></div>
@@ -174,7 +184,9 @@
         </div>
     </div>
 
+    <script src="../Stats/web.js"></script>
     <script src="../Stats/combat.js"></script>
     <script src="../Stats/stats.js"></script>
+    <script src="../Stats/class.js"></script>
 </body>
 </html>

@@ -42,15 +42,14 @@ body {
   flex: 1;
 }
 
-.table-row {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  background: #2b3142;
-  margin-bottom: 8px;
-  padding: 6px 10px;
-  border-radius: 6px;
+.table-row{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+  margin-bottom:6px;
 }
+
 
 .table-row span {
   width: 60px;
@@ -115,8 +114,15 @@ body {
   animation: shake 0.3s;
 }
 
+.job-display{
+  max-width:120px;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+
 @keyframes shake {
   0% { transform: translateX(-4px); }
   50% { transform: translateX(4px); }
   100% { transform: translateX(0); }
 }
+
