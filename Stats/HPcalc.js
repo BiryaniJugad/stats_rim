@@ -59,3 +59,35 @@ function calculateBaseSP(level, job) {
 
   return baseSP;
 }
+
+const SP_JOB_TABLE = {
+  novice: 1,
+  swordsman: 2,
+  archer: 2,
+  thief: 2,
+  acolyte: 5,
+  merchant: 3,
+  magician: 6
+};
+
+function calculateSP(BASE_LEVEL, INT, job, SP_MOD_A = 0, SP_MOD_B = 0) {
+
+  const SP_JOB = SP_JOB_TABLE[job] ?? 1;
+
+  // Base SP
+  let BASE_SP = 10 + (BASE_LEVEL * SP_JOB);
+
+  // Apply INT bonus
+  let MAX_SP = Math.floor(BASE_SP * (1 + INT * 0.01));
+
+  // Additive modifiers
+  MAX_SP += SP_MOD_A;
+
+  // Multiplicative modifiers
+  MAX_SP = Math.floor(MAX_SP * (1 + SP_MOD_B * 0.01));
+
+  return {
+    baseSP: BASE_SP,
+    maxSP: MAX_SP
+  };
+}
