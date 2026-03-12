@@ -197,7 +197,7 @@ dataNodes.forEach(node => {
     elements.critInput.textContent = combatStats.crit;
     elements.defenseInput.textContent = combatStats.defense;
     elements.magicDefenseInput.textContent = combatStats.mdefBase;
-    elements.attackSpeedInput.textContent = combatStats.attackSpeed;
+    updateASPD(character);
     elements.hitRateInput.textContent = combatStats.hit;
   
     if (elements.fleeBaseInput) {
@@ -339,6 +339,7 @@ dataNodes.forEach(node => {
     initializeElements();
     updateLevel(1);
     attachEventListeners();
+    attachASPDListeners(); 
   }
   
   document.addEventListener("DOMContentLoaded", initialize);
