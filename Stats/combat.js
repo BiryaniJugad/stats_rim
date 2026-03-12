@@ -37,8 +37,14 @@ function calculateCombatStats(character) {
     const baseHP = calculateBaseHP(level, job);
     const maxHP = Math.floor(baseHP * (1 + vit / 100));
 
-    const baseSP = calculateBaseSP(level, job);
-    const maxSP = Math.floor(baseSP * (1 + int / 100));
+    // ----------------------------
+    // SP (SP)
+    const job = character.job || "novice";
+    
+    const spData = calculateSP(level, int, job);
+    
+    const baseSP = spData.baseSP;
+    const maxSP = spData.maxSP;
   
     // ----------------------------
     // INT (Intelligence)
