@@ -1,3 +1,27 @@
+// ======================================
+// LEVEL 1 STARTING VALUES
+// ======================================
+
+const JOB_BASE_HP = {
+  novice: 40,
+  swordsman: 40,
+  magician: 40,
+  archer: 40,
+  acolyte: 40,
+  merchant: 40,
+  thief: 40
+};
+
+const JOB_BASE_SP = {
+  novice: 11,
+  swordsman: 12,
+  magician: 16,
+  archer: 12,
+  acolyte: 15,
+  merchant: 13,
+  thief: 12
+};
+
 // ===========================================
 // JOB MODIFIERS
 // ===========================================
