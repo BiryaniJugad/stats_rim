@@ -56,10 +56,10 @@ function calculateBaseHP(level, job) {
   const A = mod.A;
   const B = mod.B;
 
-  let baseHP = 40 + (level * B);
+  let baseHP = JOB_BASE_HP[job] || 40;
 
   for (let i = 2; i <= level; i++) {
-    baseHP += Math.round(A * i);
+    baseHP += B + Math.round(A * i);
   }
 
   return baseHP;
@@ -71,14 +71,12 @@ function calculateBaseHP(level, job) {
 
 function calculateBaseSP(level, job) {
 
-  const mod = JOB_SP_MOD[job];
-  const A = mod.A;
-  const B = mod.B;
+  const SP_JOB = SP_JOB_TABLE[job] ?? 1;
 
-  let baseSP = 10 + (level * B);
+  let baseSP = JOB_BASE_SP[job] || 11;
 
   for (let i = 2; i <= level; i++) {
-    baseSP += Math.round(A * i);
+    baseSP += SP_JOB;
   }
 
   return baseSP;
