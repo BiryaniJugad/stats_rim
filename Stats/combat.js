@@ -32,8 +32,13 @@ function calculateCombatStats(character) {
     // ----------------------------
     // VIT (Vitality)
     const defense = vit;
-    const baseHP = 1000;
-    const maxHP = Math.floor(baseHP * (1 + vit * 0.01));
+    const job = character.job || "novice";
+
+    const baseHP = calculateBaseHP(level, job);
+    const maxHP = Math.floor(baseHP * (1 + vit / 100));
+
+    const baseSP = calculateBaseSP(level, job);
+    const maxSP = Math.floor(baseSP * (1 + int / 100));
   
     // ----------------------------
     // INT (Intelligence)
@@ -45,14 +50,6 @@ function calculateCombatStats(character) {
     const matkMax = baseMatk + maxMatkBonus;
   
     const mdefBase = int;
-  
-    // ----------------------------
-    // SP Calculations
-    const baseSP = 500;
-    const maxSP = Math.floor(baseSP * (1 + int * 0.01));
-    const spRegen = Math.floor(int / 6);
-    const spRecoveryBonusPercent = int;
-  
     // ----------------------------
     // DEX (Dexterity)
     const hit = level + dex;
