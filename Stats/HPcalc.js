@@ -32,7 +32,7 @@ function calculateBaseHP(level, job) {
   const A = mod.A;
   const B = mod.B;
 
-  let baseHP = 35 + (level * B);
+  let baseHP = 40 + (level * B);
 
   for (let i = 2; i <= level; i++) {
     baseHP += Math.round(A * i);
