@@ -2,692 +2,176 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Status Window</title>
+    <title>Fused Status Window</title>
     <link rel="stylesheet" href="design.css">
     <link rel="stylesheet" href="stats.css">
-    <style>
-        /* ── RESET / BASE ─────────────────────────────────────────── */
-        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: #1a1c2e;
-            color: #d0d8f0;
-            min-height: 100vh;
-            display: flex;
-            align-items: flex-start;
-            justify-content: center;
-            padding: 24px 16px;
-        }
-
-        /* ── MAIN CARD ────────────────────────────────────────────── */
-        .glass-container {
-            background: linear-gradient(160deg, #1e2240 0%, #161829 100%);
-            border: 1px solid rgba(100,120,200,0.25);
-            border-radius: 12px;
-            box-shadow: 0 8px 40px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.06);
-            width: 520px;
-            padding: 18px 20px 22px;
-        }
-
-        /* ── TOP CONTROLS ROW ─────────────────────────────────────── */
-        .top-controls {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            flex-wrap: wrap;
-            margin-bottom: 14px;
-        }
-
-        .ctrl-item {
-            display: flex;
-            align-items: center;
-            gap: 5px;
-            font-size: 12px;
-            color: #8090b8;
-        }
-
-        .ctrl-item .lbl { color: #6070a0; white-space: nowrap; }
-
-        select.ctrl-select, input.ctrl-input {
-            background: #0e1020;
-            border: 1px solid #2a3060;
-            border-radius: 5px;
-            color: #c0cce8;
-            font-size: 12px;
-            padding: 3px 6px;
-            outline: none;
-            cursor: pointer;
-        }
-
-        select.ctrl-select:focus, input.ctrl-input:focus { border-color: #4060c0; }
-        input.ctrl-input { width: 52px; text-align: center; }
-
-        input[type="checkbox"] {
-            accent-color: #4060c0;
-            width: 14px; height: 14px;
-            cursor: pointer;
-        }
-
-        .sep { width: 1px; height: 20px; background: #2a3060; flex-shrink: 0; }
-
-        /* ── VITALS SECTION ───────────────────────────────────────── */
-        .vitals-section {
-            display: flex;
-            flex-direction: column;
-            gap: 7px;
-            margin-bottom: 10px;
-        }
-
-        .vital-row {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .vital-label {
-            font-size: 11px;
-            font-weight: 700;
-            letter-spacing: 0.05em;
-            width: 22px;
-            text-align: right;
-            flex-shrink: 0;
-        }
-
-        .vital-label.hp { color: #e05050; }
-        .vital-label.sp { color: #4090e0; }
-
-        .vital-bar-track {
-            flex: 1;
-            height: 12px;
-            border-radius: 6px;
-            background: #0e1020;
-            border: 1px solid #1e2850;
-            overflow: hidden;
-        }
-
-        .vital-bar-fill {
-            height: 100%;
-            border-radius: 6px;
-            transition: width 0.3s ease;
-        }
-
-        .hp-fill { background: linear-gradient(90deg, #c03030, #e05050); }
-        .sp-fill { background: linear-gradient(90deg, #2060c0, #4090e0); }
-
-        .vital-text {
-            font-size: 11px;
-            color: #8090b8;
-            width: 84px;
-            text-align: right;
-            font-variant-numeric: tabular-nums;
-            flex-shrink: 0;
-        }
-
-        /* ── REGEN INFO ───────────────────────────────────────────── */
-        .regen-row {
-            display: flex;
-            gap: 16px;
-            margin-bottom: 12px;
-            flex-wrap: wrap;
-        }
-
-        .regen-item {
-            display: flex;
-            gap: 4px;
-            align-items: baseline;
-            font-size: 10px;
-            color: #3a4868;
-        }
-
-        .regen-lbl { color: #303c58; }
-
-        .regen-val {
-            font-variant-numeric: tabular-nums;
-            font-weight: 700;
-        }
-
-        .regen-val.hp-regen { color: #804040; }
-        .regen-val.sp-regen { color: #305080; }
-
-        .regen-ticks { color: #2a3450; font-size: 9px; }
-
-        /* ── DIVIDER ──────────────────────────────────────────────── */
-        .divider {
-            height: 1px;
-            background: linear-gradient(90deg, transparent, #2a3060 30%, #2a3060 70%, transparent);
-            margin: 12px 0;
-        }
-
-        /* ── LEVEL + STATUS POINTS HEADER ─────────────────────────── */
-        .lvl-sp-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 12px;
-        }
-
-        .lvl-sp-item {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            font-size: 12px;
-            color: #6070a0;
-        }
-
-        .lvl-sp-val {
-            background: #0e1020;
-            border: 1px solid #2a3060;
-            border-radius: 5px;
-            color: #c0d0f0;
-            font-size: 13px;
-            font-weight: 700;
-            padding: 3px 10px;
-            text-align: center;
-            min-width: 48px;
-            outline: none;
-        }
-
-        .sp-points-val { color: #f0c060; border-color: #3a3020; }
-
-        /* ── WEAPON / POTION ROW ──────────────────────────────────── */
-        .weapon-row {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            margin-bottom: 12px;
-            font-size: 12px;
-            color: #6070a0;
-        }
-
-        .weapon-selector { flex: 1; }
-
-        .weapon-selector select, #potion-select {
-            width: 100%;
-            background: #0e1020;
-            border: 1px solid #2a3060;
-            border-radius: 5px;
-            color: #c0cce8;
-            font-size: 12px;
-            padding: 4px 7px;
-            outline: none;
-            cursor: pointer;
-        }
-
-        .weapon-selector select:focus, #potion-select:focus { border-color: #4060c0; }
-
-        #potion-select { width: 130px; flex-shrink: 0; }
-
-        /* ── STAT COLUMNS ─────────────────────────────────────────── */
-        .status-columns {
-            display: grid;
-            grid-template-columns: 1fr 64px 1fr;
-            gap: 8px;
-            align-items: start;
-        }
-
-        .column { display: flex; flex-direction: column; gap: 3px; }
-
-        /* Left column rows */
-        .table-row {
-            display: flex;
-            align-items: center;
-            gap: 4px;
-            height: 28px;
-            padding: 0 4px;
-            border-radius: 5px;
-            transition: background 0.1s;
-        }
-
-        .table-row:hover { background: rgba(60,80,160,0.12); }
-
-        .table-row > span:first-child {
-            font-size: 11px;
-            font-weight: 700;
-            color: #7888b8;
-            width: 30px;
-            letter-spacing: 0.04em;
-            flex-shrink: 0;
-        }
-
-        .stat-btn {
-            background: #1a2048;
-            border: 1px solid #2a3870;
-            border-radius: 4px;
-            color: #7080b0;
-            font-size: 14px;
-            line-height: 1;
-            width: 20px; height: 20px;
-            cursor: pointer;
-            display: flex; align-items: center; justify-content: center;
-            transition: background 0.12s, color 0.12s;
-            flex-shrink: 0;
-            padding: 0;
-        }
-
-        .stat-btn:hover { background: #2a3870; color: #c0d0f8; }
-        .stat-btn:active { background: #3a4a90; }
-
-        .stat-input {
-            background: #0e1020;
-            border: 1px solid #2a3060;
-            border-radius: 4px;
-            color: #e0e8ff;
-            font-size: 13px;
-            font-weight: 700;
-            text-align: center;
-            width: 34px; height: 22px;
-            outline: none;
-            flex-shrink: 0;
-        }
-
-        .stat-input:focus { border-color: #4060c0; }
-
-        .stat-error { animation: errshake 0.25s ease; }
-        @keyframes errshake {
-            0%,100% { transform: translateX(0); }
-            25%      { transform: translateX(-4px); }
-            75%      { transform: translateX(4px); }
-        }
-
-        /* Middle cost column */
-        .cost-row {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            height: 28px;
-            font-size: 10px;
-            color: #404e70;
-            gap: 2px;
-        }
-
-        .cost-next {
-            color: #e0b040;
-            font-weight: 700;
-            font-size: 11px;
-        }
-
-        /* Right derived-stats column */
-        .stat-derived-row {
-            display: flex;
-            align-items: center;
-            height: 28px;
-            padding: 0 4px;
-            gap: 4px;
-            border-radius: 5px;
-            transition: background 0.1s;
-        }
-
-        .stat-derived-row:hover { background: rgba(60,80,160,0.12); }
-
-        .derived-label {
-            font-size: 10px;
-            font-weight: 700;
-            color: #5a6a90;
-            width: 34px;
-            letter-spacing: 0.04em;
-            flex-shrink: 0;
-        }
-
-        .dikit-group {
-            display: flex;
-            align-items: center;
-            gap: 3px;
-            flex: 1;
-        }
-
-        .dikit-group input {
-            background: transparent;
-            border: none;
-            border-bottom: 1px solid #1e2850;
-            color: #a0b0d8;
-            font-size: 12px;
-            font-weight: 600;
-            text-align: center;
-            width: 36px;
-            outline: none;
-            padding: 1px 0;
-        }
-
-        .dikit-group .sym {
-            color: #3a4868;
-            font-size: 11px;
-            flex-shrink: 0;
-        }
-
-        .aspd-row { background: rgba(245,166,35,0.06); border-radius: 5px; }
-        .aspd-row .derived-label { color: #b07818; }
-        #aspd-value { color: #f5a623; font-weight: 700; }
-
-        /* ── INFO CARD ────────────────────────────────────────────── */
-        .tab-pane { display: none; }
-        .tab-pane.active { display: block; }
-
-        .info-hero-card {
-            margin-top: 14px;
-            background: #111422;
-            border: 1px solid #1e2850;
-            border-radius: 8px;
-            padding: 14px 16px;
-        }
-
-        .info-hero-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .info-hero-title {
-            font-size: 15px;
-            font-weight: 800;
-            letter-spacing: 0.12em;
-            color: #c0d0ff;
-        }
-
-        .info-hero-class-badge {
-            font-size: 10px;
-            background: #181e40;
-            border: 1px solid #2a3870;
-            border-radius: 20px;
-            padding: 2px 10px;
-            color: #5070b0;
-            letter-spacing: 0.06em;
-        }
-
-        .info-hero-divider { height: 1px; background: #1e2850; margin: 10px 0; }
-
-        .info-hero-desc {
-            font-size: 12px;
-            color: #6070a0;
-            line-height: 1.65;
-        }
-
-        .info-hero-traits {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
-            margin-top: 10px;
-        }
-
-        .info-trait {
-            display: flex;
-            align-items: center;
-            gap: 5px;
-            font-size: 11px;
-            color: #5868a0;
-        }
-
-        .info-hero-footer {
-            display: flex;
-            gap: 16px;
-            flex-wrap: wrap;
-        }
-
-        .info-footer-label { font-size: 10px; color: #3a4868; }
-        .info-footer-val   { font-size: 11px; color: #7080b0; font-weight: 700; margin-left: 3px; }
-    </style>
+    <link rel="stylesheet" href="tabs.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 </head>
 <body>
-<div class="glass-container">
-
-    <!-- ══ TOP CONTROLS ══════════════════════════════════════════════ -->
-    <div class="top-controls">
-        <div class="ctrl-item">
-            <span class="lbl">Job:</span>
-            <select name="classes" id="job-select" class="ctrl-select">
-                <option value="">Novice</option>
-                <option value="1">Swordsman</option>
-                <option value="2">Magician</option>
-                <option value="3">Archer</option>
-                <option value="4">Acolyte</option>
-                <option value="5">Merchant</option>
-                <option value="6">Thief</option>
-            </select>
-        </div>
-        <div class="sep"></div>
-        <div class="ctrl-item">
-            <span class="lbl">Base Lv:</span>
-            <input type="number" id="base-level" value="1" min="1" max="99" class="ctrl-input">
-        </div>
-        <div class="ctrl-item">
-            <span class="lbl">Job Lv:</span>
-            <select id="job-level-select" class="ctrl-select">
-                <option value="">—</option>
-                <option value="1">1</option><option value="2">2</option>
-                <option value="3">3</option><option value="4">4</option>
-                <option value="5">5</option><option value="6">6</option>
-                <option value="7">7</option>
-            </select>
-        </div>
-        <div class="sep"></div>
-        <div class="ctrl-item">
-            <span class="lbl">TK Ranker</span>
-            <input type="checkbox" id="tk-ranker">
-        </div>
+    <div class="main-layout-container">
+     <div class="character-area">
+    <div class="character-sprite-box">
+        <div class="character-glow"></div>
+        <div class="character-stage-base"></div>
+        <img src="../images/novice.png" alt="Character" class="character-sprite" id="character-img">
     </div>
-
-    <!-- ══ VITALS — single source of truth ══════════════════════════ -->
-    <div class="vitals-section">
-        <div class="vital-row">
-            <span class="vital-label hp">HP</span>
-            <div class="vital-bar-track">
-                <div class="vital-bar-fill hp-fill" id="hp-bar-fill" style="width:100%"></div>
-            </div>
-            <span class="vital-text" id="hp-bar-text">40 / 40</span>
-        </div>
-        <div class="vital-row">
-            <span class="vital-label sp">SP</span>
-            <div class="vital-bar-track">
-                <div class="vital-bar-fill sp-fill" id="sp-bar-fill" style="width:100%"></div>
-            </div>
-            <span class="vital-text" id="sp-bar-text">11 / 11</span>
-        </div>
+    <div class="character-name-container">
+        <h2 class="character-name" id="character-title">NOVICE</h2>
     </div>
+</div>
 
-    <!-- ══ REGEN INFO (live) ════════════════════════════════════════ -->
-    <div class="regen-row">
-        <div class="regen-item">
-            <span class="regen-lbl">HP Regen:</span>
-            <span class="regen-val hp-regen" id="hp-regen-val">1</span>
-            <span class="regen-ticks">/ 6s standing · / 3s sitting</span>
-        </div>
-        <div class="regen-item">
-            <span class="regen-lbl">SP Regen:</span>
-            <span class="regen-val sp-regen" id="sp-regen-val">1</span>
-            <span class="regen-ticks">/ 8s standing · / 4s sitting</span>
-        </div>
-        <div class="regen-item" style="margin-left:auto;">
-            <span class="regen-lbl">Weight Limit:</span>
-            <span class="regen-val" id="weight-limit-val" style="color:#5878a0;">2,030</span>
-        </div>
+        <div class="unified-status-panel">
+            <div class="panel-tabs">
+                <button class="tab-item" onclick="switchTab(event, 'stat-tab')">Stat</button>
+                <button class="tab-item" onclick="switchTab(event, 'info-tab')">Info</button>
+            </div>
+
+            <div id="stat-tab" class="tab-pane active">
+                <div class="tab-stat-list">
+                    <div class="bar-row">
+                        <div class="bar"><div class="hp-fill" style="width: 85%;"></div></div>
+                        <input class="bar-text-input" readonly value="858 / 1,010">
+                    </div>
+                    <div class="bar-row">
+                        <div class="bar" style="background: #e0e8f0;"><div class="sp-fill" style="width: 100%; height: 100%; background: #4090e0; border-radius: 10px;"></div></div>
+                        <input class="bar-text-input" readonly value="100 / 100">
+                    </div>
+                </div>
+                         <div class="job-row">
+                            <div class="job-dropdown-container">
+                            <span class="job-label">Select Job</span>
+                            <div class="custom-dropdown" id="jobDropdown">
+                                <div class="selected-option" onclick="toggleMenu()">
+                                    <span id="current-job">Archer</span>
+                                    <i class="arrow-icon"></i>
+                        </div>
+                    <ul class="options-menu">
+                        <li onclick="selectJob('Novice', 'novice.png')">Novice</li>
+                        <li onclick="selectJob('Swordsman', 'swordsman.png')">Swordsman</li>
+                        <li onclick="selectJob('Mage', 'mage.png')">Mage</li>
+                        <li onclick="selectJob('Archer', 'archer.png')">Archer</li>
+                        <li onclick="selectJob('Thief', 'theif.png')">Thief</li> 
+                        <li onclick="selectJob('Acolyte', 'acolyte.png')">Acolyte</li>
+                        <li onclick="selectJob('Merchant', 'merchant.png')">Merchant</li>
+                    </ul>
+                </div>
+                   <div class="dib-row">
+                        <div class="dib-item">
+                            <span class="dib-label">Base Level</span>
+                            <span class="dib-val">1</span>
+                        </div>
+                        <div class="dib-item">
+                            <span class="dib-label">Job Level</span>
+                            <span class="dib-val">1</span>
+                        </div>
+                        <div class="dib-item">
+                            <span class="dib-label">Weight</span>
+                            <span class="dib-val">2,030</span>
+                        </div>
+                    </div>
+            </div>
+      </div>
+                <div class="details-info-block">
+                    <div class="dib-row dib-regen-row">
+                        <div class="dib-regen-item">
+                            <span class="dib-label">Natural HP Regen</span>
+                            <span class="dib-val dib-regen">1 per 6s standing &nbsp;·&nbsp; per 3s sitting</span>
+                        </div>
+                        <div class="dib-regen-item">
+                            <span class="dib-label">Natural SP Regen</span>
+                            <span class="dib-val dib-regen">1 per 8s standing &nbsp;·&nbsp; per 4s sitting</span>
+                        </div>
+                    </div>
+              </div>
+
+                <div class="header">
+                    <div>Base Level <input type="text" class="lvl-value-input" value="1"></div>
+                    <div>Status Points <input type="text" class="status-value" value="42" readonly></div>
+                     <span>Weapon</span>
+                <div class="custom-dropdown weapon-dropdown" id="weaponDropdown">
+                    <div class="selected-option weapon-select" onclick="toggleWeaponMenu()">
+                        <span id="current-weapon">Bare Hand</span>
+                        <i class="arrow-icon"></i>
+                    </div>
+                    <ul class="weapon-menu">
+                        <li onclick="selectWeapon('Bare Hand')">Bare Hand</li>
+                        <li onclick="selectWeapon('Sword')">Sword</li>
+                        <li onclick="selectWeapon('Bow')">Bow</li>
+                        <li onclick="selectWeapon('Dagger')">Dagger</li>
+                        <li onclick="selectWeapon('Staff')">Staff</li>
+                        <li onclick="selectWeapon('Axe')">Axe</li>
+                        <li onclick="selectWeapon('Mace')">Mace</li>
+                    </ul>
+                </div>
+            </div>
+                
+                <div class="status-columns">
+                  <div class="column">
+                        <div class="table-row"><span>STR</span><button class="stat-btn minus">-</button><input type="text" class="stat-input" value="1"><button class="stat-btn plus">+</button></div>
+                        <div class="table-row"><span>AGI</span><button class="stat-btn minus">-</button><input type="text" class="stat-input" value="1"><button class="stat-btn plus">+</button></div>
+                        <div class="table-row"><span>VIT</span><button class="stat-btn minus">-</button><input type="text" class="stat-input" value="1"><button class="stat-btn plus">+</button></div>
+                        <div class="table-row"><span>INT</span><button class="stat-btn minus">-</button><input type="text" class="stat-input" value="1"><button class="stat-btn plus">+</button></div>
+                        <div class="table-row"><span>DEX</span><button class="stat-btn minus">-</button><input type="text" class="stat-input" value="1"><button class="stat-btn plus">+</button></div>
+                        <div class="table-row"><span>LUK</span><button class="stat-btn minus">-</button><input type="text" class="stat-input" value="1"><button class="stat-btn plus">+</button></div>
+                    </div>
+
+          
+
+                   <div class="column">
+                        <div class="table-row"><span class="symbol">+ 0</span><span class="value">2</span></div>
+                        <div class="table-row"><span class="symbol">+ 0</span><span class="value">2</span></div>
+                        <div class="table-row"><span class="symbol">+ 0</span><span class="value">2</span></div>
+                        <div class="table-row"><span class="symbol">+ 0</span><span class="value">2</span></div>
+                        <div class="table-row"><span class="symbol">+ 0</span><span class="value">2</span></div>
+                        <div class="table-row"><span class="symbol">+ 0</span><span class="value">2</span></div>
+                    </div>
+
+                       <div class="column">
+                        <div class="table-row"><span>ATK</span><div class="dikit-group"><input readonly value="1"><span class="symbol">+</span><input readonly value="0"></div></div>
+                        <div class="table-row"><span>MATK</span><div class="dikit-group"><input readonly value="1"><span class="symbol">~</span><input readonly value="1"></div></div>
+                        <div class="table-row"><span>HIT</span><div class="dikit-group"><input readonly value="2"></div></div>
+                        <div class="table-row"><span>CRIT</span><div class="dikit-group"><input readonly value="1"></div></div>
+                        <div class="table-row"><span>DEF</span><div class="dikit-group"><input readonly value="0"><span class="symbol">+</span><input readonly value="0"></div></div>
+                        <div class="table-row"><span>MDEF</span><div class="dikit-group"><input readonly value="0"><span class="symbol">+</span><input readonly value="0"></div></div>
+                        <div class="table-row"><span>FLEE</span><div class="dikit-group"><input readonly value="2"><span class="symbol">+</span><input readonly value="1"></div></div>
+                        <div class="table-row"><span>ASPD</span><div class="dikit-group"><input readonly value="150"></div></div>
+                    </div>
+                </div>
+            </div>
+            <div id="info-tab" class="tab-pane ">
+                <div class="info-hero-card">
+                    <div class="info-hero-header">
+                        <div class="info-hero-title">NOVICE</div>
+                        <div class="info-hero-class-badge">Beginner Class</div>
+                    </div>
+                    <div class="info-hero-divider"></div>
+                    <p class="info-hero-desc">
+                        The <strong>Novice</strong> is the starting class for all adventurers. Armed with little more than
+                        courage and a basic sword, the Novice stands at the threshold of a grand journey.
+                        Through dedication and battle, they will grow to choose their true path.
+                    </p>
+                    <div class="info-hero-traits">
+                        <div class="info-trait"><span class="info-trait-icon">⚔️</span><span>Balanced base stats</span></div>
+                        <div class="info-trait"><span class="info-trait-icon">🛡️</span><span>Can advance to any class</span></div>
+                        <div class="info-trait"><span class="info-trait-icon">✨</span><span>High potential growth</span></div>
+                        <div class="info-trait"><span class="info-trait-icon">📖</span><span>Starts with 48 status points</span></div>
+                    </div>
+                    <div class="info-hero-divider"></div>
+                    <div class="info-hero-footer">
+                        <span class="info-footer-label">Base EXP Rate</span><span class="info-footer-val">100%</span>
+                        <span class="info-footer-label">Job EXP Rate</span><span class="info-footer-val">100%</span>
+                        <span class="info-footer-label">Weight Limit</span><span class="info-footer-val">2,000</span>
+                    </div>
+                </div>
+            </div>
     </div>
-
-    <div class="divider"></div>
-
-    <!-- ══ LEVEL + STATUS POINTS ════════════════════════════════════ -->
-    <div class="lvl-sp-row">
-        <div class="lvl-sp-item">
-            <span>Base Level</span>
-            <input type="text" class="lvl-sp-val" id="lvl-display" value="1" readonly>
-        </div>
-        <div class="lvl-sp-item">
-            <span>Status Points</span>
-            <input type="text" class="lvl-sp-val sp-points-val status-value" value="48" readonly>
-        </div>
-    </div>
-
-    <!-- ══ WEAPON + POTION ROW ═══════════════════════════════════════ -->
-    <div class="weapon-row">
-        <span class="lbl">Weapon:</span>
-        <div class="weapon-selector">
-            <select id="weapon-select">
-                <option value="bare_handed">Bare Handed</option>
-            </select>
-        </div>
-        <span class="lbl">Potion:</span>
-        <select id="potion-select" class="items-row">
-            <option value="">None</option>
-            <option value="1">Concentration (+6)</option>
-            <option value="2">Awakening (+12)</option>
-            <option value="3">Berserk (+17)</option>
-        </select>
-    </div>
-
-    <div class="divider"></div>
-
-    <!-- ══ STAT COLUMNS ══════════════════════════════════════════════ -->
-    <div class="status-columns">
-
-        <!-- Column 1: Base stats -->
-        <div class="column">
-            <div class="table-row" data-stat="str">
-                <span>STR</span>
-                <button class="stat-btn minus">−</button>
-                <input type="text" class="stat-input" value="1">
-                <button class="stat-btn plus">+</button>
-            </div>
-            <div class="table-row" data-stat="agi">
-                <span>AGI</span>
-                <button class="stat-btn minus">−</button>
-                <input type="text" class="stat-input" value="1">
-                <button class="stat-btn plus">+</button>
-            </div>
-            <div class="table-row" data-stat="vit">
-                <span>VIT</span>
-                <button class="stat-btn minus">−</button>
-                <input type="text" class="stat-input" value="1">
-                <button class="stat-btn plus">+</button>
-            </div>
-            <div class="table-row" data-stat="int">
-                <span>INT</span>
-                <button class="stat-btn minus">−</button>
-                <input type="text" class="stat-input" value="1">
-                <button class="stat-btn plus">+</button>
-            </div>
-            <div class="table-row" data-stat="dex">
-                <span>DEX</span>
-                <button class="stat-btn minus">−</button>
-                <input type="text" class="stat-input" value="1">
-                <button class="stat-btn plus">+</button>
-            </div>
-            <div class="table-row" data-stat="luk">
-                <span>LUK</span>
-                <button class="stat-btn minus">−</button>
-                <input type="text" class="stat-input" value="1">
-                <button class="stat-btn plus">+</button>
-            </div>
-        </div>
-
-        <!-- Column 2: Next-point costs -->
-        <div class="column">
-            <div class="cost-row"><span class="cost-next" id="cost-str">+2</span><span style="color:#404e70;font-size:10px;">pts</span></div>
-            <div class="cost-row"><span class="cost-next" id="cost-agi">+2</span><span style="color:#404e70;font-size:10px;">pts</span></div>
-            <div class="cost-row"><span class="cost-next" id="cost-vit">+2</span><span style="color:#404e70;font-size:10px;">pts</span></div>
-            <div class="cost-row"><span class="cost-next" id="cost-int">+2</span><span style="color:#404e70;font-size:10px;">pts</span></div>
-            <div class="cost-row"><span class="cost-next" id="cost-dex">+2</span><span style="color:#404e70;font-size:10px;">pts</span></div>
-            <div class="cost-row"><span class="cost-next" id="cost-luk">+2</span><span style="color:#404e70;font-size:10px;">pts</span></div>
-        </div>
-
-        <!-- Column 3: Derived combat stats -->
-        <div class="column">
-            <div class="stat-derived-row">
-                <span class="derived-label">ATK</span>
-                <div class="dikit-group">
-                    <input id="d-atk" readonly value="1">
-                    <span class="sym">+</span>
-                    <input id="d-atk-bonus" readonly value="0">
-                </div>
-            </div>
-            <div class="stat-derived-row">
-                <span class="derived-label">MATK</span>
-                <div class="dikit-group">
-                    <input id="d-matk-min" readonly value="1">
-                    <span class="sym">~</span>
-                    <input id="d-matk-max" readonly value="1">
-                </div>
-            </div>
-            <div class="stat-derived-row">
-                <span class="derived-label">HIT</span>
-                <div class="dikit-group">
-                    <input id="d-hit" readonly value="2">
-                </div>
-            </div>
-            <div class="stat-derived-row">
-                <span class="derived-label">CRIT</span>
-                <div class="dikit-group">
-                    <input id="d-crit" readonly value="1">
-                </div>
-            </div>
-            <div class="stat-derived-row">
-                <span class="derived-label">DEF</span>
-                <div class="dikit-group">
-                    <input id="d-def-base" readonly value="0">
-                    <span class="sym">+</span>
-                    <input id="d-def" readonly value="0">
-                </div>
-            </div>
-            <div class="stat-derived-row">
-                <span class="derived-label">MDEF</span>
-                <div class="dikit-group">
-                    <input id="d-mdef-base" readonly value="0">
-                    <span class="sym">+</span>
-                    <input id="d-mdef" readonly value="1">
-                </div>
-            </div>
-            <div class="stat-derived-row">
-                <span class="derived-label">FLEE</span>
-                <div class="dikit-group">
-                    <input id="d-flee" readonly value="2">
-                    <span class="sym">+</span>
-                    <input id="d-flee-luk" readonly value="1">
-                </div>
-            </div>
-            <div class="stat-derived-row aspd-row">
-                <span class="derived-label">ASPD</span>
-                <div class="dikit-group">
-                    <input id="aspd-value" readonly value="150">
-                </div>
-            </div>
-        </div>
-
-    </div>
-    <!-- ══ END STAT COLUMNS ═════════════════════════════════════════ -->
-
-    <!-- ══ INFO CARD ════════════════════════════════════════════════ -->
-    <div id="info-tab" class="tab-pane active">
-        <div class="info-hero-card">
-            <div class="info-hero-header">
-                <div class="info-hero-title" id="info-job-title">NOVICE</div>
-                <div class="info-hero-class-badge" id="info-job-badge">Beginner Class</div>
-            </div>
-            <div class="info-hero-divider"></div>
-            <p class="info-hero-desc" id="info-job-desc">
-                The <strong>Novice</strong> is the starting class for all adventurers. Armed with little more than
-                courage and a basic sword, the Novice stands at the threshold of a grand journey.
-                Through dedication and battle, they will grow to choose their true path.
-            </p>
-            <div class="info-hero-traits" id="info-job-traits">
-                <div class="info-trait"><span>⚔️</span><span>Balanced base stats</span></div>
-                <div class="info-trait"><span>🛡️</span><span>Can advance to any class</span></div>
-                <div class="info-trait"><span>✨</span><span>High potential growth</span></div>
-                <div class="info-trait"><span>📖</span><span>Starts with 48 status points</span></div>
-            </div>
-            <div class="info-hero-divider"></div>
-            <div class="info-hero-footer">
-                <span class="info-footer-label">Base EXP Rate</span><span class="info-footer-val" id="info-exp-rate">100%</span>
-                <span class="info-footer-label">Job EXP Rate</span><span class="info-footer-val" id="info-job-exp-rate">100%</span>
-                <span class="info-footer-label">Weight Limit</span><span class="info-footer-val" id="info-weight-limit">2,000</span>
-            </div>
-        </div>
-    </div>
-
-</div><!-- /.glass-container -->
-
-<script src="../Stats/HPCalc.js" defer></script>
-<script src="../Stats/aspd.js" defer></script>
-<script src="../Stats/jobBonus.js" defer></script>
-<script src="../Stats/combat.js" defer></script>
-<script src="../Stats/regen.js" defer></script>
-<script src="../Stats/stats.js" defer></script>
+    <script src="../Stats/HPCalc.js"></script>
+    <script src="../Stats/jobBonus.js"></script>
+    <script src="../Stats/aspd.js"></script>
+    <script src="../Stats/tabs.js"></script>
+    <script src="../Stats/regen.js"></script>
+    <script src="../Stats/combat.js"></script>
+    <script src="../Stats/stats.js"></script>
 </body>
 </html>

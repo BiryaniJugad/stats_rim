@@ -1,24 +1,23 @@
 ﻿// ===================================================================
-// RAGNAROK STAT SYSTEM
+// RAGNAROK STAT SYSTEM  —  stats.js
+// Depends on: HPCalc.js, jobBonus.js, aspd.js, regen.js, combat.js
 // ===================================================================
 
 // ===================================================================
-// FORMULAS
+// STAT POINT MATH
 // ===================================================================
 
 function getPointsForLevel(level) {
-  if (level <= 4) return 3;
+  if (level <= 4)  return 3;
   if (level >= 95) return 22;
   return Math.floor((level - 1) / 5) + 3;
 }
 
 function getTotalStatPointsForLevel(level) {
-  const STARTING_STATUS_POINTS = 48;
-  if (level === 1) return STARTING_STATUS_POINTS;
-  let total = STARTING_STATUS_POINTS;
-  for (let i = 2; i <= level; i++) {
-    total += getPointsForLevel(i);
-  }
+  const STARTING = 48;
+  if (level === 1) return STARTING;
+  let total = STARTING;
+  for (let i = 2; i <= level; i++) total += getPointsForLevel(i);
   return total;
 }
 
@@ -28,9 +27,7 @@ function getStatIncreaseCost(currentStatValue) {
 
 function getTotalCostToReachStat(fromStat, toStat) {
   let cost = 0;
-  for (let i = fromStat; i < toStat; i++) {
-    cost += getStatIncreaseCost(i);
-  }
+  for (let i = fromStat; i < toStat; i++) cost += getStatIncreaseCost(i);
   return cost;
 }
 
@@ -44,9 +41,107 @@ const character = {
   job: "novice",
   stats: { str: 1, agi: 1, vit: 1, int: 1, dex: 1, luk: 1 },
   availablePoints: 48,
-  // Simulated current HP/SP (as fractions, 0–1) — full by default
-  currentHPFrac: 1,
-  currentSPFrac: 1,
+  currentHPFrac:   1,
+  currentSPFrac:   1,
+};
+
+// ===================================================================
+// JOB DATA
+// ===================================================================
+
+const JOB_MAP = {
+  "":  "novice",
+  "1": "swordsman",
+  "2": "magician",
+  "3": "archer",
+  "4": "acolyte",
+  "5": "merchant",
+  "6": "thief",
+};
+
+const JOB_MAX_LEVEL = {
+  novice: 9, swordsman: 50, magician: 50,
+  archer: 50, acolyte: 50, merchant: 50, thief: 50,
+};
+
+const JOB_INFO = {
+  novice: {
+    badge: "Beginner Class",
+    desc:  "The <strong>Novice</strong> is the starting class for all adventurers. Armed with little more than courage, the Novice stands at the threshold of a grand journey and can advance to any first class.",
+    traits: [
+      ["⚔️", "Balanced base stats"],
+      ["🛡️", "Can advance to any class"],
+      ["✨", "High potential growth"],
+      ["📖", "Starts with 48 status points"],
+    ],
+    expBase: "100%", expJob: "100%",
+  },
+  swordsman: {
+    badge: "1st Class — Warrior",
+    desc:  "The <strong>Swordsman</strong> is a front-line warrior who excels in physical combat. High HP and VIT make them tough to kill, and they can advance into Knight or Crusader.",
+    traits: [
+      ["⚔️", "High STR & VIT growth"],
+      ["🛡️", "Excellent HP pool"],
+      ["🗡️", "Wide weapon variety"],
+      ["📈", "Advances to Knight / Crusader"],
+    ],
+    expBase: "100%", expJob: "100%",
+  },
+  magician: {
+    badge: "1st Class — Mage",
+    desc:  "The <strong>Magician</strong> wields devastating elemental magic. With the highest INT growth of any class, they deal massive MATK at the cost of low HP and physical defense.",
+    traits: [
+      ["🔥", "Highest INT bonus"],
+      ["💥", "Powerful AOE spells"],
+      ["🧪", "SP-hungry caster"],
+      ["📈", "Advances to Wizard / Sage"],
+    ],
+    expBase: "100%", expJob: "100%",
+  },
+  archer: {
+    badge: "1st Class — Ranger",
+    desc:  "The <strong>Archer</strong> attacks from range with exceptional DEX, making them reliable damage-dealers. Their accuracy and flee make them effective against physical monsters.",
+    traits: [
+      ["🏹", "Highest DEX bonus"],
+      ["👟", "Strong AGI & FLEE"],
+      ["🎯", "High HIT accuracy"],
+      ["📈", "Advances to Hunter / Bard / Dancer"],
+    ],
+    expBase: "100%", expJob: "100%",
+  },
+  acolyte: {
+    badge: "1st Class — Healer",
+    desc:  "The <strong>Acolyte</strong> serves as healer and support. Their INT and SP pool give them strong recovery skills, and they can wield maces to contribute in combat.",
+    traits: [
+      ["💚", "Strong HP and SP regen"],
+      ["🙏", "Support & heal focused"],
+      ["📿", "High LUK growth"],
+      ["📈", "Advances to Priest / Monk"],
+    ],
+    expBase: "100%", expJob: "100%",
+  },
+  merchant: {
+    badge: "1st Class — Trader",
+    desc:  "The <strong>Merchant</strong> combines combat skill with economic prowess. High STR and a large weight limit make them self-sufficient adventurers.",
+    traits: [
+      ["💪", "High STR & carry weight"],
+      ["🪙", "Best weight limit"],
+      ["🔨", "Axe & mace specialist"],
+      ["📈", "Advances to Blacksmith / Alchemist"],
+    ],
+    expBase: "100%", expJob: "100%",
+  },
+  thief: {
+    badge: "1st Class — Rogue",
+    desc:  "The <strong>Thief</strong> relies on speed and cunning rather than brute force. High AGI gives them exceptional flee and attack speed, making them elusive fighters.",
+    traits: [
+      ["💨", "Highest AGI bonus"],
+      ["🗡️", "Fast attack speed"],
+      ["👻", "High FLEE & dodge"],
+      ["📈", "Advances to Assassin / Rogue"],
+    ],
+    expBase: "100%", expJob: "100%",
+  },
 };
 
 // ===================================================================
@@ -56,23 +151,21 @@ const character = {
 let el = {};
 
 function initializeElements() {
-  // Controls
   el.levelInput    = document.getElementById("base-level");
   el.jobSelect     = document.getElementById("job-select");
   el.jobLevelSelect = document.getElementById("job-level-select");
   el.statusPoints  = document.querySelector(".status-value");
-  el.lvlDisplay    = document.getElementById("lvl-display");
 
-  // Vitals — bar fills + text labels
-  el.hpBarFill  = document.getElementById("hp-bar-fill");
-  el.spBarFill  = document.getElementById("sp-bar-fill");
-  el.hpBarText  = document.getElementById("hp-bar-text");
-  el.spBarText  = document.getElementById("sp-bar-text");
+  // Vitals — bar fills + text inputs
+  el.hpBarFill = document.getElementById("hp-bar-fill");
+  el.spBarFill = document.getElementById("sp-bar-fill");
+  el.hpBarText = document.getElementById("hp-bar-text");   // <input readonly>
+  el.spBarText = document.getElementById("sp-bar-text");   // <input readonly>
 
   // ASPD
   el.aspdValue = document.getElementById("aspd-value");
 
-  // Derived stat inputs (right column) — addressed by ID
+  // Derived stat inputs
   el.dAtk      = document.getElementById("d-atk");
   el.dAtkBonus = document.getElementById("d-atk-bonus");
   el.dMatkMin  = document.getElementById("d-matk-min");
@@ -86,7 +179,7 @@ function initializeElements() {
   el.dFlee     = document.getElementById("d-flee");
   el.dFleeLuk  = document.getElementById("d-flee-luk");
 
-  // Cost spans (middle column)
+  // Cost spans
   el.costSpans = {
     str: document.getElementById("cost-str"),
     agi: document.getElementById("cost-agi"),
@@ -96,17 +189,70 @@ function initializeElements() {
     luk: document.getElementById("cost-luk"),
   };
 
-  // Regen + weight display
-  el.hpRegenVal     = document.getElementById("hp-regen-val");
-  el.spRegenVal     = document.getElementById("sp-regen-val");
-  el.weightLimitVal = document.getElementById("weight-limit-val");
-  el.weightDisplay  = document.getElementById("weight-display"); // top bar
+  // Regen + weight
+  el.hpRegenVal    = document.getElementById("hp-regen-val");
+  el.spRegenVal    = document.getElementById("sp-regen-val");
+  el.weightDisplay = document.getElementById("weight-display");
 
-  // Stat rows — keyed by data-stat attribute
-  el.statRows = {};
-  document.querySelectorAll(".table-row[data-stat]").forEach(row => {
+  // Dib level/jl labels
+  el.dibBaseLevel = document.getElementById("dib-base-level");
+  el.dibJobLevel  = document.getElementById("dib-job-level");
+
+  // Job-level dropdown display
+  el.currentJL = document.getElementById("current-jl");
+
+  // Info tab
+  el.infoTitle   = document.getElementById("info-job-title");
+  el.infoBadge   = document.getElementById("info-class-badge");
+  el.infoDesc    = document.getElementById("info-job-desc");
+  el.infoTraits  = document.getElementById("info-job-traits");
+  el.infoExpBase = document.getElementById("info-exp-base");
+  el.infoExpJob  = document.getElementById("info-exp-job");
+  el.infoWeight  = document.getElementById("info-weight-limit");
+
+  // Stat rows — col-stat has the inputs, col-btns has the buttons.
+  // Both sets of rows share the same data-stat attribute.
+  el.statRows = {};   // input rows  (col-stat)
+  el.btnRows  = {};   // button rows (col-btns)
+
+  document.querySelectorAll(".col-stat .table-row[data-stat]").forEach(row => {
     el.statRows[row.dataset.stat] = row;
   });
+  document.querySelectorAll(".col-btns .table-row[data-stat]").forEach(row => {
+    el.btnRows[row.dataset.stat] = row;
+  });
+
+  // Fallback: if the page uses a single-column layout where buttons and
+  // inputs share the same row, populate both maps from the same elements.
+  if (Object.keys(el.statRows).length === 0) {
+    document.querySelectorAll(".table-row[data-stat]").forEach(row => {
+      el.statRows[row.dataset.stat] = row;
+      el.btnRows[row.dataset.stat]  = row;
+    });
+  }
+}
+
+// ===================================================================
+// ASPD BRIDGE
+// aspd.js reads `elements.attackSpeedInput` and calls getCurrentJob /
+// getCurrentWeapon / getPotionASPDBonus — we provide all of these.
+// ===================================================================
+
+const elements = {
+  get attackSpeedInput() { return el.aspdValue; }
+};
+
+function getCurrentJob() {
+  return JOB_MAP[el.jobSelect?.value] ?? "novice";
+}
+
+function getCurrentWeapon() {
+  return document.getElementById("weapon-select")?.value || "bare_handed";
+}
+
+function getPotionASPDBonus() {
+  const POTION_MAP = { "": 0, "1": 6, "2": 12, "3": 17 };
+  return POTION_MAP[document.getElementById("potion-select")?.value] ?? 0;
 }
 
 // ===================================================================
@@ -148,14 +294,81 @@ function updateLevel(newLevel) {
 }
 
 // ===================================================================
+// JOB LEVEL DROPDOWN
+// ===================================================================
+
+function updateJobLevelOptions(job) {
+  const sel = document.getElementById("job-level-select");
+  const max = JOB_MAX_LEVEL[job] ?? 0;
+
+  if (sel) {
+    sel.innerHTML = '<option value="">—</option>';
+    for (let i = 1; i <= max; i++) {
+      const opt = document.createElement("option");
+      opt.value = i; opt.textContent = i;
+      sel.appendChild(opt);
+    }
+  }
+
+  const visualList = document.getElementById("jl-menu-list");
+  if (visualList) {
+    visualList.innerHTML = "";
+    const liNone = document.createElement("li");
+    liNone.textContent = "—";
+    liNone.onclick = () => selectJobLevel("", 0);
+    visualList.appendChild(liNone);
+
+    for (let i = 1; i <= max; i++) {
+      const li = document.createElement("li");
+      li.textContent = i;
+      li.onclick = () => selectJobLevel(String(i), i);
+      visualList.appendChild(li);
+    }
+  }
+}
+
+function selectJobLevel(selectVal, numVal) {
+  character.jobLevel = numVal;
+  const sel = document.getElementById("job-level-select");
+  if (sel) sel.value = selectVal;
+  if (el.currentJL)  el.currentJL.textContent  = numVal > 0 ? numVal : "—";
+  if (el.dibJobLevel) el.dibJobLevel.textContent = numVal > 0 ? numVal : "—";
+  document.getElementById("jobLevelDropdown")?.classList.remove("active");
+  updateUI();
+}
+
+// ===================================================================
+// INFO TAB
+// ===================================================================
+
+function updateInfoTab(job) {
+  const info = JOB_INFO[job] ?? JOB_INFO.novice;
+  const displayName = job.charAt(0).toUpperCase() + job.slice(1);
+  const weightFmt   = getWeightLimit(job).toLocaleString();
+
+  if (el.infoTitle)   el.infoTitle.textContent  = displayName.toUpperCase();
+  if (el.infoBadge)   el.infoBadge.textContent  = info.badge;
+  if (el.infoDesc)    el.infoDesc.innerHTML      = info.desc;
+  if (el.infoExpBase) el.infoExpBase.textContent = info.expBase;
+  if (el.infoExpJob)  el.infoExpJob.textContent  = info.expJob;
+  if (el.infoWeight)  el.infoWeight.textContent  = weightFmt;
+
+  if (el.infoTraits) {
+    el.infoTraits.innerHTML = info.traits
+      .map(([icon, text]) =>
+        `<div class="info-trait"><span class="info-trait-icon">${icon}</span><span>${text}</span></div>`)
+      .join("");
+  }
+}
+
+// ===================================================================
 // MAIN UI UPDATE
 // ===================================================================
 
 function updateUI() {
   const cs = calculateCombatStats(character);
 
-  // ── Vitals bars ─────────────────────────────────────────────────
-  // Use full HP/SP as "current" (simulator is always at full for now)
+  // ── Vitals bars ──────────────────────────────────────────────────
   const maxHP = cs.maxHP;
   const maxSP = cs.maxSP;
   const curHP = Math.round(maxHP * character.currentHPFrac);
@@ -163,17 +376,18 @@ function updateUI() {
 
   if (el.hpBarFill) el.hpBarFill.style.width = `${Math.round((curHP / maxHP) * 100)}%`;
   if (el.spBarFill) el.spBarFill.style.width  = `${Math.round((curSP / maxSP) * 100)}%`;
-  if (el.hpBarText) el.hpBarText.textContent  = `${curHP} / ${maxHP}`;
-  if (el.spBarText) el.spBarText.textContent  = `${curSP} / ${maxSP}`;
+  // hp-bar-text / sp-bar-text are <input readonly> elements → use .value
+  if (el.hpBarText) el.hpBarText.value = `${curHP} / ${maxHP}`;
+  if (el.spBarText) el.spBarText.value = `${curSP} / ${maxSP}`;
 
   // ── Derived stats ────────────────────────────────────────────────
   if (el.dAtk)      el.dAtk.value      = cs.attack;
-  if (el.dAtkBonus) el.dAtkBonus.value = 0;           // weapon bonus placeholder
+  if (el.dAtkBonus) el.dAtkBonus.value = 0;
   if (el.dMatkMin)  el.dMatkMin.value  = cs.matkMin;
   if (el.dMatkMax)  el.dMatkMax.value  = cs.matkMax;
   if (el.dHit)      el.dHit.value      = cs.hit;
   if (el.dCrit)     el.dCrit.value     = cs.crit;
-  if (el.dDefBase)  el.dDefBase.value  = 0;           // armor DEF placeholder
+  if (el.dDefBase)  el.dDefBase.value  = 0;
   if (el.dDef)      el.dDef.value      = cs.defense;
   if (el.dMdefBase) el.dMdefBase.value = 0;
   if (el.dMdef)     el.dMdef.value     = cs.mdefBase;
@@ -186,27 +400,17 @@ function updateUI() {
   if (el.hpRegenVal) el.hpRegenVal.textContent = hpr;
   if (el.spRegenVal) el.spRegenVal.textContent = spr;
 
-  // ── Weight limit ─────────────────────────────────────────────────
-  const weightLimit = getWeightLimit(character.job);
-  const weightFmt   = weightLimit.toLocaleString();
-  if (el.weightLimitVal) el.weightLimitVal.textContent = weightFmt;
-  if (el.weightDisplay)  el.weightDisplay.textContent  = weightFmt;
-  // Also update info card footer
-  const infoWeight = document.getElementById("info-weight-limit");
-  if (infoWeight) infoWeight.textContent = weightFmt;
+  // ── Weight + level display ───────────────────────────────────────
+  const weightFmt = getWeightLimit(character.job).toLocaleString();
+  if (el.weightDisplay) el.weightDisplay.textContent = weightFmt;
+  if (el.dibBaseLevel)  el.dibBaseLevel.textContent  = character.baseLevel;
+  if (el.dibJobLevel)   el.dibJobLevel.textContent   = character.jobLevel > 0 ? character.jobLevel : "—";
 
-  // ── ASPD ─────────────────────────────────────────────────────────
-  updateASPD(character);
-
-  // ── Level display ────────────────────────────────────────────────
-  if (el.lvlDisplay && document.activeElement !== el.levelInput) {
-    el.lvlDisplay.value = character.baseLevel;
-  }
-  if (document.activeElement !== el.levelInput) {
+  if (document.activeElement !== el.levelInput && el.levelInput) {
     el.levelInput.value = character.baseLevel;
   }
 
-  // ── Status points ────────────────────────────────────────────────
+  // ── Status points ─────────────────────────────────────────────────
   if (el.statusPoints) el.statusPoints.value = character.availablePoints;
 
   // ── Stat inputs + cost spans + job bonus indicators ──────────────
@@ -216,8 +420,9 @@ function updateUI() {
     const row = el.statRows[s];
     if (!row) return;
 
-    const val  = character.stats[s];
-    const cost = getStatIncreaseCost(val);
+  ["str", "agi", "vit", "int", "dex", "luk"].forEach(s => {
+    const val       = character.stats[s];
+    const cost      = getStatIncreaseCost(val);
     const canAfford = character.availablePoints >= cost;
     const bonus = jobBonuses[s] || 0;
 
@@ -264,32 +469,20 @@ function updateUI() {
 }
 
 // ===================================================================
-// ASPD BRIDGE
-// aspd.js expects: getCurrentJob(), getCurrentWeapon(), getPotionASPDBonus()
-// and writes to elements.attackSpeedInput.
-// We bridge those here so aspd.js doesn't need changes.
+// CUSTOM DROPDOWN HANDLERS
+// All visual dropdown toggles live here — tabs.js must NOT redefine them.
 // ===================================================================
 
-// aspd.js reads `elements.attackSpeedInput` — point it at our element
-const elements = {
-  get attackSpeedInput() { return el.aspdValue; }
-};
-
-function getCurrentJob() {
-  const JOB_MAP = {
-    "": "novice", "1": "swordsman", "2": "magician",
-    "3": "archer", "4": "acolyte",  "5": "merchant", "6": "thief",
-  };
-  return JOB_MAP[el.jobSelect?.value] ?? "novice";
+function toggleMenu() {
+  document.getElementById("jobDropdown")?.classList.toggle("active");
 }
 
-function getCurrentWeapon() {
-  return document.getElementById("weapon-select")?.value || "bare_handed";
+function toggleJobLevelMenu() {
+  document.getElementById("jobLevelDropdown")?.classList.toggle("active");
 }
 
-function getPotionASPDBonus() {
-  const POTION_MAP = { "": 0, "1": 6, "2": 12, "3": 17 };
-  return POTION_MAP[document.getElementById("potion-select")?.value] ?? 0;
+function toggleWeaponMenu() {
+  document.getElementById("weaponDropdown")?.classList.toggle("active");
 }
 
 // ===================================================================
@@ -319,84 +512,126 @@ function updateJobLevelOptions(job) {
 // EVENT LISTENERS
 // ===================================================================
 
+function switchTab(evt, tabId) {
+  document.querySelectorAll(".tab-pane").forEach(p => p.classList.remove("active"));
+  document.querySelectorAll(".tab-item").forEach(b => b.classList.remove("active"));
+  document.getElementById(tabId)?.classList.add("active");
+  evt.currentTarget.classList.add("active");
+}
+
+function selectPotion(displayName, val) {
+  const display = document.getElementById("current-potion");
+  if (display) display.textContent = displayName;
+  const sel = document.getElementById("potion-select");
+  if (sel) sel.value = val;
+  document.getElementById("potionDropdown")?.classList.remove("active");
+  updateASPD(character);
+}
+
+/**
+ * Called by each <li> in the job dropdown.
+ * @param {string} displayName  e.g. "Swordsman"
+ * @param {string} fileName     e.g. "swordsman.png"
+ * @param {string} selectVal    hidden select value: "", "1"…"6"
+ */
+function selectJob(displayName, fileName, selectVal) {
+  document.getElementById("current-job").textContent     = displayName;
+  document.getElementById("character-title").textContent = displayName.toUpperCase();
+
+  const img = document.getElementById("character-img");
+  if (img) img.src = `../images/${fileName}`;
+
+  if (el.jobSelect) el.jobSelect.value = selectVal;
+
+  character.job      = JOB_MAP[selectVal] ?? "novice";
+  character.jobLevel = 0;
+
+  updateJobLevelOptions(character.job);
+  if (el.currentJL)  el.currentJL.textContent  = "—";
+  if (el.dibJobLevel) el.dibJobLevel.textContent = "—";
+
+  // Repopulate weapon dropdown for new class
+  const wSel = document.getElementById("weapon-select");
+  if (wSel) populateWeaponSelect(character.job, wSel);
+
+  document.getElementById("jobDropdown")?.classList.remove("active");
+  updateUI();
+}
+
+// ===================================================================
+// EVENT LISTENERS
+// ===================================================================
+
 function attachEventListeners() {
   const statOrder = ["str", "agi", "vit", "int", "dex", "luk"];
 
-  // ── Stat rows: input field + +/- buttons ────────────────────────
+  // ── Stat inputs (col-stat rows) ───────────────────────────────────
   statOrder.forEach(statName => {
     const row = el.statRows[statName];
     if (!row) return;
+    const input = row.querySelector(".stat-input");
+    if (!input) return;
 
-    const input    = row.querySelector(".stat-input");
-    const btnPlus  = row.querySelector(".stat-btn.plus");
-    const btnMinus = row.querySelector(".stat-btn.minus");
+    input.setAttribute("maxlength", "2");
 
-    // Typed input
-    if (input) {
-      input.setAttribute("maxlength", "2");
+    input.addEventListener("input", e => {
+      let raw = e.target.value.replace(/\D/g, "");
+      if (raw === "") { e.target.value = ""; return; }
+      let req = Math.max(1, Math.min(99, parseInt(raw)));
 
-      input.addEventListener("input", e => {
-        let raw = e.target.value.replace(/\D/g, "");
-        if (raw === "") { e.target.value = ""; return; }
+      const total = getTotalStatPointsForLevel(character.baseLevel);
+      const spentOthers = Object.keys(character.stats).reduce((sum, s) =>
+        s === statName ? sum : sum + getTotalCostToReachStat(1, character.stats[s]), 0);
 
-        let req = Math.max(1, Math.min(99, parseInt(raw)));
+      let maxAllowed = 1;
+      for (let i = 1; i <= 99; i++) {
+        if (spentOthers + getTotalCostToReachStat(1, i) <= total) maxAllowed = i;
+        else break;
+      }
+      if (req > maxAllowed) {
+        req = maxAllowed;
+        row.classList.add("stat-error");
+        setTimeout(() => row.classList.remove("stat-error"), 300);
+      }
+      e.target.value = req;
+      trySetStat(statName, req);
+    });
 
-        // Clamp to what we can actually afford
-        const total = getTotalStatPointsForLevel(character.baseLevel);
-        const spentOthers = Object.keys(character.stats).reduce((sum, s) =>
-          s === statName ? sum : sum + getTotalCostToReachStat(1, character.stats[s]), 0);
-
-        let maxAllowed = 1;
-        for (let i = 1; i <= 99; i++) {
-          if (spentOthers + getTotalCostToReachStat(1, i) <= total) maxAllowed = i;
-          else break;
-        }
-
-        if (req > maxAllowed) {
-          req = maxAllowed;
-          row.classList.add("stat-error");
-          setTimeout(() => row.classList.remove("stat-error"), 300);
-        }
-
-        e.target.value = req;
-        trySetStat(statName, req);
-      });
-
-      input.addEventListener("blur", () => {
-        if (!input.value || parseInt(input.value) < 1) trySetStat(statName, 1);
-      });
-    }
-
-    // Plus button
-    if (btnPlus) {
-      btnPlus.addEventListener("click", () => {
-        const cur  = character.stats[statName];
-        const cost = getStatIncreaseCost(cur);
-        if (character.availablePoints >= cost && cur < 99) {
-          trySetStat(statName, cur + 1);
-        }
-      });
-    }
-
-    // Minus button
-    if (btnMinus) {
-      btnMinus.addEventListener("click", () => {
-        const cur = character.stats[statName];
-        if (cur > 1) trySetStat(statName, cur - 1);
-      });
-    }
+    input.addEventListener("blur", () => {
+      if (!input.value || parseInt(input.value) < 1) trySetStat(statName, 1);
+    });
   });
 
-  // ── Level input ──────────────────────────────────────────────────
-  el.levelInput.addEventListener("input", e => {
+  // ── +/- buttons (col-btns rows) ───────────────────────────────────
+  statOrder.forEach(statName => {
+    const btnRow = el.btnRows[statName];
+    if (!btnRow) return;
+
+    const btnPlus  = btnRow.querySelector(".stat-btn.plus");
+    const btnMinus = btnRow.querySelector(".stat-btn.minus");
+
+    btnPlus?.addEventListener("click", () => {
+      const cur  = character.stats[statName];
+      const cost = getStatIncreaseCost(cur);
+      if (character.availablePoints >= cost && cur < 99) trySetStat(statName, cur + 1);
+    });
+
+    btnMinus?.addEventListener("click", () => {
+      const cur = character.stats[statName];
+      if (cur > 1) trySetStat(statName, cur - 1);
+    });
+  });
+
+  // ── Base level input ──────────────────────────────────────────────
+  el.levelInput?.addEventListener("input", e => {
     let cleaned = e.target.value.replace(/[^0-9]/g, "");
     if (cleaned === "") { e.target.value = ""; return; }
-    let val = Math.max(1, Math.min(99, parseInt(cleaned, 10)));
+    const val = Math.max(1, Math.min(99, parseInt(cleaned, 10)));
     e.target.value = val;
     updateLevel(val);
   });
 
-  el.levelInput.addEventListener("blur", () => {
+  el.levelInput?.addEventListener("blur", () => {
     if (!el.levelInput.value || parseInt(el.levelInput.value) < 1) updateLevel(1);
   });
 
@@ -432,19 +667,56 @@ function attachEventListeners() {
 }
 
 // ===================================================================
-// ASPD LISTENERS (from aspd.js) — override to use our IDs
+// WEAPON DROPDOWN — keeps hidden <select> + visual list in sync
+// (Overrides the version in aspd.js so we control the visual list ID)
 // ===================================================================
 
-function attachASPDListeners() {
-  // aspd.js's attachASPDListeners looks for .job-select, .weapon-selector select,
-  // and .items-row .level-select — our HTML uses different IDs, so we re-implement
-  // this here and skip calling aspd.js's version directly.
+function populateWeaponSelect(job, hiddenSel) {
+  if (!hiddenSel) return;
 
-  const weaponSel = document.getElementById("weapon-select");
-  if (weaponSel) {
-    populateWeaponSelect(getCurrentJob(), weaponSel);
+  const classIdx   = CLASS_INDEX[job];
+  const currentVal = hiddenSel.value;
+
+  hiddenSel.innerHTML = "";
+
+  const visualList = document.getElementById("weapon-menu-list");
+  if (visualList) visualList.innerHTML = "";
+
+  for (const [weaponKey, label] of Object.entries(WEAPON_LABELS)) {
+    const row  = BASE_ASPD_TABLE[weaponKey];
+    const aspd = row[classIdx];
+    if (aspd === null) continue;
+
+    const opt = document.createElement("option");
+    opt.value = weaponKey; opt.textContent = label;
+    hiddenSel.appendChild(opt);
+
+    if (visualList) {
+      const li = document.createElement("li");
+      li.textContent = label;
+      li.onclick = () => {
+        hiddenSel.value = weaponKey;
+        const cur = document.getElementById("current-weapon");
+        if (cur) cur.textContent = label;
+        document.getElementById("weaponDropdown")?.classList.remove("active");
+        updateASPD(character);
+      };
+      visualList.appendChild(li);
+    }
   }
-  // Listeners already attached in attachEventListeners(); nothing extra needed.
+
+  if ([...hiddenSel.options].some(o => o.value === currentVal)) {
+    hiddenSel.value = currentVal;
+    const lbl = WEAPON_LABELS[currentVal];
+    if (lbl) {
+      const cur = document.getElementById("current-weapon");
+      if (cur) cur.textContent = lbl;
+    }
+  } else {
+    hiddenSel.value = "bare_handed";
+    const cur = document.getElementById("current-weapon");
+    if (cur) cur.textContent = "Bare Handed";
+  }
 }
 
 // ===================================================================
@@ -453,11 +725,13 @@ function attachASPDListeners() {
 
 function initialize() {
   initializeElements();
+  updateJobLevelOptions(character.job);
+
+  const weaponSel = document.getElementById("weapon-select");
+  if (weaponSel) populateWeaponSelect(character.job, weaponSel);
+
   updateLevel(1);
   attachEventListeners();
-  // Populate weapon dropdown on startup
-  const weaponSel = document.getElementById("weapon-select");
-  if (weaponSel) populateWeaponSelect(getCurrentJob(), weaponSel);
   updateUI();
 }
 
