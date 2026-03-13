@@ -50,124 +50,81 @@
                         <input class="bar-text-input" readonly value="100 / 100">
                     </div>
                 </div>
-
-                <div class="enhancement-row">
-                    <div class="group-container">
-                        <h3 class="label sub-label">Buffs</h3>
-                        <div class="buffs-flex">
-                            <div class="b-item">
-                                <span>Blessings</span>
-                                <select name="levels" class="level-select">
-                                    <option value="">- Level -</option>
-                                     <option value="1">Level 1</option>
-                                     <option value="2">Level 2</option>
-                                     <option value="3">Level 3</option>
-                                     <option value="4">Level 4</option>
-                                     <option value="5">Level 5</option>
-                                     <option value="6">Level 6</option>
-                                     <option value="7">Level 7</option>
-                                     <option value="8">Level 8</option>
-                                     <option value="9">Level 9</option>
-                                     <option value="10">Level 10</option>
-                                </select>
-                            </div>
-                            <div class="b-item">
-                                <span>Increase AGI</span>
-                                <select name="levels" class="level-select">
-                                    <option value="">- Level -</option>
-                                    <option value="1">Level 1</option>
-                                    <option value="2">Level 2</option>
-                                    <option value="3">Level 3</option>
-                                    <option value="4">Level 4</option>
-                                    <option value="5">Level 5</option>
-                                    <option value="6">Level 6</option>
-                                    <option value="7">Level 7</option>
-                                    <option value="8">Level 8</option>
-                                    <option value="9">Level 9</option>
-                                    <option value="10">Level 10</option>
-                                </select>
-                            </div>
-                            <div class="b-item">
-                                <span>Angelus</span>
-                                <select name="levels" class="level-select">
-                                    <option value="">- Level -</option>
-                                    <option value="1">Level 1</option>
-                                    <option value="2">Level 2</option>
-                                    <option value="3">Level 3</option>
-                                    <option value="4">Level 4</option>
-                                    <option value="5">Level 5</option>
-                                    <option value="6">Level 6</option>
-                                    <option value="7">Level 7</option>
-                                    <option value="8">Level 8</option>
-                                    <option value="9">Level 9</option>
-                                    <option value="10">Level 10</option>
-                                </select>
-                            </div>
-                            <div class="b-item">
-                                <span>Impositio Manus</span>
-                                <select name="levels" class="level-select">
-                                    <option value="">- Level -</option>
-                                    <option value="1">Level 1</option>
-                                    <option value="2">Level 2</option>
-                                    <option value="3">Level 3</option>
-                                    <option value="4">Level 4</option>
-                                    <option value="5">Level 5</option>
-                                </select>
-                            </div>
-                            <div class="b-item">
-                                <span>Wind Walk</span>
-                                <select name="levels" class="level-select">
-                                    <option value="">- Level -</option>
-                                    <option value="1">Level 1</option>
-                                    <option value="2">Level 2</option>
-                                    <option value="3">Level 3</option>
-                                    <option value="4">Level 4</option>
-                                    <option value="5">Level 5</option>
-                                    <option value="6">Level 6</option>
-                                    <option value="7">Level 7</option>
-                                    <option value="8">Level 8</option>
-                                    <option value="9">Level 9</option>
-                                    <option value="10">Level 10</option>
-                                </select>
-                            </div>
-                            <div class="b-item"><span>Gloria?</span> <input type="checkbox"></div>
-                        </div>
+                          <div class="job-row">
+                    <div class="job-select-group">
+                        <label class="job-label">Select Job</label>
+                        <select class="job-select" id="job-select" onchange="updateJob(this.value)">
+                            <option value="Novice">Novice</option>
+                            <option value="Swordsman">Swordsman</option>
+                            <option value="Mage">Mage</option>
+                            <option value="Archer">Archer</option>
+                            <option value="Thief">Thief</option>
+                            <option value="Acolyte">Acolyte</option>
+                            <option value="Merchant">Merchant</option>
+                        </select>
                     </div>
-
-                    <div class="active-enhancements">
-                        <div class="items-group">
-                            <h4 class="sub-label">ITEMS</h4>
-                            <div class="items-row">
-                                <div class="b-item">
-                                    <span>SPEED POTIONS</span>
-                                    <select name="levels" class="level-select">
-                                        <option value="">- Potion Type -</option>
-                                        <option value="1">Concentration Potion</option>
-                                        <option value="2">Awakening Potion</option>
-                                        <option value="3">Berserk Potion</option>
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
+                    <div class="job-current-group">
+                        <span class="job-label">Job</span>
+                        <span class="job-current-val" id="job-current">Novice</span>
                     </div>
                 </div>
-                <!-- body -->
-            </section>
-            <div class="content-grid">  
-                <div class="stats-box">
-                    <h3 class="label">Attributes</h3>
-                    <div class="stat-row"><span>STR</span> <input type="number" class="stat-input" value="1"> <span class="bonus">+0</span> <span class="req">2</span></div>
-                    <div class="stat-row"><span>AGI</span> <input type="number" class="stat-input" value="1"> <span class="bonus">+0</span> <span class="req">2</span></div>
-                    <div class="stat-row"><span>VIT</span> <input type="number" class="stat-input" value="1"> <span class="bonus">+0</span> <span class="req">2</span></div>
-                    <div class="stat-row"><span>INT</span> <input type="number" class="stat-input" value="1"> <span class="bonus">+0</span> <span class="req">2</span></div>
-                    <div class="stat-row"><span>DEX</span> <input type="number" class="stat-input" value="1"> <span class="bonus">+0</span> <span class="req">2</span></div>
-                    <div class="stat-row"><span>LUK</span> <input type="number" class="stat-input" value="1"> <span class="bonus">+0</span> <span class="req">2</span></div>
-                    <div class="weapon-selector">
-                        <span class="label">Weapon Type</span>
-                        <div class="weapon-row">
-                            <span>Right:</span>
-                            <select><option>Hand</option></select>
+ 
+                <div class="details-info-block">
+                    <div class="dib-row">
+                        <div class="dib-item">
+                            <span class="dib-label">HP</span>
+                            <span class="dib-val dib-hp">30</span>
                         </div>
+                        <div class="dib-item">
+                            <span class="dib-label">SP</span>
+                            <span class="dib-val dib-sp">30</span>
+                        </div>
+                        <div class="dib-item">
+                            <span class="dib-label">Base Level</span>
+                            <span class="dib-val">1</span>
+                        </div>
+                        <div class="dib-item">
+                            <span class="dib-label">Job Level</span>
+                            <span class="dib-val">1</span>
+                        </div>
+                        <div class="dib-item">
+                            <span class="dib-label">Weight</span>
+                            <span class="dib-val">2,030</span>
+                        </div>
+                    </div>
+                    <div class="dib-row dib-regen-row">
+                        <div class="dib-regen-item">
+                            <span class="dib-label">Natural HP Regen</span>
+                            <span class="dib-val dib-regen">1 per 6s standing &nbsp;·&nbsp; per 3s sitting</span>
+                        </div>
+                        <div class="dib-regen-item">
+                            <span class="dib-label">Natural SP Regen</span>
+                            <span class="dib-val dib-regen">1 per 8s standing &nbsp;·&nbsp; per 4s sitting</span>
+                        </div>
+                    </div>
+            </div>
+                <div class="header">
+                    <div>Base Level <input type="text" class="lvl-value-input" value="1"></div>
+                    <div>Status Points <input type="text" class="status-value" value="42" readonly></div>
+                </div>
+
+                <div class="status-columns">
+                    <div class="column">
+                        <div class="table-row"><span>STR</span><button class="stat-btn minus">-</button><input type="text" class="stat-input" value="4"><button class="stat-btn plus">+</button></div>
+                        <div class="table-row"><span>AGI</span><button class="stat-btn minus">-</button><input type="text" class="stat-input" value="1"><button class="stat-btn plus">+</button></div>
+                        <div class="table-row"><span>VIT</span><button class="stat-btn minus">-</button><input type="text" class="stat-input" value="1"><button class="stat-btn plus">+</button></div>
+                        <div class="table-row"><span>INT</span><button class="stat-btn minus">-</button><input type="text" class="stat-input" value="1"><button class="stat-btn plus">+</button></div>
+                        <div class="table-row"><span>DEX</span><button class="stat-btn minus">-</button><input type="text" class="stat-input" value="1"><button class="stat-btn plus">+</button></div>
+                        <div class="table-row"><span>LUK</span><button class="stat-btn minus">-</button><input type="text" class="stat-input" value="1"><button class="stat-btn plus">+</button></div>
+                    </div>
+
+                    <div class="column">
+                        <div class="table-row"><span class="symbol">+ 0</span><span class="value">2</span></div>
+                        <div class="table-row"><span class="symbol">+ 0</span><span class="value">2</span></div>
+                        <div class="table-row"><span class="symbol">+ 0</span><span class="value">2</span></div>
+                        <div class="table-row"><span class="symbol">+ 0</span><span class="value">2</span></div>
+                        <div class="table-row"><span class="symbol">+ 0</span><span class="value">2</span></div>
+                        <div class="table-row"><span class="symbol">+ 0</span><span class="value">2</span></div>
                     </div>
 
                     <div class="column">
@@ -182,24 +139,48 @@
                     </div>
                 </div>
             </div>
-        <!-- footer side/status --> <!--gi comment nako kay basin OE si sir-->
-        <!-- <footer class="resistance-area">
-            <h3 class="label">Status Change Resistances</h3>
-            <div class="res-row">
-                <div class="res-item">STUN<span>4%</span></div>
-                <div class="res-item">POISON<span>4%</span></div>
-                <div class="res-item">SILENCE<span>4%</span></div>
-                <div class="res-item">BLEEDING<span>4%</span></div>
-                <div class="res-item">SLEEP<span>4%</span></div>
-                <div class="res-item">STONE COURSE<span>4%</span></div>
-                <div class="res-item">FREEZE<span>4%</span></div>
-                <div class="res-item">CURSE<span>4%</span></div>
-                <div class="res-item">BLIND<span>4%</span></div>
-                <div class="res-item">CONFUSION<span>4%</span></div>
+            <div id="info-tab" class="tab-pane">
+                <div class="info-hero-card">
+                    <div class="info-hero-header">
+                        <div class="info-hero-title">NOVICE</div>
+                        <div class="info-hero-class-badge">Beginner Class</div>
+                    </div>
+                    <div class="info-hero-divider"></div>
+                    <p class="info-hero-desc">
+                        The <strong>Novice</strong> is the starting class for all adventurers. Armed with little more than
+                        courage and a basic sword, the Novice stands at the threshold of a grand journey.
+                        Through dedication and battle, they will grow to choose their true path.
+                    </p>
+                    <div class="info-hero-traits">
+                        <div class="info-trait"><span class="info-trait-icon">⚔️</span><span>Balanced base stats</span></div>
+                        <div class="info-trait"><span class="info-trait-icon">🛡️</span><span>Can advance to any class</span></div>
+                        <div class="info-trait"><span class="info-trait-icon">✨</span><span>High potential growth</span></div>
+                        <div class="info-trait"><span class="info-trait-icon">📖</span><span>Starts with 48 status points</span></div>
+                    </div>
+                    <div class="info-hero-divider"></div>
+                    <div class="info-hero-footer">
+                        <span class="info-footer-label">Base EXP Rate</span><span class="info-footer-val">100%</span>
+                        <span class="info-footer-label">Job EXP Rate</span><span class="info-footer-val">100%</span>
+                        <span class="info-footer-label">Weight Limit</span><span class="info-footer-val">2,000</span>
+                    </div>
+                </div>
             </div>
-        </footer> -->
     </div>
-    </div>
+    <script>
+        function switchTab(evt, tabId) {
+            // Hide all tab panes
+            const panes = document.querySelectorAll('.tab-pane');
+            panes.forEach(pane => pane.classList.remove('active'));
+
+            // Deactivate all tab buttons
+            const buttons = document.querySelectorAll('.tab-item');
+            buttons.forEach(btn => btn.classList.remove('active'));
+
+            // Show current tab and activate button
+            document.getElementById(tabId).classList.add('active');
+            evt.currentTarget.classList.add('active');
+        }
+    </script>
 
     <script src="../Stats/HPCalc.js" defer></script>
     <script src="../Stats/aspd.js" defer></script>
