@@ -24,7 +24,7 @@ function getPointsForLevel(level) {
     }
     return total;
   }
-  
+                              
   function getStatIncreaseCost(currentStatValue) {
     return Math.min(Math.floor((currentStatValue - 1) / 10) + 2, 11);
   }
@@ -180,6 +180,16 @@ dataNodes.forEach(node => {
   
   function updateUI() {
     const combatStats = calculateCombatStats(character);
+
+  // ========================
+  // UPDATE HP / SP DISPLAY
+  // ========================
+
+    const hpDisplay = document.querySelectorAll(".vital-node .val")[0];
+    const spDisplay = document.querySelectorAll(".vital-node .val")[1];
+    
+    if (hpDisplay) hpDisplay.textContent = combatStats.maxHP;
+    if (spDisplay) spDisplay.textContent = combatStats.maxSP;
   
     elements.attackInput.textContent = combatStats.attack;
     elements.matkMinInput.textContent = combatStats.matkMin;
@@ -187,7 +197,7 @@ dataNodes.forEach(node => {
     elements.critInput.textContent = combatStats.crit;
     elements.defenseInput.textContent = combatStats.defense;
     elements.magicDefenseInput.textContent = combatStats.mdefBase;
-    elements.attackSpeedInput.textContent = combatStats.attackSpeed;
+    updateASPD(character);
     elements.hitRateInput.textContent = combatStats.hit;
   
     if (elements.fleeBaseInput) {
@@ -329,6 +339,7 @@ dataNodes.forEach(node => {
     initializeElements();
     updateLevel(1);
     attachEventListeners();
+    attachASPDListeners(); 
   }
   
   document.addEventListener("DOMContentLoaded", initialize);
