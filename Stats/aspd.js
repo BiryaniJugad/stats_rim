@@ -197,7 +197,7 @@ function updateASPD(character) {
 
   // Update the display
   if (elements?.attackSpeedInput) {
-    elements.attackSpeedInput.textContent = aspd !== null ? aspd : "—";
+      elements.attackSpeedInput.value = aspd !== null ? aspd : "—";
   }
 
   return aspd;
