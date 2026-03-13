@@ -8,11 +8,8 @@ function calculateCombatStats(character) {
   const level = character.baseLevel;
   const job   = character.job || "novice";
 
-  // ── Apply job-level stat bonuses to effective stats ───────────────
-  const jb  = (typeof calculateJobBonuses === "function")
-    ? calculateJobBonuses(job, character.jobLevel || 0)
-    : { str: 0, agi: 0, vit: 0, int: 0, dex: 0, luk: 0 };
-
+  // ── Apply job level bonuses to effective stats ───────────────────
+  const jb = calculateJobBonuses(job, character.jobLevel || 0);
   const str = character.stats.str + (jb.str || 0);
   const agi = character.stats.agi + (jb.agi || 0);
   const vit = character.stats.vit + (jb.vit || 0);

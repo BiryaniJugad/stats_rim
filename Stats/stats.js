@@ -36,10 +36,10 @@ function getTotalCostToReachStat(fromStat, toStat) {
 // ===================================================================
 
 const character = {
-  baseLevel:       1,
-  jobLevel:        0,
-  job:             "novice",
-  stats:           { str: 1, agi: 1, vit: 1, int: 1, dex: 1, luk: 1 },
+  baseLevel: 1,
+  jobLevel: 0,
+  job: "novice",
+  stats: { str: 1, agi: 1, vit: 1, int: 1, dex: 1, luk: 1 },
   availablePoints: 48,
   currentHPFrac:   1,
   currentSPFrac:   1,
@@ -153,6 +153,7 @@ let el = {};
 function initializeElements() {
   el.levelInput    = document.getElementById("base-level");
   el.jobSelect     = document.getElementById("job-select");
+  el.jobLevelSelect = document.getElementById("job-level-select");
   el.statusPoints  = document.querySelector(".status-value");
 
   // Vitals — bar fills + text inputs
@@ -412,52 +413,57 @@ function updateUI() {
   // ── Status points ─────────────────────────────────────────────────
   if (el.statusPoints) el.statusPoints.value = character.availablePoints;
 
-  // ── ASPD ──────────────────────────────────────────────────────────
-  updateASPD(character);
-
-  // ── Info tab ──────────────────────────────────────────────────────
-  updateInfoTab(character.job);
-
-  // ── Stat rows ─────────────────────────────────────────────────────
-  const jobBonuses = (typeof calculateJobBonuses === "function")
-    ? calculateJobBonuses(character.job, character.jobLevel)
-    : { str: 0, agi: 0, vit: 0, int: 0, dex: 0, luk: 0 };
+  // ── Stat inputs + cost spans + job bonus indicators ──────────────
+  const jobBonuses = calculateJobBonuses(character.job, character.jobLevel);
+  const statOrder = ["str", "agi", "vit", "int", "dex", "luk"];
+  statOrder.forEach(s => {
+    const row = el.statRows[s];
+    if (!row) return;
 
   ["str", "agi", "vit", "int", "dex", "luk"].forEach(s => {
     const val       = character.stats[s];
     const cost      = getStatIncreaseCost(val);
     const canAfford = character.availablePoints >= cost;
-    const bonus     = jobBonuses[s] || 0;
+    const bonus = jobBonuses[s] || 0;
 
-    // Input (col-stat row)
-    const inputRow = el.statRows[s];
-    if (inputRow) {
-      const input = inputRow.querySelector(".stat-input");
-      if (input) input.value = val;
-    }
+    const input    = row.querySelector(".stat-input");
+    const btnPlus  = row.querySelector(".stat-btn.plus");
+    const btnMinus = row.querySelector(".stat-btn.minus");
 
-    // +/- buttons (col-btns row — may be same row as inputRow in single-col layouts)
-    const btnRow = el.btnRows[s];
-    if (btnRow) {
-      const btnPlus  = btnRow.querySelector(".stat-btn.plus");
-      const btnMinus = btnRow.querySelector(".stat-btn.minus");
-      if (btnPlus)  btnPlus.disabled  = !canAfford || val >= 99;
-      if (btnMinus) btnMinus.disabled = val <= 1;
-    }
+    if (input)    input.value   = val;
+    if (btnPlus)  btnPlus.disabled  = !canAfford || val >= 99;
+    if (btnMinus) btnMinus.disabled = val <= 1;
 
-    // Cost span
+    // Cost span: show point cost + job bonus if any
     if (el.costSpans[s]) {
-      el.costSpans[s].textContent = cost;
-      el.costSpans[s].style.color      = canAfford ? "#e0b040" : "#b06030";
-      el.costSpans[s].style.fontWeight = "800";
+      const span = el.costSpans[s];
+      span.innerHTML = canAfford
+        ? `+${cost}<span style="color:#4060c0;font-size:10px;">pts</span>`
+        : `+${cost}<span style="color:#5a4020;font-size:10px;">pts</span>`;
+      span.style.color = canAfford ? "#e0b040" : "#5a4020";
     }
 
-    // Job-bonus badge
-    const badge = document.getElementById(`jbonus-${s}`);
+    // Job bonus badge — shown in the bonus-badge span next to cost
+    const badgeId = `jbonus-${s}`;
+    let badge = document.getElementById(badgeId);
+    if (!badge) {
+      // Create it once, insert after cost row content
+      const costRow = el.costSpans[s]?.closest(".cost-row");
+      if (costRow) {
+        badge = document.createElement("span");
+        badge.id = badgeId;
+        badge.style.cssText = "font-size:10px;font-weight:700;margin-left:3px;";
+        costRow.appendChild(badge);
+      }
+    }
     if (badge) {
-      badge.textContent = bonus > 0 ? `+${bonus}` : "+0";
-      badge.style.color = bonus > 0 ? "#4888ff" : "#b0bcc8";
-      badge.title       = bonus > 0 ? `Job bonus: +${bonus} ${s.toUpperCase()}` : "";
+      if (bonus > 0) {
+        badge.textContent = `+${bonus}`;
+        badge.style.color = "#4888ff";
+        badge.title = `Job bonus: +${bonus} ${s.toUpperCase()}`;
+      } else {
+        badge.textContent = "";
+      }
     }
   });
 }
@@ -479,9 +485,32 @@ function toggleWeaponMenu() {
   document.getElementById("weaponDropdown")?.classList.toggle("active");
 }
 
-function togglePotionMenu() {
-  document.getElementById("potionDropdown")?.classList.toggle("active");
+// ===================================================================
+// JOB LEVEL DROPDOWN — update max options per class
+// ===================================================================
+
+const JOB_MAX_LEVEL = {
+  novice: 9, swordsman: 50, magician: 50,
+  archer: 50, acolyte: 50, merchant: 50, thief: 50,
+};
+
+function updateJobLevelOptions(job) {
+  const sel = el.jobLevelSelect;
+  if (!sel) return;
+  const max = JOB_MAX_LEVEL[job] ?? 0;
+  // Rebuild options
+  sel.innerHTML = '<option value="">—</option>';
+  for (let i = 1; i <= max; i++) {
+    const opt = document.createElement("option");
+    opt.value = i;
+    opt.textContent = i;
+    sel.appendChild(opt);
+  }
 }
+
+// ===================================================================
+// EVENT LISTENERS
+// ===================================================================
 
 function switchTab(evt, tabId) {
   document.querySelectorAll(".tab-pane").forEach(p => p.classList.remove("active"));
@@ -606,19 +635,35 @@ function attachEventListeners() {
     if (!el.levelInput.value || parseInt(el.levelInput.value) < 1) updateLevel(1);
   });
 
-  // ── Weapon / potion hidden selects ───────────────────────────────
-  document.getElementById("weapon-select")
-    ?.addEventListener("change", () => updateASPD(character));
-  document.getElementById("potion-select")
-    ?.addEventListener("change", () => updateASPD(character));
+  // ── Job select ───────────────────────────────────────────────────
+  const JOB_MAP = {
+    "": "novice", "1": "swordsman", "2": "magician",
+    "3": "archer", "4": "acolyte",  "5": "merchant", "6": "thief",
+  };
 
-  // ── Close all dropdowns when clicking outside ─────────────────────
-  document.addEventListener("click", e => {
-    ["jobDropdown", "jobLevelDropdown", "weaponDropdown", "potionDropdown"].forEach(id => {
-      const dd = document.getElementById(id);
-      if (dd && !e.target.closest(`#${id}`)) dd.classList.remove("active");
-    });
+  el.jobSelect?.addEventListener("change", e => {
+    character.job = JOB_MAP[e.target.value] ?? "novice";
+    character.jobLevel = 0; // reset job level on class change
+    if (el.jobLevelSelect) {
+      el.jobLevelSelect.value = "";
+      updateJobLevelOptions(character.job);
+    }
+    const wSel = document.getElementById("weapon-select");
+    if (wSel) populateWeaponSelect(character.job, wSel);
+    updateUI();
   });
+
+  // ── Job level select ─────────────────────────────────────────────
+  el.jobLevelSelect?.addEventListener("change", e => {
+    character.jobLevel = parseInt(e.target.value) || 0;
+    updateUI();
+  });
+
+  // ── Weapon select ────────────────────────────────────────────────
+  document.getElementById("weapon-select")?.addEventListener("change", () => updateASPD(character));
+
+  // ── Potion select ────────────────────────────────────────────────
+  document.getElementById("potion-select")?.addEventListener("change", () => updateASPD(character));
 }
 
 // ===================================================================
