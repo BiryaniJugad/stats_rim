@@ -136,16 +136,6 @@ body {
     z-index: 20;
 }
 
-.character-name {
-    margin: 0;
-    font-family: var(--font-main);
-    font-size: 16px;
-    font-weight: 800;
-    color: #e8d890;
-    letter-spacing: 3px;
-    text-transform: uppercase;
-    text-shadow: 0 0 10px rgba(230,200,80,0.4);
-}
 
 /* ──────────────────────────────────────────
    STATUS PANEL (Right side inside card)
@@ -157,6 +147,34 @@ body {
     display: flex;
     flex-direction: column;
     box-sizing: border-box;
+}
+/* Styling specific to the weapon row in the status table */
+.weapon-row {
+    margin-top: 10px;
+    border-top: 1px dashed #d1d9e6; /* Separator line */
+    padding-top: 10px 
+}
+
+
+
+.weapon-select {
+    padding: 4px 10px !important;
+    font-size: 12px !important;
+    border-radius: 8px !important;
+    background: #ffffff !important;
+}
+
+.weapon-menu {
+    font-size: 12px;
+    max-height: 150px;
+    overflow-y: auto; /* Adds scroll if list is long */
+}
+
+/* Ensure the status columns align properly */
+.status-columns {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
 }
 
 /* ──────────────────────────────────────────
@@ -219,4 +237,133 @@ body {
     .unified-status-panel {
         width: 100%;
     }
+}   
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@500;700&display=swap');
+
+.job-dropdown-container {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-family: 'Inter', sans-serif; /* Clean, modern gaming font */
+}
+
+.job-label {
+    font-weight: 700;
+    color: #4a5d78;
+    font-size: 14px;
+}
+
+.custom-dropdown {
+    position: relative;
+    width: 150px;
+    user-select: none;
+}
+
+.selected-option {
+    background: #f8faff;
+    border: 2px solid #d1d9e6;
+    border-radius: 10px;
+    padding: 6px 15px;
+    color: #4a5d78;
+    font-weight: 500;
+    font-size: 14px;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: border-color 0.2s;
+}
+
+/* Gold border when active/hovered */
+.custom-dropdown:hover .selected-option,
+.custom-dropdown.active .selected-option {
+    border-color: #ffb800;
+}
+
+.options-menu {
+    position: absolute;
+    top: 110%;
+    left: 0;
+    font-weight: bold;
+    width: 100%;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    list-style: none;
+    padding: 5px 0;
+    margin: 0;
+    display: none; /* Hidden by default */
+    z-index: 10;
+}
+
+.custom-dropdown.active .options-menu {
+    display: block;
+}
+
+.options-menu li {
+    padding: 8px 15px;
+    font-size: 14px;
+    color: #4a5d78;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+/* Hovering over a job (Swordsman, Mage, etc.) */
+.options-menu li:hover {
+    background-color: #f0f4f8;
+    color: #ffb800; /* Text turns gold on hover */
+    font-weight: 700;
+}
+
+.arrow-icon::after {
+    content: '';
+    border: solid #4a5d78;
+    border-width: 0 2px 2px 0;
+    display: inline-block;
+    padding: 3px;
+    transform: rotate(45deg);
+}
+
+
+.weapon-menu {
+    position: absolute;
+    top: 110%;
+    left: 0;
+    width: 100%;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    list-style: none;
+    padding: 5px 0;
+    margin: 0;
+    display: none; /* Hidden by default */
+    z-index: 10;
+}
+
+.custom-dropdown.active .weapon-menu {
+    display: block;
+}
+
+.weapon-menu li {
+    padding: 8px 15px;
+    font-size: 14px;
+    color: #4a5d78;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+/* Hovering over a job (Swordsman, Mage, etc.) */
+.weapon-menu li:hover {
+    background-color: #f0f4f8;
+    color: #ffb800; /* Text turns gold on hover */
+    font-weight: 700;
+}
+
+.arrow-icon::after {
+    content: '';
+    border: solid #4a5d78;
+    border-width: 0 2px 2px 0;
+    display: inline-block;
+    padding: 3px;
+    transform: rotate(45deg);
 }

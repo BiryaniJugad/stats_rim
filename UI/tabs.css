@@ -236,8 +236,8 @@
     gap: 4px;
     background: var(--bg-badge);
     border-radius: 8px;
-    padding: 4px 10px;
-    white-space: nowrap;
+    padding: 7px 24px;
+    white-space: onwrap;
 }
 
 .dib-label {
