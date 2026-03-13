@@ -59,11 +59,6 @@ const JOB_MAP = {
   "6": "thief",
 };
 
-const JOB_MAX_LEVEL = {
-  novice: 9, swordsman: 50, magician: 50,
-  archer: 50, acolyte: 50, merchant: 50, thief: 50,
-};
-
 const JOB_INFO = {
   novice: {
     badge: "Beginner Class",
@@ -415,57 +410,56 @@ function updateUI() {
 
   // ── Stat inputs + cost spans + job bonus indicators ──────────────
   const jobBonuses = calculateJobBonuses(character.job, character.jobLevel);
-  const statOrder = ["str", "agi", "vit", "int", "dex", "luk"];
-  statOrder.forEach(s => {
-    const row = el.statRows[s];
-    if (!row) return;
+const statOrder = ["str", "agi", "vit", "int", "dex", "luk"];
 
-  ["str", "agi", "vit", "int", "dex", "luk"].forEach(s => {
-    const val       = character.stats[s];
-    const cost      = getStatIncreaseCost(val);
-    const canAfford = character.availablePoints >= cost;
-    const bonus = jobBonuses[s] || 0;
+statOrder.forEach(s => {
+  const row = el.statRows[s];
+  if (!row) return;
 
-    const input    = row.querySelector(".stat-input");
-    const btnPlus  = row.querySelector(".stat-btn.plus");
-    const btnMinus = row.querySelector(".stat-btn.minus");
+  const val       = character.stats[s];
+  const cost      = getStatIncreaseCost(val);
+  const canAfford = character.availablePoints >= cost;
+  const bonus     = jobBonuses[s] || 0;
 
-    if (input)    input.value   = val;
-    if (btnPlus)  btnPlus.disabled  = !canAfford || val >= 99;
-    if (btnMinus) btnMinus.disabled = val <= 1;
+  const input    = row.querySelector(".stat-input");
+  const btnPlus  = row.querySelector(".stat-btn.plus");
+  const btnMinus = row.querySelector(".stat-btn.minus");
 
-    // Cost span: show point cost + job bonus if any
-    if (el.costSpans[s]) {
-      const span = el.costSpans[s];
-      span.innerHTML = canAfford
-        ? `+${cost}<span style="color:#4060c0;font-size:10px;">pts</span>`
-        : `+${cost}<span style="color:#5a4020;font-size:10px;">pts</span>`;
-      span.style.color = canAfford ? "#e0b040" : "#5a4020";
+  if (input) input.value = val;
+  if (btnPlus)  btnPlus.disabled  = !canAfford || val >= 99;
+  if (btnMinus) btnMinus.disabled = val <= 1;
+
+  if (el.costSpans[s]) {
+    const span = el.costSpans[s];
+    span.innerHTML = canAfford
+      ? `+${cost}<span style="color:#4060c0;font-size:10px;">pts</span>`
+      : `+${cost}<span style="color:#5a4020;font-size:10px;">pts</span>`;
+    span.style.color = canAfford ? "#e0b040" : "#5a4020";
+  }
+
+  const badgeId = `jbonus-${s}`;
+  let badge = document.getElementById(badgeId);
+
+  if (!badge) {
+    const costRow = el.costSpans[s]?.closest(".cost-row");
+    if (costRow) {
+      badge = document.createElement("span");
+      badge.id = badgeId;
+      badge.style.cssText = "font-size:10px;font-weight:700;margin-left:3px;";
+      costRow.appendChild(badge);
     }
+  }
 
-    // Job bonus badge — shown in the bonus-badge span next to cost
-    const badgeId = `jbonus-${s}`;
-    let badge = document.getElementById(badgeId);
-    if (!badge) {
-      // Create it once, insert after cost row content
-      const costRow = el.costSpans[s]?.closest(".cost-row");
-      if (costRow) {
-        badge = document.createElement("span");
-        badge.id = badgeId;
-        badge.style.cssText = "font-size:10px;font-weight:700;margin-left:3px;";
-        costRow.appendChild(badge);
-      }
+  if (badge) {
+    if (bonus > 0) {
+      badge.textContent = `+${bonus}`;
+      badge.style.color = "#4888ff";
+      badge.title = `Job bonus: +${bonus} ${s.toUpperCase()}`;
+    } else {
+      badge.textContent = "";
     }
-    if (badge) {
-      if (bonus > 0) {
-        badge.textContent = `+${bonus}`;
-        badge.style.color = "#4888ff";
-        badge.title = `Job bonus: +${bonus} ${s.toUpperCase()}`;
-      } else {
-        badge.textContent = "";
-      }
-    }
-  });
+  }
+});
 }
 
 // ===================================================================
@@ -493,20 +487,6 @@ const JOB_MAX_LEVEL = {
   novice: 9, swordsman: 50, magician: 50,
   archer: 50, acolyte: 50, merchant: 50, thief: 50,
 };
-
-function updateJobLevelOptions(job) {
-  const sel = el.jobLevelSelect;
-  if (!sel) return;
-  const max = JOB_MAX_LEVEL[job] ?? 0;
-  // Rebuild options
-  sel.innerHTML = '<option value="">—</option>';
-  for (let i = 1; i <= max; i++) {
-    const opt = document.createElement("option");
-    opt.value = i;
-    opt.textContent = i;
-    sel.appendChild(opt);
-  }
-}
 
 // ===================================================================
 // EVENT LISTENERS
@@ -636,11 +616,6 @@ function attachEventListeners() {
   });
 
   // ── Job select ───────────────────────────────────────────────────
-  const JOB_MAP = {
-    "": "novice", "1": "swordsman", "2": "magician",
-    "3": "archer", "4": "acolyte",  "5": "merchant", "6": "thief",
-  };
-
   el.jobSelect?.addEventListener("change", e => {
     character.job = JOB_MAP[e.target.value] ?? "novice";
     character.jobLevel = 0; // reset job level on class change
