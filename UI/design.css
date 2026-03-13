@@ -148,6 +148,34 @@ body {
     flex-direction: column;
     box-sizing: border-box;
 }
+/* Styling specific to the weapon row in the status table */
+.weapon-row {
+    margin-top: 10px;
+    border-top: 1px dashed #d1d9e6; /* Separator line */
+    padding-top: 10px 
+}
+
+
+
+.weapon-select {
+    padding: 4px 10px !important;
+    font-size: 12px !important;
+    border-radius: 8px !important;
+    background: #ffffff !important;
+}
+
+.weapon-menu {
+    font-size: 12px;
+    max-height: 150px;
+    overflow-y: auto; /* Adds scroll if list is long */
+}
+
+/* Ensure the status columns align properly */
+.status-columns {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+}
 
 /* ──────────────────────────────────────────
    ANIMATIONS
@@ -256,6 +284,7 @@ body {
     position: absolute;
     top: 110%;
     left: 0;
+    font-weight: bold;
     width: 100%;
     background: white;
     border-radius: 8px;
@@ -281,6 +310,50 @@ body {
 
 /* Hovering over a job (Swordsman, Mage, etc.) */
 .options-menu li:hover {
+    background-color: #f0f4f8;
+    color: #ffb800; /* Text turns gold on hover */
+    font-weight: 700;
+}
+
+.arrow-icon::after {
+    content: '';
+    border: solid #4a5d78;
+    border-width: 0 2px 2px 0;
+    display: inline-block;
+    padding: 3px;
+    transform: rotate(45deg);
+}
+
+
+.weapon-menu {
+    position: absolute;
+    top: 110%;
+    left: 0;
+    width: 100%;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    list-style: none;
+    padding: 5px 0;
+    margin: 0;
+    display: none; /* Hidden by default */
+    z-index: 10;
+}
+
+.custom-dropdown.active .weapon-menu {
+    display: block;
+}
+
+.weapon-menu li {
+    padding: 8px 15px;
+    font-size: 14px;
+    color: #4a5d78;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+/* Hovering over a job (Swordsman, Mage, etc.) */
+.weapon-menu li:hover {
     background-color: #f0f4f8;
     color: #ffb800; /* Text turns gold on hover */
     font-weight: 700;

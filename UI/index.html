@@ -51,9 +51,10 @@
                         <li onclick="selectJob('Swordsman', 'swordsman.png')">Swordsman</li>
                         <li onclick="selectJob('Mage', 'mage.png')">Mage</li>
                         <li onclick="selectJob('Archer', 'archer.png')">Archer</li>
-                        <li onclick="selectJob('Thief', 'theif.png')">Thief</li> <li onclick="selectJob('Acolyte', 'acolyte.png')">Acolyte</li>
+                        <li onclick="selectJob('Thief', 'theif.png')">Thief</li> 
+                        <li onclick="selectJob('Acolyte', 'acolyte.png')">Acolyte</li>
                         <li onclick="selectJob('Merchant', 'merchant.png')">Merchant</li>
-                     </ul>
+                    </ul>
                 </div>
                    <div class="dib-row">
                         <div class="dib-item">
@@ -87,11 +88,27 @@
                 <div class="header">
                     <div>Base Level <input type="text" class="lvl-value-input" value="1"></div>
                     <div>Status Points <input type="text" class="status-value" value="42" readonly></div>
+                     <span>Weapon</span>
+                <div class="custom-dropdown weapon-dropdown" id="weaponDropdown">
+                    <div class="selected-option weapon-select" onclick="toggleWeaponMenu()">
+                        <span id="current-weapon">Bare Hand</span>
+                        <i class="arrow-icon"></i>
+                    </div>
+                    <ul class="weapon-menu">
+                        <li onclick="selectWeapon('Bare Hand')">Bare Hand</li>
+                        <li onclick="selectWeapon('Sword')">Sword</li>
+                        <li onclick="selectWeapon('Bow')">Bow</li>
+                        <li onclick="selectWeapon('Dagger')">Dagger</li>
+                        <li onclick="selectWeapon('Staff')">Staff</li>
+                        <li onclick="selectWeapon('Axe')">Axe</li>
+                        <li onclick="selectWeapon('Mace')">Mace</li>
+                    </ul>
                 </div>
-
+            </div>
+                
                 <div class="status-columns">
-                    <div class="column">
-                        <div class="table-row"><span>STR</span><button class="stat-btn minus">-</button><input type="text" class="stat-input" value="4"><button class="stat-btn plus">+</button></div>
+                  <div class="column">
+                        <div class="table-row"><span>STR</span><button class="stat-btn minus">-</button><input type="text" class="stat-input" value="1"><button class="stat-btn plus">+</button></div>
                         <div class="table-row"><span>AGI</span><button class="stat-btn minus">-</button><input type="text" class="stat-input" value="1"><button class="stat-btn plus">+</button></div>
                         <div class="table-row"><span>VIT</span><button class="stat-btn minus">-</button><input type="text" class="stat-input" value="1"><button class="stat-btn plus">+</button></div>
                         <div class="table-row"><span>INT</span><button class="stat-btn minus">-</button><input type="text" class="stat-input" value="1"><button class="stat-btn plus">+</button></div>
@@ -99,7 +116,9 @@
                         <div class="table-row"><span>LUK</span><button class="stat-btn minus">-</button><input type="text" class="stat-input" value="1"><button class="stat-btn plus">+</button></div>
                     </div>
 
-                    <div class="column">
+          
+
+                   <div class="column">
                         <div class="table-row"><span class="symbol">+ 0</span><span class="value">2</span></div>
                         <div class="table-row"><span class="symbol">+ 0</span><span class="value">2</span></div>
                         <div class="table-row"><span class="symbol">+ 0</span><span class="value">2</span></div>
@@ -108,15 +127,15 @@
                         <div class="table-row"><span class="symbol">+ 0</span><span class="value">2</span></div>
                     </div>
 
-                    <div class="column">
-                        <div class="table-row"><span>ATK</span><div class="dikit-group"><input readonly value="4"><span class="symbol">+</span><input readonly value="0"></div></div>
+                       <div class="column">
+                        <div class="table-row"><span>ATK</span><div class="dikit-group"><input readonly value="1"><span class="symbol">+</span><input readonly value="0"></div></div>
                         <div class="table-row"><span>MATK</span><div class="dikit-group"><input readonly value="1"><span class="symbol">~</span><input readonly value="1"></div></div>
                         <div class="table-row"><span>HIT</span><div class="dikit-group"><input readonly value="2"></div></div>
                         <div class="table-row"><span>CRIT</span><div class="dikit-group"><input readonly value="1"></div></div>
-                        <div class="table-row"><span>DEF</span><div class="dikit-group"><input readonly value="0"><span class="symbol">+</span><input readonly value="1"></div></div>
-                        <div class="table-row"><span>MDEF</span><div class="dikit-group"><input readonly value="0"><span class="symbol">+</span><input readonly value="1"></div></div>
+                        <div class="table-row"><span>DEF</span><div class="dikit-group"><input readonly value="0"><span class="symbol">+</span><input readonly value="0"></div></div>
+                        <div class="table-row"><span>MDEF</span><div class="dikit-group"><input readonly value="0"><span class="symbol">+</span><input readonly value="0"></div></div>
                         <div class="table-row"><span>FLEE</span><div class="dikit-group"><input readonly value="2"><span class="symbol">+</span><input readonly value="1"></div></div>
-                        <div class="table-row"><span>ASPD</span><div class="dikit-group"><input readonly value="150" style="color: var(--orange-text);"></div></div>
+                        <div class="table-row"><span>ASPD</span><div class="dikit-group"><input readonly value="150"></div></div>
                     </div>
                 </div>
             </div>
@@ -147,65 +166,7 @@
                 </div>
             </div>
     </div>
-    <script>
-                function switchTab(evt, tabId) {
-                    // Hide all tab panes
-                    const panes = document.querySelectorAll('.tab-pane');
-                    panes.forEach(pane => pane.classList.remove('active'));
-
-                    // Deactivate all tab buttons
-                    const buttons = document.querySelectorAll('.tab-item');
-                    buttons.forEach(btn => btn.classList.remove('active'));
-
-                    // Show current tab and activate button
-                    document.getElementById(tabId).classList.add('active');
-                    evt.currentTarget.classList.add('active');
-                }
-                function toggleMenu() {
-            document.getElementById('jobDropdown').classList.toggle('active');
-               }
-
-            function selectJob(jobName) {
-                // Update the display text
-                document.getElementById('current-job').innerText = jobName;
-                
-                // Close the menu
-                document.getElementById('jobDropdown').classList.remove('active');
-                
-                // Trigger your update function
-                if (typeof updateJob === "function") {
-                    updateJob(jobName);
-                }
-            }
-
-            // Close dropdown if user clicks elsewhere on the screen
-            window.onclick = function(event) {
-                if (!event.target.closest('#jobDropdown')) {
-                    document.getElementById('jobDropdown').classList.remove('active');
-                }
-            }
-
-                        function selectJob(jobName, fileName) {
-                // 1. Update the Dropdown UI text
-                document.getElementById('current-job').innerText = jobName;
-
-                // 2. Update the Character Name (H2) - Converting to Uppercase like your design
-                document.getElementById('character-title').innerText = jobName.toUpperCase();
-
-                // 3. Update the Character Image
-                const imgElement = document.getElementById('character-img');
-                imgElement.src = "../images/" + fileName;
-
-                // 4. Close the dropdown menu
-                document.getElementById('jobDropdown').classList.remove('active');
-                
-                // Optional: Call your stat calculation function if you have one
-                if (typeof updateJobStats === "function") {
-                    updateJobStats(jobName);
-                }
-}
-    </script>
-
+      <script src="../Stats/tabs.js"></script>
     <script src="../Stats/combat.js"></script>
     <script src="../Stats/stats.js"></script>
 </body>
