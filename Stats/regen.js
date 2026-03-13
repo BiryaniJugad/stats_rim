@@ -7,13 +7,13 @@
 // ===================================================================
 
 const JOB_WEIGHT = {
-  novice:    2030,
-  swordsman: 2830,
-  magician:  2230,
-  archer:    2360,
-  acolyte:   2230,
-  merchant:  2530,
-  thief:     2430,
+  novice:    2000,
+  swordsman: 2800,
+  magician:  2200,
+  archer:    2330,
+  acolyte:   2200,
+  merchant:  2500,
+  thief:     2400,
 };
 
 /**

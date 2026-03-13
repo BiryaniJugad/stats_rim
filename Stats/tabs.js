@@ -32,7 +32,7 @@
             }
 
 
-                                // 1. Toggle the visibility of the dropdown menu
+                    // 1. Toggle the visibility of the dropdown menu
                     function toggleWeaponMenu() {
                         const dropdown = document.getElementById('weaponDropdown');
                         dropdown.classList.toggle('active');
