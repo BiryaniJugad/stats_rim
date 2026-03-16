@@ -47,15 +47,6 @@ function calculateCombatStats(character) {
   const dex = character.stats.dex + (jb.dex || 0);
   const luk = character.stats.luk + (jb.luk || 0);
 
-  // ── Apply job level bonuses to effective stats ───────────────────
-  const jb = calculateJobBonuses(job, character.jobLevel || 0);
-  const str = character.stats.str + (jb.str || 0);
-  const agi = character.stats.agi + (jb.agi || 0);
-  const vit = character.stats.vit + (jb.vit || 0);
-  const int = character.stats.int + (jb.int || 0);
-  const dex = character.stats.dex + (jb.dex || 0);
-  const luk = character.stats.luk + (jb.luk || 0);
-
   // ── ATK ──────────────────────────────────────────────────────────
   // batk = STR + floor(STR/10)^2 + floor(DEX/5) + floor(LUK/5)
   const dStr           = Math.floor(str / 10);
