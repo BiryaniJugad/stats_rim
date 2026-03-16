@@ -391,6 +391,11 @@ function updateInfoTab(job) {
         `<div class="info-trait"><span class="info-trait-icon">${icon}</span><span>${text}</span></div>`)
       .join("");
   }
+
+  // Footer order: Base EXP Rate, Job EXP Rate, Weight Limit
+  if (footerVals[0]) footerVals[0].textContent = info.expBase;
+  if (footerVals[1]) footerVals[1].textContent = info.expJob;
+  if (footerVals[2]) footerVals[2].textContent = wl;
 }
 
 // ===================================================================

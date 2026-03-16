@@ -227,7 +227,8 @@
     display: flex;
     flex-wrap: wrap;
     align-items: center;
-    gap: 6px;
+    gap: 35px;
+    margin-left: 15px;
 }
 
 .dib-item {
@@ -237,7 +238,6 @@
     background: var(--bg-badge);
     border-radius: 8px;
     padding: 7px 24px;
-    white-space: onwrap;
 }
 
 .dib-label {

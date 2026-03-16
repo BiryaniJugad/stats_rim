@@ -19,6 +19,7 @@
   font-weight: 700;
   color: var(--text-mid);
   white-space: nowrap;
+  margin-right: 20px;
 }
 
 /* ── Job Level dropdown — matches weapon dropdown size ── */
@@ -90,7 +91,7 @@
 
 /* Weapon dropdown — keep consistent sizing with jl-dropdown */
 .weapon-dropdown {
-  width: 90px;
+  width: 170px;
   min-width: 90px;
 }
 
