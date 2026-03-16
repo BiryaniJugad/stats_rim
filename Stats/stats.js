@@ -475,15 +475,22 @@ function updateUI() {
 
     // Second column: bonus + cost
     // The second .column rows are siblings — find matching index
-    const allStatRows = document.querySelectorAll(".status-columns .column:nth-child(2) .table-row");
-    const idx         = statOrder.indexOf(s);
-    const bonusRow    = allStatRows[idx];
+    const allColumns = document.querySelectorAll(".stats-grid .column");
+    const idx        = statOrder.indexOf(s);
+
+    // Bonus column (2nd .column)
+    const bonusRow = allColumns[1]?.querySelectorAll(".table-row")[idx];
     if (bonusRow) {
       const symSpan = bonusRow.querySelector(".symbol");
-      const valSpan = bonusRow.querySelector(".value");
       if (symSpan) symSpan.textContent = `+ ${bonus}`;
-      if (valSpan) valSpan.textContent = cost;
     }
+
+    // Points Req. column (3rd .column)
+    const costRow = allColumns[2]?.querySelectorAll(".table-row")[idx];
+    if (costRow) {
+      const valSpan = costRow.querySelector(".value");
+      if (valSpan) valSpan.textContent = cost;
+    } 
   });
 
   // ── Weight ────────────────────────────────────────────────────────

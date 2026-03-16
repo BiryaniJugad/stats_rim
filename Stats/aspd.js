@@ -58,16 +58,19 @@ const WEAPON_LABELS = {
 // ===================================================================
 // ASPD FORMULA
 // ===================================================================
-
 /**
  * Calculate final ASPD.
+ * Formula: ASPD = 200 - (WD - ([WD*AGI/25] + [WD*DEX/100]) / 10) * (1 - SM)
+ * WD  = weapon delay = 200 - baseASPD
+ * SM  = speed modifier from potions (0.0 – 0.3 range)
+ * [ ] = Math.round()
  *
  * @param {string} job        - e.g. "swordsman"
  * @param {string} weapon     - e.g. "sword_1h"
  * @param {number} agi        - character AGI stat
  * @param {number} dex        - character DEX stat
- * @param {number} aspdBonus  - flat bonus from potions/buffs (default 0)
- * @returns {number|null}     - final ASPD, or null if weapon unusable
+ * @param {number} aspdBonus  - flat speed-modifier bonus from potions (0, 6, 12, or 17)
+ * @returns {number|null}     - final ASPD (capped 0–199), or null if weapon unusable
  */
 function calculateASPD(job, weapon, agi, dex, aspdBonus = 0) {
   const classIdx = CLASS_INDEX[job];
@@ -77,14 +80,24 @@ function calculateASPD(job, weapon, agi, dex, aspdBonus = 0) {
   if (!row) return null;
 
   const baseASPD = row[classIdx];
-  if (baseASPD === null) return null; // weapon not allowed for this class
+  if (baseASPD === null) return null; // weapon not usable by this class
 
-  const agiBonus = Math.floor(agi / 4);
-  const dexBonus = Math.floor(dex / 4);
+  // Weapon delay: inverse of base ASPD
+  const WD = 200 - baseASPD;
 
-  const finalASPD = Math.min(190, baseASPD + agiBonus + dexBonus + aspdBonus);
+  // Speed modifier: potions give flat ASPD bonus (6, 12, 17),
+  // convert to SM fraction (they represent % of WD reduction)
+  const SM = aspdBonus / 100;
 
-  return finalASPD;
+  // AGI and DEX contributions (rounded to nearest integer each)
+  const agiContrib = Math.round(WD * agi / 25);
+  const dexContrib = Math.round(WD * dex / 100);
+
+  // Final ASPD formula
+  const finalASPD = 200 - (WD - (agiContrib + dexContrib) / 10) * (1 - SM);
+
+  // Floor to integer, cap between 0 and 199
+  return Math.min(199, Math.max(0, Math.floor(finalASPD)));
 }
 
 // ===================================================================
@@ -187,17 +200,19 @@ function getPotionASPDBonus() {
  * @param {object} character - the character object from stats.js
  */
 function updateASPD(character) {
-  const job    = getCurrentJob();
-  const weapon = getCurrentWeapon();
+  const job    = character.job;                          // use character state directly
+  const weapon = character.weaponKey || "bare_handed";  // use character state directly
   const agi    = character.stats.agi;
   const dex    = character.stats.dex;
-  const bonus  = getPotionASPDBonus();
+
+  // Potion map — read from character.potionVal
+  const POTION_MAP = { "": 0, "1": 6, "2": 12, "3": 17 };
+  const bonus = POTION_MAP[character.potionVal ?? ""] ?? 0;
 
   const aspd = calculateASPD(job, weapon, agi, dex, bonus);
 
-  // Update the display
   if (elements?.attackSpeedInput) {
-      elements.attackSpeedInput.value = aspd !== null ? aspd : "—";
+    elements.attackSpeedInput.value = aspd !== null ? aspd : "—";
   }
 
   return aspd;

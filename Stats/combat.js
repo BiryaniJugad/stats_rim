@@ -1,14 +1,9 @@
-// ===================================================================
-// RAGNAROK COMBAT STATS  —  combat.js
-// Depends on: HPCalc.js  (calculateMaxHP)
+// // Depends on: HPCalc.js  (calculateMaxHP)
 //             jobBonus.js (calculateJobBonuses)
-// ===================================================================
 
-// ===================================================================
 // SP TABLE  (base SP per job level)
 // Formula: BASE_SP = 10 + (BASE_LEVEL * SP_JOB)
 //          MAX_SP  = floor(BASE_SP * (1 + INT * 0.01))
-// ===================================================================
 
 const SP_JOB_TABLE = {
   novice:    1,
