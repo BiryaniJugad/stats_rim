@@ -391,7 +391,6 @@ body {
     font-family: 'Rajdhani', sans-serif;
     font-weight: 700;
     font-size: 11px;
-    letter-spacing: 0..05em;
     text-transform: uppercase;
     color: #8ca0b8;
     padding: 0 8px 10px;
@@ -402,8 +401,7 @@ body {
     font-family: 'Rajdhani', sans-serif;
     font-weight: 700;
     font-size: 11px;
-    margin-left: 50px;
-    letter-spacing: 0..05em;
+    margin-left: 60px;
     text-transform: uppercase;
     color: #8ca0b8;
     padding: 0 8px 10px;

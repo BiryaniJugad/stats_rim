@@ -10,7 +10,6 @@ namespace stats_rim
             InitializeComponent();
         }
 
-        // KINI RA DAPAT ANG NAA:
         private async void Form1_Load(object sender, EventArgs e)
         {
             await webView1.EnsureCoreWebView2Async(null);
