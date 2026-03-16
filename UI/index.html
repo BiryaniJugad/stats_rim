@@ -14,7 +14,7 @@
      <div class="character-area">
     <div class="character-sprite-box">
         <div class="character-glow"></div>
-        <div class="character-stage-base"></div>
+        <div class="character-stage-base"></div>    
         <img src="../images/novice.png" alt="Character" class="character-sprite" id="character-img">
     </div>
     <div class="character-name-container">
@@ -49,7 +49,7 @@
                     <ul class="options-menu">
                         <li onclick="selectJob('Novice', 'novice.png', '')">Novice</li>
                         <li onclick="selectJob('Swordsman', 'swordsman.png', '1')">Swordsman</li>
-                        <li onclick="selectJob('Mage', 'mage.png', '2')">Mage</li>
+                        <li onclick="selectJob('Magician', 'mage.png', '2')">Magician</li>
                         <li onclick="selectJob('Archer', 'archer.png', '3')">Archer</li>
                         <li onclick="selectJob('Thief', 'theif.png', '4')">Thief</li> 
                         <li onclick="selectJob('Acolyte', 'acolyte.png', '5')">Acolyte</li>
@@ -161,16 +161,16 @@
             <div id="info-tab" class="tab-pane ">
                 <div class="info-hero-card">
                     <div class="info-hero-header">
-                        <div class="info-hero-title">NOVICE</div>
-                        <div class="info-hero-class-badge">Beginner Class</div>
+                        <div class="info-hero-title" id="info-job-title">NOVICE</div>
+                        <div class="info-hero-class-badge" id="info-class-badge">Beginner Class</div>
                     </div>
                     <div class="info-hero-divider"></div>
-                    <p class="info-hero-desc">
+                    <p class="info-hero-desc" id="info-job-desc">
                         The <strong>Novice</strong> is the starting class for all adventurers. Armed with little more than
                         courage and a basic sword, the Novice stands at the threshold of a grand journey.
                         Through dedication and battle, they will grow to choose their true path.
                     </p>
-                    <div class="info-hero-traits">
+                    <div class="info-hero-traits" id="info-job-traits">
                         <div class="info-trait"><span class="info-trait-icon">⚔️</span><span>Balanced base stats</span></div>
                         <div class="info-trait"><span class="info-trait-icon">🛡️</span><span>Can advance to any class</span></div>
                         <div class="info-trait"><span class="info-trait-icon">✨</span><span>High potential growth</span></div>
@@ -178,9 +178,9 @@
                     </div>
                     <div class="info-hero-divider"></div>
                     <div class="info-hero-footer">
-                        <span class="info-footer-label">Base EXP Rate</span><span class="info-footer-val">100%</span>
-                        <span class="info-footer-label">Job EXP Rate</span><span class="info-footer-val">100%</span>
-                        <span class="info-footer-label">Weight Limit</span><span class="info-footer-val">2,000</span>
+                        <span class="info-footer-label">Base EXP Rate</span><span class="info-footer-val" id="info-exp-base">100%</span>
+                        <span class="info-footer-label">Job EXP Rate</span><span class="info-footer-val" id="info-exp-job">100%</span>
+                        <span class="info-footer-label">Base Weight Limit</span><span class="info-footer-val" id="info-weight-limit">2,000</span>
                     </div>
                 </div>
             </div>
