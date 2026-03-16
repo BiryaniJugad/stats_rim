@@ -260,16 +260,16 @@
             <div id="info-tab" class="tab-pane">
                 <div class="info-hero-card">
                     <div class="info-hero-header">
-                        <div class="info-hero-title">NOVICE</div>
-                        <div class="info-hero-class-badge">Beginner Class</div>
+                        <div class="info-hero-title" id="info-job-title">NOVICE</div>
+                        <div class="info-hero-class-badge" id="info-class-badge">Beginner Class</div>
                     </div>
                     <div class="info-hero-divider"></div>
-                    <p class="info-hero-desc">
+                    <p class="info-hero-desc" id="info-job-desc">
                         The <strong>Novice</strong> is the starting class for all adventurers. Armed with little more than
                         courage and a basic sword, the Novice stands at the threshold of a grand journey.
                         Through dedication and battle, they will grow to choose their true path.
                     </p>
-                    <div class="info-hero-traits">
+                    <div class="info-hero-traits" id="info-job-traits">
                         <div class="info-trait"><span class="info-trait-icon">⚔️</span><span>Balanced base stats</span></div>
                         <div class="info-trait"><span class="info-trait-icon">🛡️</span><span>Can advance to any class</span></div>
                         <div class="info-trait"><span class="info-trait-icon">✨</span><span>High potential growth</span></div>
@@ -277,9 +277,9 @@
                     </div>
                     <div class="info-hero-divider"></div>
                     <div class="info-hero-footer">
-                        <span class="info-footer-label">Base EXP Rate</span><span class="info-footer-val">100%</span>
-                        <span class="info-footer-label">Job EXP Rate</span><span class="info-footer-val">100%</span>
-                        <span class="info-footer-label">Weight Limit</span><span class="info-footer-val">2,000</span>
+                        <span class="info-footer-label">Base EXP Rate</span><span class="info-footer-val" id="info-exp-base">100%</span>
+                        <span class="info-footer-label">Job EXP Rate</span><span class="info-footer-val" id="info-exp-job">100%</span>
+                        <span class="info-footer-label">Base Weight Limit</span><span class="info-footer-val" id="info-weight-limit">2,000</span>
                     </div>
                 </div>
             </div>
@@ -298,5 +298,5 @@
     <script src="../Stats/regen.js"></script>
     <script src="../Stats/combat.js"></script>
     <script src="../Stats/stats.js"></script>
-</body>
+</body> 
 </html>
