@@ -1,4 +1,4 @@
-﻿
+
 namespace stats_rim
 {
    partial class Form1
