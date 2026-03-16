@@ -57,14 +57,27 @@
                     </ul>
                 </div>
                    <div class="dib-row">
-                        <div class="dib-item">
-                            <span class="dib-label">Base Level</span>
-                            <span class="dib-val">1</span>
+                       <div class="job-dropdown-container">
+                        <span class="job-label">Job Level</span>
+                        <div class="custom-dropdown" id="jobLevelDropdown">
+                            <div class="selected-option2" onclick="toggleJobLevelMenu()">
+                                <span id="current-job-level">1</span>
+                                <i class="arrow-icon"></i>
+                            </div>
+                            <ul class="options-menu" id="jobLevelMenu">
+                                <li onclick="selectJobLevel(1)">1</li>
+                                <li onclick="selectJobLevel(2)">2</li>
+                                <li onclick="selectJobLevel(3)">3</li>
+                                <li onclick="selectJobLevel(4)">4</li>
+                                <li onclick="selectJobLevel(5)">5</li>
+                                <li onclick="selectJobLevel(6)">6</li>
+                                <li onclick="selectJobLevel(7)">7</li>
+                                <li onclick="selectJobLevel(8)">8</li>
+                                <li onclick="selectJobLevel(9)">9</li>
+                                <li onclick="selectJobLevel(10)">10</li>
+                          </ul>
                         </div>
-                        <div class="dib-item">
-                            <span class="dib-label">Job Level</span>
-                            <span class="dib-val">1</span>
-                        </div>
+                    </div>
                         <div class="dib-item">
                             <span class="dib-label">Weight</span>
                             <span class="dib-val">2,030</span>
@@ -105,40 +118,56 @@
                     </ul>
                 </div>
             </div>
-                
-                <div class="status-columns">
-                  <div class="column">
-                        <div class="table-row"><span>STR</span><button class="stat-btn minus">-</button><input type="text" class="stat-input" value="1"><button class="stat-btn plus">+</button></div>
-                        <div class="table-row"><span>AGI</span><button class="stat-btn minus">-</button><input type="text" class="stat-input" value="1"><button class="stat-btn plus">+</button></div>
-                        <div class="table-row"><span>VIT</span><button class="stat-btn minus">-</button><input type="text" class="stat-input" value="1"><button class="stat-btn plus">+</button></div>
-                        <div class="table-row"><span>INT</span><button class="stat-btn minus">-</button><input type="text" class="stat-input" value="1"><button class="stat-btn plus">+</button></div>
-                        <div class="table-row"><span>DEX</span><button class="stat-btn minus">-</button><input type="text" class="stat-input" value="1"><button class="stat-btn plus">+</button></div>
-                        <div class="table-row"><span>LUK</span><button class="stat-btn minus">-</button><input type="text" class="stat-input" value="1"><button class="stat-btn plus">+</button></div>
-                    </div>
+ <div class="stats-main-wrapper">
+    <div class="stats-grid">
 
-          
+        <!-- ROW 1: Headers (must be direct children of stats-grid) -->
+        <div class="h-label">Stats</div>
+        <div class="h-label">Bonus</div>
+        <div class="h-label">Points Req.</div>
+        <div class="h-label">Status Information</div>
 
-                   <div class="column">
-                        <div class="table-row"><span class="symbol">+ 0</span><span class="value">2</span></div>
-                        <div class="table-row"><span class="symbol">+ 0</span><span class="value">2</span></div>
-                        <div class="table-row"><span class="symbol">+ 0</span><span class="value">2</span></div>
-                        <div class="table-row"><span class="symbol">+ 0</span><span class="value">2</span></div>
-                        <div class="table-row"><span class="symbol">+ 0</span><span class="value">2</span></div>
-                        <div class="table-row"><span class="symbol">+ 0</span><span class="value">2</span></div>
-                    </div>
+        <!-- ROW 2+: The four columns (also direct children of stats-grid) -->
+        <div class="col-stats">
+            <div class="table-row"><span>STR</span><button class="stat-btn minus">-</button><input class="stat-input" value="1"><button class="stat-btn plus">+</button></div>
+            <div class="table-row"><span>AGI</span><button class="stat-btn minus">-</button><input class="stat-input" value="1"><button class="stat-btn plus">+</button></div>
+            <div class="table-row"><span>VIT</span><button class="stat-btn minus">-</button><input class="stat-input" value="1"><button class="stat-btn plus">+</button></div>
+            <div class="table-row"><span>INT</span><button class="stat-btn minus">-</button><input class="stat-input" value="1"><button class="stat-btn plus">+</button></div>
+            <div class="table-row"><span>DEX</span><button class="stat-btn minus">-</button><input class="stat-input" value="1"><button class="stat-btn plus">+</button></div>
+            <div class="table-row"><span>LUK</span><button class="stat-btn minus">-</button><input class="stat-input" value="1"><button class="stat-btn plus">+</button></div>
+        </div>
 
-                       <div class="column">
-                        <div class="table-row"><span>ATK</span><div class="dikit-group"><input readonly value="1"><span class="symbol">+</span><input readonly value="0"></div></div>
-                        <div class="table-row"><span>MATK</span><div class="dikit-group"><input readonly value="1"><span class="symbol">~</span><input readonly value="1"></div></div>
-                        <div class="table-row"><span>HIT</span><div class="dikit-group"><input readonly value="2"></div></div>
-                        <div class="table-row"><span>CRIT</span><div class="dikit-group"><input readonly value="1"></div></div>
-                        <div class="table-row"><span>DEF</span><div class="dikit-group"><input readonly value="0"><span class="symbol">+</span><input readonly value="0"></div></div>
-                        <div class="table-row"><span>MDEF</span><div class="dikit-group"><input readonly value="0"><span class="symbol">+</span><input readonly value="0"></div></div>
-                        <div class="table-row"><span>FLEE</span><div class="dikit-group"><input readonly value="2"><span class="symbol">+</span><input readonly value="1"></div></div>
-                        <div class="table-row"><span>ASPD</span><div class="dikit-group"><input readonly value="150"></div></div>
-                    </div>
-                </div>
-            </div>
+        <div class="col-bonus">
+            <div class="table-row"><span class="symbol">+ 0</span></div>
+            <div class="table-row"><span class="symbol">+ 0</span></div>
+            <div class="table-row"><span class="symbol">+ 0</span></div>
+            <div class="table-row"><span class="symbol">+ 0</span></div>
+            <div class="table-row"><span class="symbol">+ 0</span></div>
+            <div class="table-row"><span class="symbol">+ 0</span></div>
+        </div>
+
+        <div class="col-pts">
+            <div class="table-row"><span class="value">2</span></div>
+            <div class="table-row"><span class="value">2</span></div>
+            <div class="table-row"><span class="value">2</span></div>
+            <div class="table-row"><span class="value">2</span></div>
+            <div class="table-row"><span class="value">2</span></div>
+            <div class="table-row"><span class="value">2</span></div>
+        </div>
+
+        <div class="col-info">
+            <div class="table-row"><span>ATK</span><div class="dikit-group"><input readonly value="1"><span class="symbol">+</span><input readonly value="0"></div></div>
+            <div class="table-row"><span>MATK</span><div class="dikit-group"><input readonly value="1"><span class="symbol">~</span><input readonly value="1"></div></div>
+            <div class="table-row"><span>HIT</span><div class="dikit-group"><input readonly value="2"></div></div>
+            <div class="table-row"><span>CRIT</span><div class="dikit-group"><input readonly value="1"></div></div>
+            <div class="table-row"><span>DEF</span><div class="dikit-group"><input readonly value="0"><span class="symbol">+</span><input readonly value="0"></div></div>
+            <div class="table-row"><span>MDEF</span><div class="dikit-group"><input readonly value="0"><span class="symbol">+</span><input readonly value="0"></div></div>
+            <div class="table-row"><span>FLEE</span><div class="dikit-group"><input readonly value="2"><span class="symbol">+</span><input readonly value="1"></div></div>
+            <div class="table-row"><span>ASPD</span><div class="dikit-group"><input readonly value="150"></div></div>
+        </div>
+
+    </div>
+</div>
             <div id="info-tab" class="tab-pane ">
                 <div class="info-hero-card">
                     <div class="info-hero-header">

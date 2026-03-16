@@ -88,3 +88,27 @@
                     updateJobStats(jobName);
                 }
 }
+                    //jobs
+                    function toggleJobLevelMenu() {
+                        const dropdown = document.getElementById('jobLevelDropdown');
+                        dropdown.classList.toggle('active');
+                    }
+
+                    function selectJobLevel(level) {
+                        // Update the displayed level
+                        document.getElementById('current-job-level').innerText = level;
+                        
+                        // Close the menu
+                        document.getElementById('jobLevelDropdown').classList.remove('active');
+                        
+                        // Custom logic (e.g., updating stats)
+                        console.log("Selected Job Level:", level);
+                    }
+
+                    // Optional: Close the dropdown if clicking outside
+                    document.addEventListener('click', function(e) {
+                        const dropdown = document.getElementById('jobLevelDropdown');
+                        if (!dropdown.contains(e.target)) {
+                            dropdown.classList.remove('active');
+                        }
+                    });
