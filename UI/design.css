@@ -26,8 +26,6 @@ body {
     background-size: cover;
     font-family: var(--font-main);
     overflow: hidden;
-
-    /* Center the unified card on screen */
     display: flex;
     align-items: center;
     justify-content: center;
@@ -36,14 +34,13 @@ body {
     box-sizing: border-box;
 }
 
-/* ──────────────────────────────────────────
+/* ══════════════════════════════════════════════════
    MAIN LAYOUT — character + panel in ONE card
-────────────────────────────────────────── */
+══════════════════════════════════════════════════ */
 .main-layout-container {
-    display: inline-flex;        /* shrink-wraps to content */
+    display: inline-flex;
     flex-direction: row;
     align-items: stretch;
-
     background: rgba(255, 255, 255, 0.85);
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
@@ -53,9 +50,9 @@ body {
     overflow: hidden;
 }
 
-/* ──────────────────────────────────────────
+/* ══════════════════════════════════════════════════
    CHARACTER SIDE (Left panel inside card)
-────────────────────────────────────────── */
+══════════════════════════════════════════════════ */
 .character-area {
     width: 260px;
     flex-shrink: 0;
@@ -66,7 +63,6 @@ body {
     padding-bottom: 24px;
     position: relative;
     overflow: hidden;
-
     background: linear-gradient(
         180deg,
         rgba(30, 60, 40, 0.82) 0%,
@@ -136,10 +132,9 @@ body {
     z-index: 20;
 }
 
-
-/* ──────────────────────────────────────────
+/* ══════════════════════════════════════════════════
    STATUS PANEL (Right side inside card)
-────────────────────────────────────────── */
+══════════════════════════════════════════════════ */
 .unified-status-panel {
     flex-shrink: 0;
     width: 420px;
@@ -148,38 +143,40 @@ body {
     flex-direction: column;
     box-sizing: border-box;
 }
-/* Styling specific to the weapon row in the status table */
+
 .weapon-row {
     margin-top: 10px;
-    border-top: 1px dashed #d1d9e6; /* Separator line */
-    padding-top: 10px 
+    border-top: 1px dashed #d1d9e6;
+    padding-top: 10px;
 }
-
-
 
 .weapon-select {
-    padding: 4px 10px !important;
-    font-size: 12px !important;
-    border-radius: 8px !important;
-    background: #ffffff !important;
-}
-
-.weapon-menu {
+       padding: 3px 8px;
     font-size: 12px;
-    max-height: 150px;
-    overflow-y: auto; /* Adds scroll if list is long */
+    width: 100%;
+    box-sizing: border-box;
+    background: linear-gradient(180deg, #f8fbff 0%, #eef4fc 100%);
+    border: 1.5px solid var(--border);
+    border-radius: 8px;
+    color: var(--text-value);
+    font-weight: 700;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    white-space: nowrap;
+    transition: border-color 0.2s;
 }
 
-/* Ensure the status columns align properly */
 .status-columns {
     display: flex;
     justify-content: space-between;
     gap: 20px;
 }
 
-/* ──────────────────────────────────────────
+/* ══════════════════════════════════════════════════
    ANIMATIONS
-────────────────────────────────────────── */
+══════════════════════════════════════════════════ */
 @keyframes floating {
     0%, 100% { transform: translateY(0); }
     50%       { transform: translateY(-16px); }
@@ -190,9 +187,9 @@ body {
     50%       { transform: scale(1.1); opacity: 0.7; }
 }
 
-/* ──────────────────────────────────────────
+/* ══════════════════════════════════════════════════
    TABS
-────────────────────────────────────────── */
+══════════════════════════════════════════════════ */
 .panel-tabs {
     display: flex;
     justify-content: space-around;
@@ -220,9 +217,9 @@ body {
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
 }
 
-/* ──────────────────────────────────────────
+/* ══════════════════════════════════════════════════
    RESPONSIVE
-────────────────────────────────────────── */
+══════════════════════════════════════════════════ */
 @media (max-width: 780px) {
     .main-layout-container {
         flex-direction: column;
@@ -237,49 +234,59 @@ body {
     .unified-status-panel {
         width: 100%;
     }
-}   
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@500;700&display=swap');
+}
 
+/* ══════════════════════════════════════════════════
+   FONTS
+══════════════════════════════════════════════════ */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@500;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;600;700&family=Exo+2:wght@400;500;600&display=swap');
+
+/* ══════════════════════════════════════════════════
+   JOB DROPDOWN
+══════════════════════════════════════════════════ */
 .job-dropdown-container {
     display: flex;
     align-items: center;
-    gap: 10px;
-    margin-right: 30px;
-    flex-wrap: nowrap; /* Prevents jumping to new lines */
+    gap: 12px;
+    font-family: 'Inter', sans-serif;
 }
 
 .job-label {
-    flex-shrink: 0;
-    white-space: nowrap;
-}
-#jobLevelDropdown {
-    min-width: 70px; 
+    font-weight: 700;
+    color: #4a5d78;
+    font-size: 14px;
 }
 
 .custom-dropdown {
     position: relative;
-    min-width: 140px; /* Force a minimum width for the box */
-    flex-shrink: 0;   /* Don't let flexbox make it smaller than 140px */
+    width: 150px;
+    user-select: none;
 }
 
-/* Gold border when active/hovered */
 .custom-dropdown:hover .selected-option,
 .custom-dropdown.active .selected-option {
     border-color: #ffb800;
 }
 
-.options-menu, .weapon-menu {
-    position: absolute;
-    top: 110%;
-    left: 0;
-    min-width: 100%;    /* At least as wide as the button */
-    width: max-content; /* Expand to fit the longest word (Swordsman) */
-    background: white;
+.selected-option {
+    padding: 3px 8px;
+    font-size: 12px;
+    width: 100%;
+    box-sizing: border-box;
+    background: linear-gradient(180deg, #f8fbff 0%, #eef4fc 100%);
+    border: 1.5px solid var(--border);
     border-radius: 8px;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-    z-index: 100;       /* Make sure it stays on top */
-    overflow-x: hidden; /* Remove that annoying horizontal scrollbar */
+    color: var(--text-value);
+    font-weight: 700;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    white-space: nowrap;
+    transition: border-color 0.2s;
 }
+
 .options-menu {
     position: absolute;
     top: 110%;
@@ -292,9 +299,10 @@ body {
     list-style: none;
     padding: 5px 0;
     margin: 0;
-    display: none; /* Hidden by default */
+    display: none;
     z-index: 10;
 }
+
 .custom-dropdown.active .options-menu {
     display: block;
 }
@@ -307,10 +315,9 @@ body {
     transition: background 0.2s;
 }
 
-/* Hovering over a job (Swordsman, Mage, etc.) */
 .options-menu li:hover {
     background-color: #f0f4f8;
-    color: #ffb800; /* Text turns gold on hover */
+    color: #ffb800;
     font-weight: 700;
 }
 
@@ -323,6 +330,9 @@ body {
     transform: rotate(45deg);
 }
 
+/* ══════════════════════════════════════════════════
+   WEAPON DROPDOWN
+══════════════════════════════════════════════════ */
 .weapon-menu {
     position: absolute;
     top: 110%;
@@ -334,8 +344,11 @@ body {
     list-style: none;
     padding: 5px 0;
     margin: 0;
-    display: none; /* Hidden by default */
+    display: none;
     z-index: 10;
+    font-size: 12px;
+    max-height: 150px;
+    overflow-y: auto;
 }
 
 .custom-dropdown.active .weapon-menu {
@@ -350,153 +363,47 @@ body {
     transition: background 0.2s;
 }
 
-/* Hovering over a job (Swordsman, Mage, etc.) */
 .weapon-menu li:hover {
-    background-color: #f0f4f8;
-    color: #ffb800; /* Text turns gold on hover */
-    font-weight: 700;
-}
-
-.arrow-icon::after {
-    content: '';
-    border: solid #4a5d78;
-    border-width: 0 2px 2px 0;
-    display: inline-block;
-    padding: 3px;
-    transform: rotate(45deg);
-}
-/* Container for the label and dropdown */
-.job-dropdown-container {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    font-family: 'Inter', sans-serif;
-}
-
-.job-label {
-    font-weight: 700;
-    color: #4a5d78;
-    font-size: 14px;
-}
-
-/* Base Dropdown Styling */
-.custom-dropdown {
-    position: relative;
-    width: 80px; /* Slimmer for just numbers */
-    user-select: none;
-}
-
-.selected-option  {
-    background: #f8faff;
-    border: 2px solid #d1d9e6;
-    border-radius: 10px;
-    padding: 6px 15px;
-    color: #4a5d78;
-    font-weight: 500;
-    font-size: 14px;
-    cursor: pointer;
-    display: flex;
-    margin-right: 25px;
-    justify-content: space-between;
-    align-items: center;
-    transition: border-color 0.2s;
-}
-.selected-option2 {
-    background: #f8faff;
-    border: 2px solid #d1d9e6;
-    border-radius: 10px;
-    padding: 6px 15px;
-    color: #4a5d78;
-    font-weight: 500;
-    font-size: 14px;
-    cursor: pointer;
-    display: flex;
-    width: 55px;
-    margin-right: 50px;
-    justify-content: space-between;
-    align-items: center;
-    transition: border-color 0.2s;
-}
-
-/* Gold border on hover or when open */
-.custom-dropdown:hover .selected-option,
-.custom-dropdown.active .selected-option {
-    border-color: #ffb800;
-}
-
-/* The Menu */
-.options-menu {
-    position: absolute;
-    top: 110%;
-    left: 0;
-    width: 100%;
-    background: white;
-    border-radius: 8px;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-    list-style: none;
-    padding: 5px 0;
-    margin: 0;
-    display: none; /* Hidden by default */
-    z-index: 20;
-    max-height: 150px;
-    overflow-y: auto;
-}
-
-.custom-dropdown.active .options-menu {
-    display: block;
-}
-
-.options-menu li {
-    padding: 8px 15px;
-    font-size: 14px;
-    color: #4a5d78;
-    cursor: pointer;
-    transition: background 0.2s;
-}
-
-/* Gold text and bold on hover */
-.options-menu li:hover {
     background-color: #f0f4f8;
     color: #ffb800;
     font-weight: 700;
 }
 
-/* Arrow Icon styling */
-.arrow-icon::after {
-    content: '';
-    border: solid #4a5d78;
-    border-width: 0 2px 2px 0;
-    display: inline-block;
-    padding: 3px;
-    transform: rotate(45deg);
-}
-
-
-
-
-
-
-
-
-@import url('https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;600;700&family=Exo+2:wght@400;500;600&display=swap');
-
+/* ══════════════════════════════════════════════════
+   STATS GRID — MAIN WRAPPER
+══════════════════════════════════════════════════ */
 .stats-main-wrapper {
     font-family: 'Exo 2', sans-serif;
     padding: 4px 0;
     color: #324a6e;
 }
 
+/* ── 4-column grid ── */
 .stats-grid {
     display: grid;
-    grid-template-columns: 148px 58px 80px 1fr;
+    grid-template-columns: 148px 60px 90px minmax(200px, 1fr);
+    align-items: start;
     gap: 0;
 }
 
+/* ── Header labels ── */
 .h-label {
     font-family: 'Rajdhani', sans-serif;
     font-weight: 700;
     font-size: 11px;
-    letter-spacing: 0.08em;
+    letter-spacing: 0..05em;
+    text-transform: uppercase;
+    color: #8ca0b8;
+    padding: 0 8px 10px;
+    border-bottom: 1.5px solid #e8eef5;
+    margin-bottom: 4px;
+}
+.h-label2 {
+    font-family: 'Rajdhani', sans-serif;
+    font-weight: 700;
+    font-size: 11px;
+    margin-left: 50px;
+    letter-spacing: 0..05em;
     text-transform: uppercase;
     color: #8ca0b8;
     padding: 0 8px 10px;
@@ -504,35 +411,58 @@ body {
     margin-bottom: 4px;
 }
 
-.col-stats, .col-bonus, .col-pts, .col-info {
+/* ── Column wrappers ── */
+.column {
     display: flex;
     flex-direction: column;
-    gap: 0;
 }
 
+/* ── Every row ── */
 .table-row {
     display: flex;
     align-items: center;
-    gap: 4px;
-    padding: 5px 8px;
-    height: 32px;
+    height: 34px;
+    padding: 0 8px;
     border-bottom: 1px solid #f0f4f9;
     transition: background 0.15s;
 }
 
-.table-row:hover {
-    background: #f7faff;
-}
+.table-row:hover { background: #f7faff; }
 
-.stat-label {
+/* ── Stat name label (STR, AGI…) ── */
+.table-row > span:first-child {
     font-family: 'Rajdhani', sans-serif;
     font-weight: 700;
     font-size: 13px;
     letter-spacing: 0.05em;
     color: #4a6080;
     min-width: 30px;
+    margin: 5px;
+}
+.table-row2 {
+    display: flex;
+    align-items: center;
+    height: 34px;
+    padding: 0 8px;
+    border-bottom: 1px solid #f0f4f9;
+    transition: background 0.15s;
 }
 
+.table-row2:hover { background: #f7faff; }
+
+.table-row2 > span:first-child {
+    font-family: 'Rajdhani', sans-serif;
+    font-weight: 700;
+    font-size: 13px;
+    letter-spacing: 0.05em;
+    color: #4a6080;
+    min-width: 30px;
+    margin: 5px;
+}
+
+/* ══════════════════════════════════════════════════
+   STATS COLUMN — +/- buttons & input
+══════════════════════════════════════════════════ */
 .stat-btn {
     width: 22px;
     height: 22px;
@@ -555,7 +485,6 @@ body {
 .stat-btn.plus {
     border-color: #50a840;
     color: #50a840;
-    margin-left:10px;
 }
 
 .stat-btn.minus {
@@ -563,18 +492,14 @@ body {
     color: #8ca0b8;
 }
 
-.stat-btn:hover:not(:disabled) {
-    transform: scale(1.1);
-}
+.stat-btn:hover:not(:disabled) { transform: scale(1.1); }
 
 .stat-btn.plus:hover:not(:disabled) {
     background: #50a840;
     color: #fff;
 }
 
-.stat-btn.minus:hover:not(:disabled) {
-    background: #e8eef5;
-}
+.stat-btn.minus:hover:not(:disabled) { background: #e8eef5; }
 
 .stat-btn:disabled {
     opacity: 0.3;
@@ -582,7 +507,7 @@ body {
 }
 
 .stat-input {
-    width: 34px;
+    width: 36px;
     height: 24px;
     text-align: center;
     border: 1.5px solid #d1d9e6;
@@ -600,11 +525,10 @@ body {
     background: #fff;
 }
 
-.col-bonus .table-row {
-    justify-content: center;
-}
-
-.col-pts .table-row {
+/* ══════════════════════════════════════════════════
+   BONUS COLUMN — centered
+══════════════════════════════════════════════════ */
+.column:nth-child(2) .table-row {
     justify-content: center;
 }
 
@@ -613,6 +537,13 @@ body {
     font-size: 12px;
     font-weight: 500;
     color: #4a9ee8;
+}
+
+/* ══════════════════════════════════════════════════
+   POINTS REQ. COLUMN — centered
+══════════════════════════════════════════════════ */
+.column:nth-child(3) .table-row {
+    justify-content: center;
 }
 
 .value {
@@ -624,31 +555,35 @@ body {
     border: 1px solid #f0d080;
     border-radius: 5px;
     padding: 1px 8px;
-    min-width: 28px;
+    min-width: 36px;
     text-align: center;
+    display: inline-block;
 }
 
-.col-info .table-row {
-    gap: 6px;
-}
-
-.info-label {
+/* ══════════════════════════════════════════════════
+   STATUS INFORMATION COLUMN
+══════════════════════════════════════════════════ */
+ 
+/* Stat name labels (ATK, MATK…) */
+.column:nth-child(4) .table-row > span:first-child {
     font-family: 'Rajdhani', sans-serif;
     font-weight: 700;
     font-size: 12px;
     letter-spacing: 0.04em;
     color: #5a6d85;
-    min-width: 38px;
+    min-width: 52px;
 }
 
+/* Value pair group — pushed to the RIGHT */
 .dikit-group {
     display: flex;
     align-items: center;
-    gap: 3px;
+    gap: 8px;          /* was 4px — more breathing room between inputs */
+    margin-left: auto;
 }
 
 .dikit-group input {
-    width: 38px;
+    width: 42px;
     height: 24px;
     text-align: center;
     border: 1.5px solid #d1d9e6;
@@ -658,17 +593,10 @@ body {
     font-weight: 600;
     background: #f0f4f8;
     color: #324a6e;
+    cursor: default;
 }
 
 .dikit-group .symbol {
     font-size: 11px;
     color: #8ca0b8;
-}
-.col-stats .table-row {
-    display: grid;
-    grid-template-columns: 32px 22px 36px 22px;
-    align-items: center;
-    gap: 5px;
-    padding: 5px 8px;
-    height: 32px;
 }

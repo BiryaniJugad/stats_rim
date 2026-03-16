@@ -1,15 +1,45 @@
 // ===================================================================
 // RAGNAROK COMBAT STATS  —  combat.js
-// Depends on: HPCalc.js (calculateMaxHP, calculateSP)
+// Depends on: HPCalc.js  (calculateMaxHP)
 //             jobBonus.js (calculateJobBonuses)
 // ===================================================================
 
-function calculateCombatStats(character) {
-  const level = character.baseLevel;
-  const job   = character.job || "novice";
+// ===================================================================
+// SP TABLE  (base SP per job level)
+// Formula: BASE_SP = 10 + (BASE_LEVEL * SP_JOB)
+//          MAX_SP  = floor(BASE_SP * (1 + INT * 0.01))
+// ===================================================================
 
-  // ── Apply job level bonuses to effective stats ───────────────────
-  const jb = calculateJobBonuses(job, character.jobLevel || 0);
+const SP_JOB_TABLE = {
+  novice:    1,
+  swordsman: 1,
+  archer:    1,
+  thief:     1,
+  acolyte:   5,
+  merchant:  3,
+  magician:  6,
+};
+
+function calculateSP(BASE_LEVEL, INT, job, SP_MOD_A = 0, SP_MOD_B = 0) {
+  const SP_JOB = SP_JOB_TABLE[job] ?? 1;
+  let BASE_SP  = 10 + (BASE_LEVEL * SP_JOB);
+  let MAX_SP   = Math.floor(BASE_SP * (1 + INT * 0.01));
+  MAX_SP      += SP_MOD_A;
+  MAX_SP       = Math.floor(MAX_SP * (1 + SP_MOD_B * 0.01));
+  return { baseSP: BASE_SP, maxSP: MAX_SP };
+}
+
+// ===================================================================
+// MAIN COMBAT STATS
+// ===================================================================
+
+function calculateCombatStats(character) {
+  const level    = character.baseLevel;
+  const job      = character.job || "novice";
+  const jobLevel = character.jobLevel || 0;
+
+  // ── Job level bonuses ─────────────────────────────────────────────
+  const jb  = calculateJobBonuses(job, jobLevel);
   const str = character.stats.str + (jb.str || 0);
   const agi = character.stats.agi + (jb.agi || 0);
   const vit = character.stats.vit + (jb.vit || 0);
@@ -18,18 +48,22 @@ function calculateCombatStats(character) {
   const luk = character.stats.luk + (jb.luk || 0);
 
   // ── ATK ──────────────────────────────────────────────────────────
-  const strBonus       = Math.floor(str / 10) ** 2;
+  // batk = STR + floor(STR/10)^2 + floor(DEX/5) + floor(LUK/5)
+  const dStr           = Math.floor(str / 10);
+  const strBonus       = dStr * dStr;
   const dexMeleeBonus  = Math.floor(dex / 5);
   const lukAttackBonus = Math.floor(luk / 5);
   const attack         = str + strBonus + dexMeleeBonus + lukAttackBonus;
 
   // ── FLEE ─────────────────────────────────────────────────────────
-  const flee = level + agi + 1 + Math.floor(luk / 10);
+  // flee = level + AGI   (perfect dodge via LUK handled in updateUI)
+  const flee = level + agi;
 
-  // ── VIT / DEF ────────────────────────────────────────────────────
+  // ── DEF (soft) ───────────────────────────────────────────────────
+  // Soft DEF = VIT (Angelus multiplied in buff layer if needed)
   const defense = vit;
 
-  // ── HP ───────────────────────────────────────────────────────────
+  // ── HP  (uses lookup table from HPCalc.js) ────────────────────────
   const maxHP = calculateMaxHP(level, job, vit);
 
   // ── SP ───────────────────────────────────────────────────────────
@@ -37,11 +71,8 @@ function calculateCombatStats(character) {
   const maxSP  = spData.maxSP;
 
   // ── MATK ─────────────────────────────────────────────────────────
-  const baseMatk     = int;
-  const minMatkBonus = Math.floor(int / 7) ** 2;
-  const maxMatkBonus = Math.floor(int / 5) ** 2;
-  const matkMin      = baseMatk + minMatkBonus;
-  const matkMax      = baseMatk + maxMatkBonus;
+  const matkMin = int + Math.floor(int / 7) ** 2;
+  const matkMax = int + Math.floor(int / 5) ** 2;
 
   // ── MDEF ─────────────────────────────────────────────────────────
   const mdefBase = int;
@@ -50,10 +81,11 @@ function calculateCombatStats(character) {
   const hit = level + dex;
 
   // ── CRIT ─────────────────────────────────────────────────────────
-  const crit = Math.max(1, Math.floor(luk * 0.3) + 1);
+  // floor((LUK * 3 + 10) * 10 / 100)
+  const crit = Math.floor((luk * 3 + 10) * 10 / 100);
 
   // ── ASPD (placeholder — overridden by aspd.js updateASPD) ────────
-  const attackSpeed = 150 + Math.floor(agi / 5) + Math.floor(dex / 20);
+  const attackSpeed = 150;
 
   return {
     attack,
@@ -68,27 +100,4 @@ function calculateCombatStats(character) {
     maxHP,
     maxSP,
   };
-}
-
-// ===================================================================
-// SP FORMULA
-// ===================================================================
-
-const SP_JOB_TABLE = {
-  novice:    1,
-  swordsman: 2,
-  archer:    2,
-  thief:     2,
-  acolyte:   5,
-  merchant:  3,
-  magician:  6,
-};
-
-function calculateSP(BASE_LEVEL, INT, job, SP_MOD_A = 0, SP_MOD_B = 0) {
-  const SP_JOB = SP_JOB_TABLE[job] ?? 1;
-  let BASE_SP  = 10 + (BASE_LEVEL * SP_JOB);
-  let MAX_SP   = Math.floor(BASE_SP * (1 + INT * 0.01));
-  MAX_SP      += SP_MOD_A;
-  MAX_SP       = Math.floor(MAX_SP * (1 + SP_MOD_B * 0.01));
-  return { baseSP: BASE_SP, maxSP: MAX_SP };
 }

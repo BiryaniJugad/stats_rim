@@ -163,7 +163,7 @@
     display: flex;
     align-items: center;
     gap: 20px;
-    padding: 8px;
+    padding: 8px 0;
     border-bottom: 1.5px solid var(--border-light);
     margin-bottom: 4px;
 }
@@ -227,20 +227,22 @@
     display: flex;
     flex-wrap: wrap;
     align-items: center;
-    gap: 6px;
+    gap: 35px;
+    margin-left: 15px;
 }
 
 .dib-item {
     display: flex;
     align-items: center;
     gap: 4px;
+    background: var(--bg-badge);
     border-radius: 8px;
-    padding: 7px 12px;
+    padding: 7px 24px;
     white-space: onwrap;
 }
 
 .dib-label {
-    font-size: 12px;
+    font-size: 10px;
     font-weight: 700;
     color: var(--text-light);
     font-family: var(--font-main);
