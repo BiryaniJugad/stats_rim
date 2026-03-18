@@ -27,6 +27,30 @@ const BASE_ASPD_TABLE = {
   "bow":                  [null, null, null,  130, null, null,  120 ],
 };
 
+// ===================================================================
+// BTBA TABLE (Base Time Between Attacks)
+// Mirrors JobData.WeaponBTBAs from the C# backend
+// null = weapon not usable by that class
+// ===================================================================
+
+const BTBA_TABLE = {
+  //                        nov    swd    mag    arc    aco    mer    thi
+  "bare_handed":          [ 1.0,   0.8,   1.0,   0.8,   0.8,   0.8,   0.8  ],
+  "dagger":               [ 1.3,   1.0,   1.2,   1.2,  null,   1.2,   1.0  ],
+  "sword_1h":             [ 1.4,   1.1,  null,  null,  null,   1.4,   1.3  ],
+  "sword_2h":             [null,   1.2,  null,  null,  null,  null,  null  ],
+  "spear_1h":             [null,   1.3,  null,  null,  null,  null,  null  ],
+  "spear_2h":             [null,   1.4,  null,  null,  null,  null,  null  ],
+  "axe_1h":               [ 1.6,   1.4,  null,  null,  null,   1.4,   1.6  ],
+  "axe_2h":               [null,   1.5,  null,  null,  null,   1.5,  null  ],
+  "mace_1h":              [ 1.4,   1.3,  null,  null,   1.2,   1.4,  null  ],
+  "mace_2h":              [ 1.4,   1.4,  null,  null,   1.2,   1.4,  null  ],
+  "rod_staff":            [ 1.3,  null,   1.4,  null,   1.2,  null,  null  ],
+  "rod_2h":               [ 1.3,  null,   1.4,  null,   1.2,  null,  null  ],
+  "bow":                  [null,  null,  null,   1.4,  null,  null,   1.6  ],
+};
+
+
 // Class index map — must match the job-select option values in HTML
 const CLASS_INDEX = {
   novice:    0,
@@ -56,15 +80,16 @@ const WEAPON_LABELS = {
 };
 
 // ===================================================================
-// ASPD FORMULA
+// ASPD FORMULA  (matches C# UpdateAspd exactly)
+// wd               = 50 * btba
+// agiReduction     = floor((wd * agi) / 25)
+// dexReduction     = floor((wd * dex) / 100)
+// delayAfterStats  = (wd - (agiReduction + dexReduction)) / 10
+// internalAspd     = 200 - delayAfterStats
+// offset           = 45 + ((btba - 1.0) * 45)
+// displayAspd      = floor(internalAspd - offset)   capped at 190
 // ===================================================================
 /**
- * Calculate final ASPD.
- * Formula: ASPD = 200 - (WD - ([WD*AGI/25] + [WD*DEX/100]) / 10) * (1 - SM)
- * WD  = weapon delay = 200 - baseASPD
- * SM  = speed modifier from potions (0.0 – 0.3 range)
- * [ ] = Math.round()
- *
  * @param {string} job        - e.g. "swordsman"
  * @param {string} weapon     - e.g. "sword_1h"
  * @param {number} agi        - character AGI stat
@@ -72,32 +97,23 @@ const WEAPON_LABELS = {
  * @param {number} aspdBonus  - flat speed-modifier bonus from potions (0, 6, 12, or 17)
  * @returns {number|null}     - final ASPD (capped 0–199), or null if weapon unusable
  */
-function calculateASPD(job, weapon, agi, dex, aspdBonus = 0) {
+ function calculateASPD(job, weapon, agi, dex, aspdBonus = 0) {
   const classIdx = CLASS_INDEX[job];
   if (classIdx === undefined) return null;
 
-  const row = BASE_ASPD_TABLE[weapon];
-  if (!row) return null;
+  const aspdRow = BASE_ASPD_TABLE[weapon];
+  if (!aspdRow) return null;
 
-  const baseASPD = row[classIdx];
-  if (baseASPD === null) return null; // weapon not usable by this class
+  const baseASPD = aspdRow[classIdx];
+  if (baseASPD === null) return null;
 
-  // Weapon delay: inverse of base ASPD
-  const WD = 200 - baseASPD;
+  // RateMyServer formula
+  const finalASPD = baseASPD
+    + Math.floor(agi / 4)
+    + Math.floor(dex / 4)
+    + aspdBonus;
 
-  // Speed modifier: potions give flat ASPD bonus (6, 12, 17),
-  // convert to SM fraction (they represent % of WD reduction)
-  const SM = aspdBonus / 100;
-
-  // AGI and DEX contributions (rounded to nearest integer each)
-  const agiContrib = Math.round(WD * agi / 25);
-  const dexContrib = Math.round(WD * dex / 100);
-
-  // Final ASPD formula
-  const finalASPD = 200 - (WD - (agiContrib + dexContrib) / 10) * (1 - SM);
-
-  // Floor to integer, cap between 0 and 199
-  return Math.min(199, Math.max(0, Math.floor(finalASPD)));
+  return Math.min(190, finalASPD);
 }
 
 // ===================================================================
@@ -122,17 +138,22 @@ const POTION_ASPD_BONUS = {
  * @param {string} job            - e.g. "swordsman"
  * @param {HTMLSelectElement} sel - the weapon <select> element
  */
-function populateWeaponSelect(job, sel) {
+ function populateWeaponSelect(job, sel) {
   const classIdx = CLASS_INDEX[job];
-  const currentVal = sel.value;
+  if (classIdx === undefined) return;
 
+  // Guard: sel may be null if called from stats.js override path
+  if (!sel) return;
+
+  const currentVal = sel.value;
   sel.innerHTML = "";
 
   for (const [weaponKey, label] of Object.entries(WEAPON_LABELS)) {
-    const row = BASE_ASPD_TABLE[weaponKey];
-    const aspd = row[classIdx];
-
-    if (aspd === null) continue; // skip unusable weapons
+    const row  = BASE_ASPD_TABLE[weaponKey];
+    const btbaRow = BTBA_TABLE[weaponKey];
+    // Skip if unusable by either table
+    if (!row || row[classIdx] === null) continue;
+    if (!btbaRow || btbaRow[classIdx] === null) continue;
 
     const opt = document.createElement("option");
     opt.value = weaponKey;
@@ -140,7 +161,6 @@ function populateWeaponSelect(job, sel) {
     sel.appendChild(opt);
   }
 
-  // Restore previous selection if still valid, else default to bare_handed
   if ([...sel.options].some(o => o.value === currentVal)) {
     sel.value = currentVal;
   } else {
@@ -158,19 +178,6 @@ function populateWeaponSelect(job, sel) {
  * Maps the numeric option values back to job names.
  */
 function getCurrentJob() {
-  const jobSelect = document.querySelector(".job-select");
-  const val = jobSelect?.value;
-
-  const JOB_MAP = {
-    "":  "novice",
-    "1": "swordsman",
-    "2": "magician",
-    "3": "archer",
-    "4": "acolyte",
-    "5": "merchant",
-    "6": "thief",
-  };
-
   return JOB_MAP[val] ?? "novice";
 }
 
@@ -199,13 +206,16 @@ function getPotionASPDBonus() {
  *
  * @param {object} character - the character object from stats.js
  */
-function updateASPD(character) {
-  const job    = character.job;                          // use character state directly
-  const weapon = character.weaponKey || "bare_handed";  // use character state directly
-  const agi    = character.stats.agi;
-  const dex    = character.stats.dex;
+ function updateASPD(character) {
+  const job    = character.job;
+  const weapon = character.weaponKey || "bare_handed";
 
-  // Potion map — read from character.potionVal
+  // Use effective stats (base + job level bonuses) — mirrors C# totalAgi / totalDex
+  const jobBonuses = calculateJobBonuses(character.job, character.jobLevel);
+  const agi = character.stats.agi + (jobBonuses.agi || 0);
+  const dex = character.stats.dex + (jobBonuses.dex || 0);
+
+  // Potion bonus
   const POTION_MAP = { "": 0, "1": 6, "2": 12, "3": 17 };
   const bonus = POTION_MAP[character.potionVal ?? ""] ?? 0;
 

@@ -297,16 +297,17 @@ function selectWeapon(weaponLabel) {
 // and keep character.weaponKey in sync — no hidden <select> needed.
 function populateWeaponSelect(job) {
   const classIdx = CLASS_INDEX[job];
-
   const visualList = document.querySelector(".weapon-menu");
   if (visualList) visualList.innerHTML = "";
 
   let currentKeyStillValid = false;
 
   for (const [weaponKey, label] of Object.entries(WEAPON_LABELS)) {
-    const row  = BASE_ASPD_TABLE[weaponKey];
-    const aspd = row[classIdx];
-    if (aspd === null) continue; // not usable by this class
+    const aspdRow = BASE_ASPD_TABLE[weaponKey];
+    const btbaRow = BTBA_TABLE[weaponKey];
+    // Skip if either table marks it unusable for this class
+    if (!aspdRow || aspdRow[classIdx] === null) continue;
+    if (!btbaRow || btbaRow[classIdx] === null) continue;
 
     if (weaponKey === character.weaponKey) currentKeyStillValid = true;
 
@@ -324,7 +325,6 @@ function populateWeaponSelect(job) {
     }
   }
 
-  // If previous weapon isn't valid for this class, reset to bare_handed
   if (!currentKeyStillValid) {
     character.weaponKey = "bare_handed";
     const curW = document.getElementById("current-weapon");
