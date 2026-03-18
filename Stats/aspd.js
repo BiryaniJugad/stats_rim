@@ -103,19 +103,28 @@ const WEAPON_LABELS = {
 
   const aspdRow = BASE_ASPD_TABLE[weapon];
   if (!aspdRow) return null;
+  if (aspdRow[classIdx] === null) return null;
 
-  const baseASPD = aspdRow[classIdx];
-  if (baseASPD === null) return null;
+  const btbaRow = BTBA_TABLE[weapon];
+  if (!btbaRow) return null;
+  const btba = btbaRow[classIdx];
+  if (btba === null) return null;
 
-  // RateMyServer formula
-  const finalASPD = baseASPD
-    + Math.floor(agi / 4)
-    + Math.floor(dex / 4)
-    + aspdBonus;
+  // SM = speed modifier from potions
+  const SM = aspdBonus / 100;
 
-  return Math.min(190, finalASPD);
+  // Weapon Delay
+  const WD = 50 * btba;
+
+  // [ ] = Math.round() per formula spec
+  const agiContrib = Math.round(WD * agi / 25);
+  const dexContrib = Math.round(WD * dex / 100);
+
+  // ASPD = 200 - (WD - ([WD*AGI/25] + [WD*DEX/100]) / 10) * (1 - SM)
+  const finalASPD = 200 - (WD - (agiContrib + dexContrib) / 10) * (1 - SM);
+
+  return Math.min(190, Math.floor(finalASPD));
 }
-
 // ===================================================================
 // POTION ASPD BONUS TABLE
 // ===================================================================
