@@ -17,45 +17,45 @@
         <div class="job-sidebar">
             <span class="job-sidebar-label">Class</span>
             <button class="job-btn active" data-color="gold" title="Novice"
-                onclick="selectJobBtn(this); selectJob('Novice', 'novice.png', '')">
+                onclick="selectJobBtn(this); selectJob('Novice', 'character/novice.png', '')">
                 <div class="pip"></div>
-                <img src="../images/novice_logo.png" alt="Novice">
+                <img src="../images/logo/novice_logo.png" alt="Novice">
                 <span class="jname">Novice</span>
             </button>
             <button class="job-btn" data-color="blue" title="Swordsman"
-                onclick="selectJobBtn(this); selectJob('Swordsman', 'swordsman.png', '1')">
+                onclick="selectJobBtn(this); selectJob('Swordsman', 'character/swordsman.png', '1')">
                 <div class="pip"></div>
-                <img src="../images/swordsman_logo.png" alt="Swordsman">
+                <img src="../images/logo/swordsman_logo.png" alt="Swordsman">
                 <span class="jname">Swordsman</span>
             </button>
             <button class="job-btn" data-color="purple" title="Magician"
-                onclick="selectJobBtn(this); selectJob('Magician', 'mage.png', '2')">
+                onclick="selectJobBtn(this); selectJob('Magician', 'character/magician.png', '2')">
                 <div class="pip"></div>
-                <img src="../images/mage_logo.png" alt="Magician">
-                <span class="jname">Mage</span>
+                <img src="../images/logo/magician_logo.png" alt="Magician">
+                <span class="jname">Magician</span>
             </button>
             <button class="job-btn" data-color="green" title="Archer"
-                onclick="selectJobBtn(this); selectJob('Archer', 'archer.png', '3')">
+                onclick="selectJobBtn(this); selectJob('Archer', 'character/archer.png', '3')">
                 <div class="pip"></div>
-                <img src="../images/archer_logo.png" alt="Archer">
+                <img src="../images/logo/archer_logo.png" alt="Archer">
                 <span class="jname">Archer</span>
             </button>
             <button class="job-btn" data-color="teal" title="Acolyte"
-                onclick="selectJobBtn(this); selectJob('Acolyte', 'acolyte.png', '5')">
+                onclick="selectJobBtn(this); selectJob('Acolyte', 'character/acolyte.png', '5')">
                 <div class="pip"></div>
-                <img src="../images/acolyte_logo.png" alt="Acolyte">
+                <img src="../images/logo/acolyte_logo.png" alt="Acolyte">
                 <span class="jname">Acolyte</span>
             </button>
             <button class="job-btn" data-color="orange" title="Merchant"
-                onclick="selectJobBtn(this); selectJob('Merchant', 'merchant.png', '6')">
+                onclick="selectJobBtn(this); selectJob('Merchant', 'character/merchant.png', '6')">
                 <div class="pip"></div>
-                <img src="../images/merchant_logo.png" alt="Merchant">
-                <span class="jname">Merch</span>
+                <img src="../images/logo/merchant_logo.png" alt="Merchant">
+                <span class="jname">Mercant</span>
             </button>
             <button class="job-btn" data-color="red" title="Thief"
-                onclick="selectJobBtn(this); selectJob('Thief', 'thief.png', '4')">
+                onclick="selectJobBtn(this); selectJob('Thief', 'character/thief.png', '4')">
                 <div class="pip"></div>
-                <img src="../images/thief_logo.png" alt="Thief">
+                <img src="../images/logo/thief_logo.png" alt="Thief">
                 <span class="jname">Thief</span>
             </button>
         </div>
@@ -65,7 +65,7 @@
             <div class="character-sprite-box">
                 <div class="character-glow"></div>
                 <div class="character-stage-base"></div>
-                <img src="../images/novice.png" alt="Character" class="character-sprite" id="character-img">
+                <img src="../images/character/novice.png" alt="Character" class="character-sprite" id="character-img">
             </div>
             <div class="character-name-container">
                 <h2 class="character-name" id="character-title">NOVICE</h2>
@@ -74,7 +74,7 @@
 
         <div class="unified-status-panel" hidden>
             <div class="panel-tabs">
-                <button class="tab-item" onclick="switchTab(event, 'stat-tab')">Stat</button>
+                <button class="tab-item" onclick="switchTab(event, 'stat-tab')">Stats</button>
                 <button class="tab-item" onclick="switchTab(event, 'info-tab')">Info</button>
                 <button class="tab-item" onclick="switchTab(event, 'skills-tab')">Skills</button>
             </div>
@@ -228,7 +228,6 @@
                                     <tr>
                                         <th>Icon</th>
                                         <th>Skill Name</th>
-                                        <!-- single merged column: − Cur/Max + -->
                                         <th class="th-level">Cur / Max Level</th>
                                         <th>Type</th>
                                     </tr>
