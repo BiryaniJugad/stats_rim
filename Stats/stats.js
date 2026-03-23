@@ -297,16 +297,17 @@ function selectWeapon(weaponLabel) {
 // and keep character.weaponKey in sync — no hidden <select> needed.
 function populateWeaponSelect(job) {
   const classIdx = CLASS_INDEX[job];
-
   const visualList = document.querySelector(".weapon-menu");
   if (visualList) visualList.innerHTML = "";
 
   let currentKeyStillValid = false;
 
   for (const [weaponKey, label] of Object.entries(WEAPON_LABELS)) {
-    const row  = BASE_ASPD_TABLE[weaponKey];
-    const aspd = row[classIdx];
-    if (aspd === null) continue; // not usable by this class
+    const aspdRow = BASE_ASPD_TABLE[weaponKey];
+    const btbaRow = BTBA_TABLE[weaponKey];
+    // Skip if either table marks it unusable for this class
+    if (!aspdRow || aspdRow[classIdx] === null) continue;
+    if (!btbaRow || btbaRow[classIdx] === null) continue;
 
     if (weaponKey === character.weaponKey) currentKeyStillValid = true;
 
@@ -324,7 +325,6 @@ function populateWeaponSelect(job) {
     }
   }
 
-  // If previous weapon isn't valid for this class, reset to bare_handed
   if (!currentKeyStillValid) {
     character.weaponKey = "bare_handed";
     const curW = document.getElementById("current-weapon");
@@ -391,11 +391,6 @@ function updateInfoTab(job) {
         `<div class="info-trait"><span class="info-trait-icon">${icon}</span><span>${text}</span></div>`)
       .join("");
   }
-
-  // Footer order: Base EXP Rate, Job EXP Rate, Weight Limit
-  if (footerVals[0]) footerVals[0].textContent = info.expBase;
-  if (footerVals[1]) footerVals[1].textContent = info.expJob;
-  if (footerVals[2]) footerVals[2].textContent = wl;
 }
 
 // ===================================================================
@@ -480,15 +475,22 @@ function updateUI() {
 
     // Second column: bonus + cost
     // The second .column rows are siblings — find matching index
-    const allStatRows = document.querySelectorAll(".status-columns .column:nth-child(2) .table-row");
-    const idx         = statOrder.indexOf(s);
-    const bonusRow    = allStatRows[idx];
+    const allColumns = document.querySelectorAll(".stats-grid .column");
+    const idx        = statOrder.indexOf(s);
+
+    // Bonus column (2nd .column)
+    const bonusRow = allColumns[1]?.querySelectorAll(".table-row")[idx];
     if (bonusRow) {
       const symSpan = bonusRow.querySelector(".symbol");
-      const valSpan = bonusRow.querySelector(".value");
       if (symSpan) symSpan.textContent = `+ ${bonus}`;
-      if (valSpan) valSpan.textContent = cost;
     }
+
+    // Points Req. column (3rd .column)
+    const costRow = allColumns[2]?.querySelectorAll(".table-row")[idx];
+    if (costRow) {
+      const valSpan = costRow.querySelector(".value");
+      if (valSpan) valSpan.textContent = cost;
+    } 
   });
 
   // ── Weight ────────────────────────────────────────────────────────
