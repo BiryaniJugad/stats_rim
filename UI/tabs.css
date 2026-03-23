@@ -260,13 +260,13 @@
 /* Row 2: Regen — each item stacks label on top of value */
 .dib-regen-row {
     display: grid;
-    grid-template-columns: 1fr 1fr;   /* two equal columns, always */
+    grid-template-columns: 1fr 1fr;
     gap: 6px;
 }
 
 .dib-regen-item {
     display: flex;
-    flex-direction: column;           /* label above, value below */
+    flex-direction: column;
     gap: 2px;
     background: rgba(80,168,64,0.07);
     border: 1px solid rgba(80,168,64,0.2);
@@ -285,4 +285,142 @@
     color: var(--green-text);
     font-family: var(--font-main);
     white-space: nowrap;
+}
+
+/* ══════════════════════════════════════════
+   Job Class Sidebar — matches light UI theme
+   ══════════════════════════════════════════ */
+.job-sidebar {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    padding: 14px 8px;
+    background: rgba(255, 255, 255, 0.72);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-right: 1.5px solid rgba(200, 210, 225, 0.55);
+    z-index: 2;
+}
+
+.job-sidebar-label {
+    font-size: 9px;
+    font-weight: 700;
+    color: var(--text-light);
+    text-transform: uppercase;
+    letter-spacing: 0.13em;
+    margin-bottom: 4px;
+    font-family: var(--font-main);
+}
+
+.job-btn {
+    width: 54px;
+    height: 54px;
+    border-radius: 12px;
+    border: 1.5px solid var(--border-light);
+    background: var(--bg-badge);
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 3px;
+    position: relative;
+    transition: transform 0.13s ease, border-color 0.15s ease, background 0.15s ease, box-shadow 0.15s ease;
+    padding: 0;
+}
+
+.job-btn:hover {
+    transform: scale(1.07);
+    border-color: var(--border);
+    background: #ffffff;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.10);
+}
+
+.job-btn img {
+    width: 30px;
+    height: 30px;
+    object-fit: contain;
+    display: block;
+    filter: grayscale(0.6) opacity(0.5);
+    transition: filter 0.15s ease;
+}
+
+.job-btn:hover img {
+    filter: grayscale(0.2) opacity(0.8);
+}
+
+.job-btn.active img {
+    filter: grayscale(0) opacity(1);
+}
+
+.job-btn .jname {
+    font-size: 8px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    color: var(--text-light);
+    line-height: 1;
+    font-family: var(--font-main);
+    transition: color 0.15s ease;
+}
+
+.job-btn .pip {
+    position: absolute;
+    top: 4px;
+    right: 4px;
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    display: none;
+}
+
+.job-btn.active .pip { display: block; }
+
+/* ── Active state: warm orange/gold — matches the UI's accent color ── */
+.job-btn.active {
+    border-color: rgba(240, 160, 16, 0.55);
+    background: rgba(240, 160, 16, 0.08);
+    box-shadow: 0 0 0 2px rgba(240, 160, 16, 0.18);
+}
+
+.job-btn.active .pip {
+    background: #f0a010;
+}
+
+.job-btn.active .jname {
+    color: var(--orange-dark, #c07808);
+}
+
+/* Override per-class colors with the unified warm orange to match UI theme */
+.job-btn[data-color="gold"].active,
+.job-btn[data-color="blue"].active,
+.job-btn[data-color="purple"].active,
+.job-btn[data-color="green"].active,
+.job-btn[data-color="teal"].active,
+.job-btn[data-color="orange"].active,
+.job-btn[data-color="red"].active {
+    border-color: rgba(240, 160, 16, 0.55);
+    background: rgba(240, 160, 16, 0.08);
+    box-shadow: 0 0 0 2px rgba(240, 160, 16, 0.18);
+}
+
+.job-btn[data-color="gold"].active .pip,
+.job-btn[data-color="blue"].active .pip,
+.job-btn[data-color="purple"].active .pip,
+.job-btn[data-color="green"].active .pip,
+.job-btn[data-color="teal"].active .pip,
+.job-btn[data-color="orange"].active .pip,
+.job-btn[data-color="red"].active .pip {
+    background: #f0a010;
+}
+
+.job-btn[data-color="gold"].active .jname,
+.job-btn[data-color="blue"].active .jname,
+.job-btn[data-color="purple"].active .jname,
+.job-btn[data-color="green"].active .jname,
+.job-btn[data-color="teal"].active .jname,
+.job-btn[data-color="orange"].active .jname,
+.job-btn[data-color="red"].active .jname {
+    color: var(--orange-dark, #c07808);
 }
