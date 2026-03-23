@@ -110,50 +110,36 @@ const JOB_INFO = {
     badge: "Beginner Class",
     desc: "The <strong>Novice</strong> is the starting class for all adventurers. Armed with little more than courage, the Novice stands at the threshold of a grand journey and can advance to any first class.",
     traits: [["⚔️","Balanced base stats"],["🛡️","Can advance to any class"],["✨","High potential growth"],["📖","Starts with 48 status points"]],
-    expBase: "100%", expJob: "100%",
-    weightLimit: "2,030",
   },
   swordsman: {
     badge: "1st Class — Warrior",
     desc: "The <strong>Swordsman</strong> is a front-line warrior who excels in physical combat. High HP and VIT make them tough to kill.",
     traits: [["⚔️","High STR & VIT growth"],["🛡️","Excellent HP pool"],["🗡️","Wide weapon variety"],["📈","Advances to Knight / Crusader"]],
-    expBase: "100%", expJob: "100%",
-    weightLimit: "2,830",
   },
   magician: {
     badge: "1st Class — Mage",
     desc: "The <strong>Magician</strong> wields devastating elemental magic. With the highest INT growth, they deal massive MATK at the cost of low HP.",
     traits: [["🔥","Highest INT bonus"],["💥","Powerful AOE spells"],["🧪","SP-hungry caster"],["📈","Advances to Wizard / Sage"]],
-    expBase: "100%", expJob: "100%",
-    weightLimit: "2,230",
   },
   archer: {
     badge: "1st Class — Ranger",
     desc: "The <strong>Archer</strong> attacks from range with exceptional DEX, making them reliable damage-dealers with high HIT and FLEE.",
     traits: [["🏹","Highest DEX bonus"],["👟","Strong AGI & FLEE"],["🎯","High HIT accuracy"],["📈","Advances to Hunter / Bard / Dancer"]],
-    expBase: "100%", expJob: "100%",
-    weightLimit: "2,630",
   },
   acolyte: {
     badge: "1st Class — Healer",
     desc: "The <strong>Acolyte</strong> serves as healer and support. Their INT and SP pool give them strong recovery skills.",
     traits: [["💚","Strong HP and SP regen"],["🙏","Support & heal focused"],["📿","High LUK growth"],["📈","Advances to Priest / Monk"]],
-    expBase: "100%", expJob: "100%",
-    weightLimit: "2,430",
   },
   merchant: {
     badge: "1st Class — Trader",
     desc: "The <strong>Merchant</strong> combines combat skill with economic prowess. High STR and a large weight limit make them self-sufficient.",
     traits: [["💪","High STR & carry weight"],["🪙","Best weight limit"],["🔨","Axe & mace specialist"],["📈","Advances to Blacksmith / Alchemist"]],
-    expBase: "100%", expJob: "100%",
-    weightLimit: "2,830"
   },
   thief: {
     badge: "1st Class — Rogue",
     desc: "The <strong>Thief</strong> relies on speed and cunning. High AGI gives them exceptional FLEE and attack speed.",
     traits: [["💨","Highest AGI bonus"],["🗡️","Fast attack speed"],["👻","High FLEE & dodge"],["📈","Advances to Assassin / Rogue"]],
-    expBase: "100%", expJob: "100%",
-    weightLimit: "2,430",
   },
 };
 
