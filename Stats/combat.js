@@ -7,9 +7,9 @@
 
 const SP_JOB_TABLE = {
   novice:    1,
-  swordsman: 1,
-  archer:    1,
-  thief:     1,
+  swordsman: 2,
+  archer:    2,
+  thief:     2,
   acolyte:   5,
   merchant:  3,
   magician:  6,
