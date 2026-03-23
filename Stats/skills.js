@@ -15,7 +15,7 @@ const JOB_SKILLS = {
         label: 'Novice',
         unlocked: [
             { name: 'Basic Skill', cur: 0, max: 9, type: 'active' },
-            { name: 'First Aid',   cur: 1, max: 1, type: 'quest'  },
+            { name: 'First Aid',   cur: 1, max: 1, type: 'quest'  }, //active but quest
             { name: 'Trick Dead',  cur: 1, max: 1, type: 'quest'  },
         ],
         locked: [],
@@ -24,16 +24,16 @@ const JOB_SKILLS = {
     'Swordsman': {
         label: 'Swordsman',
         unlocked: [
-            { name: 'Sword Mastery',               cur: 0, max: 10, type: 'active' },
-            { name: 'Increase Recuperative Power', cur: 0, max: 10, type: 'active' },
+            { name: 'Sword Mastery',               cur: 0, max: 10, type: 'active' }, //passive
+            { name: 'Increase Recuperative Power', cur: 0, max: 10, type: 'active' }, //passive
             { name: 'Bash',                        cur: 0, max: 10, type: 'active' },
-            { name: 'Provoke',                     cur: 0, max: 10, type: 'active' },
-            { name: 'Moving HP Recovery',          cur: 1, max: 1,  type: 'quest'  },
-            { name: 'Fatal Blow',                  cur: 1, max: 1,  type: 'quest'  },
-            { name: 'Auto Berserk',                cur: 1, max: 1,  type: 'quest'  },
+            { name: 'Provoke',                     cur: 0, max: 10, type: 'active' }, 
+            { name: 'Moving HP Recovery',          cur: 1, max: 1,  type: 'quest'  }, //passive but quest
+            { name: 'Fatal Blow',                  cur: 1, max: 1,  type: 'quest'  }, //passive but quest
+            { name: 'Auto Berserk',                cur: 1, max: 1,  type: 'quest'  }, //active but quest
         ],
         locked: [
-            { name: 'Two-Handed Sword Mastery', max: 10, req: 'Sword Mastery Lv 1' },
+            { name: 'Two-Handed Sword Mastery', max: 10, req: 'Sword Mastery Lv 1' },//passive
             { name: 'Magnum Break',             max: 10, req: 'Bash Lv 5'          },
             { name: 'Endure',                   max: 10, req: 'Provoke Lv 5'       },
         ],
@@ -42,9 +42,9 @@ const JOB_SKILLS = {
     'Magician': {
         label: 'Magician',
         unlocked: [
-            { name: 'Increase Spiritual Power', cur: 0, max: 10, type: 'active' },
+            { name: 'Increase Spiritual Power', cur: 0, max: 10, type: 'active' }, //passive
             { name: 'Sight',                    cur: 0, max: 1,  type: 'active' },
-            { name: 'Napalm Beat',              cur: 0, max: 10, type: 'active' },
+            { name: 'Napalm Beat',              cur: 0, max: 10, type: 'active' }, 
             { name: 'Cold Bolt',                cur: 0, max: 10, type: 'active' },
             { name: 'Stone Curse',              cur: 0, max: 10, type: 'active' },
             { name: 'Fire Bolt',                cur: 0, max: 10, type: 'active' },
@@ -64,8 +64,8 @@ const JOB_SKILLS = {
     'Archer': {
         label: 'Archer',
         unlocked: [
-            { name: "Owl's Eye",       cur: 0, max: 10, type: 'active' },
-            { name: 'Double Strafing', cur: 0, max: 10, type: 'active' },
+            { name: "Owl's Eye",       cur: 0, max: 10, type: 'active' }, //passive
+            { name: 'Double Strafing', cur: 0, max: 10, type: 'active' }, //passive
             { name: 'Making Arrow',    cur: 1, max: 1,  type: 'quest'  },
             { name: 'Charge Arrow',    cur: 1, max: 1,  type: 'quest'  },
         ],
@@ -79,14 +79,14 @@ const JOB_SKILLS = {
     'Acolyte': {
         label: 'Acolyte',
         unlocked: [
-            { name: 'Divine Protection', cur: 0, max: 10, type: 'active' },
-            { name: 'Ruwach',            cur: 0, max: 1,  type: 'active' },
+            { name: 'Divine Protection', cur: 0, max: 10, type: 'active' }, //passive
+            { name: 'Ruwach',            cur: 0, max: 1,  type: 'active' }, 
             { name: 'Heal',              cur: 0, max: 10, type: 'active' },
             { name: 'Aqua Benedicta',    cur: 0, max: 1,  type: 'active' },
             { name: 'Holy Light',        cur: 1, max: 1,  type: 'quest'  },
         ],
         locked: [
-            { name: 'Demon Bane',       max: 10, req: 'Divine Protection Lv 3'  },
+            { name: 'Demon Bane',       max: 10, req: 'Divine Protection Lv 3'  }, //passive
             { name: 'Teleportation',    max: 2,  req: 'Ruwach Lv 1'             },
             { name: 'Warp Portal',      max: 4,  req: 'Teleportation Lv 2'      },
             { name: 'Pneuma',           max: 1,  req: 'Warp Portal Lv 4'        },
@@ -102,7 +102,7 @@ const JOB_SKILLS = {
     'Merchant': {
         label: 'Merchant',
         unlocked: [
-            { name: 'Enlarge Weight Limit', cur: 0, max: 10, type: 'active' },
+            { name: 'Enlarge Weight Limit', cur: 0, max: 10, type: 'active' }, //passive
             { name: 'Identify',             cur: 0, max: 1,  type: 'active' },
             { name: 'Mammonite',            cur: 0, max: 10, type: 'active' },
             { name: 'Cart Revolution',      cur: 1, max: 1,  type: 'quest'  },
@@ -111,9 +111,9 @@ const JOB_SKILLS = {
             { name: 'Cart Decoration',      cur: 1, max: 1,  type: 'quest'  },
         ],
         locked: [
-            { name: 'Discount',     max: 10, req: 'Enlarge Weight Limit Lv 3' },
-            { name: 'Overcharge',   max: 10, req: 'Discount Lv 3'             },
-            { name: 'Pushcart',     max: 10, req: 'Enlarge Weight Limit Lv 5' },
+            { name: 'Discount',     max: 10, req: 'Enlarge Weight Limit Lv 3' }, //passive
+            { name: 'Overcharge',   max: 10, req: 'Discount Lv 3'             }, //passive
+            { name: 'Pushcart',     max: 10, req: 'Enlarge Weight Limit Lv 5' }, //passive
             { name: 'Vending',      max: 10, req: 'Pushcart Lv 3'             },
             { name: 'Buying Store', max: 1,  req: 'Vending Lv 1'              },
         ],
@@ -122,9 +122,9 @@ const JOB_SKILLS = {
     'Thief': {
         label: 'Thief',
         unlocked: [
-            { name: 'Double Attack',  cur: 0, max: 10, type: 'active' },
-            { name: 'Increase Dodge', cur: 0, max: 10, type: 'active' },
-            { name: 'Steal',          cur: 0, max: 10, type: 'active' },
+            { name: 'Double Attack',  cur: 0, max: 10, type: 'active' }, //passive
+            { name: 'Increase Dodge', cur: 0, max: 10, type: 'active' }, //passive
+            { name: 'Steal',          cur: 0, max: 10, type: 'active' }, 
             { name: 'Envenom',        cur: 0, max: 10, type: 'active' },
             { name: 'Sprinkle Sand',  cur: 1, max: 1,  type: 'quest'  },
             { name: 'Back Sliding',   cur: 1, max: 1,  type: 'quest'  },
