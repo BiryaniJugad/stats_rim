@@ -205,7 +205,7 @@ function updateJobLevelOptions(job) {
   if (visualList) {
     visualList.innerHTML = "";
     const liNone = document.createElement("li");
-    liNone.textContent = "—";
+    liNone.textContent = "0";
     liNone.onclick = () => selectJobLevel(0);
     visualList.appendChild(liNone);
     for (let i = 1; i <= max; i++) {
@@ -241,7 +241,7 @@ function selectJob(displayName, fileName, selectVal) {
   character.jobLevel = 0;
 
   const curJL = document.getElementById("current-jl");
-  if (curJL) curJL.textContent = "—";
+  if (curJL) curJL.textContent = "0";
 
   document.getElementById("jobDropdown")?.classList.remove("active");
   updateJobLevelOptions(character.job);

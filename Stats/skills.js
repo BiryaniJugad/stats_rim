@@ -99,6 +99,450 @@ const SKILL_ICONS = {
 };
 
 // ===================================================================
+// SKILL DESCRIPTIONS
+// desc    : flavour/mechanic text
+// effect  : function(level, char, maxHP, maxSP) → array of effect lines
+//           each line: { label, value, next } where next is optional
+// ===================================================================
+
+const SKILL_DESCRIPTIONS = {
+
+    // ── NOVICE ───────────────────────────────────────────────────────
+    'Basic Skill': {
+        desc: 'A foundational skill that unlocks core game functions as it levels up. Each level grants access to a new action or ability.',
+        effect: (lv) => {
+            const ALL_LEVELS = [
+                { label: 'Lv 1', value: 'Enable Trade — exchange items with other characters.' },
+                { label: 'Lv 2', value: 'Enable Emotions — express emotions using Alt+0~9. View list with Alt+M.' },
+                { label: 'Lv 3', value: 'Enable Sit — regenerate HP/SP 2× faster while sitting. Use /sit or Insert.' },
+                { label: 'Lv 4', value: 'Enable Chat Room — create a chat room with Alt+C.' },
+                { label: 'Lv 5', value: 'Enable Party — join a party.' },
+                { label: 'Lv 6', value: 'Enable Kafra Storage — access an extra 300-slot inventory at any Kafra NPC.' },
+                { label: 'Lv 7', value: 'Enable /organize — create your own party with /organize [Party Name].' },
+                { label: 'Lv 9', value: 'Enable Job Change — allows changing into a 1st class profession.' },
+            ];
+               
+            // Show unlocked levels normally, locked ones dimmed via a marker
+            return ALL_LEVELS.map((row, i) => {
+                const levelNum = i + 1;
+                if (levelNum <= lv) {
+                    // Unlocked — show as normal with no next
+                    return { label: row.label, value: row.value };
+                } else {
+                    // Not yet reached — show as locked
+                    return { label: row.label, value: row.value, locked: true };
+                }
+            });
+        },
+    },
+    'First Aid': {
+        desc: 'Restores a small amount of HP using basic first aid techniques.',
+        effect: () => [
+            { label: 'HP Restored', value: '5' },
+        ],
+    },
+    'Trick Dead': {
+        desc: 'Pretend to fall dead on the ground, becoming immune from all attacks from Players and monsters. Skill can be toggled on and off',
+        effect: () => [
+            {label: 'Skill can be toggled On and Off', value: ''}
+        ],
+    },
+
+    // ── SWORDSMAN ────────────────────────────────────────────────────
+    'Sword Mastery': {
+        desc: 'Increases damage with Daggers and One-Handed Swords. Bypasses armor and VIT defense.',
+        effect: (lv) => [
+            { label: 'ATK Bonus', value: `+${4 * lv}`, next: lv < 10 ? `+${4 * (lv + 1)}` : null },
+        ],
+    },
+    'Two-Handed Sword Mastery': {
+        desc: 'Increases damage with Two-Handed Swords. Bypasses armor and VIT defense.',
+        effect: (lv) => [
+            { label: 'ATK Bonus', value: `+${4 * lv}`, next: lv < 10 ? `+${4 * (lv + 1)}` : null },
+        ],
+    },
+    'Increase Recuperative Power': {
+        desc: 'Heals HP every 10 seconds while standing still on one cell. Also increases healing item effectiveness.',
+        effect: (lv, char, maxHP) => [
+            { label: 'HP / 10s still',  value: `+${Math.floor((5 * lv) + (maxHP * 0.002 * lv))}`,
+              next: lv < 10 ? `+${Math.floor((5 * (lv+1)) + (maxHP * 0.002 * (lv+1)))}` : null },
+            { label: 'Heal Item Bonus', value: `+${10 * lv}%`,
+              next: lv < 10 ? `+${10 * (lv + 1)}%` : null },
+        ],
+    },
+    'Bash': {
+        desc: 'A powerful melee attack that deals heavy damage to a single target.',
+        effect: (lv) => [
+            { label: 'ATK', value: `${130 + 30 * lv}%`, next: lv < 10 ? `${130 + 30 * (lv+1)}%` : null },
+        ],
+    },
+    'Provoke': {
+        desc: 'Taunts an enemy, increasing its ATK while reducing its DEF.',
+        effect: (lv) => [
+            { label: 'Enemy ATK +', value: `${2 + 3 * lv}%`, next: lv < 10 ? `${2 + 3*(lv+1)}%` : null },
+            { label: 'Enemy DEF −', value: `${5 + 5 * lv}%`, next: lv < 10 ? `${5 + 5*(lv+1)}%` : null },
+        ],
+    },
+    'Moving HP Recovery': {
+        desc: 'Allows natural HP recovery while moving.',
+        effect: () => [],
+    },
+    'Fatal Blow': {
+        desc: 'Gives Bash a chance to stun the target.',
+        effect: () => [{ label: 'Stun Chance', value: '5%' }],
+    },
+    'Auto Berserk': {
+        desc: 'Automatically activates Provoke when HP drops below 25%.',
+        effect: () => [],
+    },
+    'Magnum Break': {
+        desc: 'A fire-element AoE attack that pushes enemies away.',
+        effect: (lv) => [
+            { label: 'ATK',       value: `${200 + 10 * lv}%`, next: lv < 10 ? `${200 + 10*(lv+1)}%` : null },
+            { label: 'Fire Bonus',value: `+${20 + 5 * lv}%`,  next: lv < 10 ? `+${20 + 5*(lv+1)}%` : null },
+        ],
+    },
+    'Endure': {
+        desc: 'Temporarily prevents knockback and increases MDEF.',
+        effect: (lv) => [
+            { label: 'MDEF +', value: `+${lv}`, next: lv < 10 ? `+${lv+1}` : null },
+        ],
+    },
+
+    // ── MAGICIAN ─────────────────────────────────────────────────────
+    'Increase Spiritual Power': {
+        desc: 'Increases SP recovery and healing item effectiveness for SP.',
+        effect: (lv, char, maxHP, maxSP) => [
+            { label: 'SP / 10s still',  value: `+${Math.floor((maxSP / 500 + 3) * lv)}`,
+              next: lv < 10 ? `+${Math.floor((maxSP / 500 + 3) * (lv+1))}` : null },
+            { label: 'SP Item Bonus',   value: `+${2 * lv}%`,
+              next: lv < 10 ? `+${2 * (lv+1)}%` : null },
+        ],
+    },
+    'Sight': {
+        desc: 'Reveals hidden enemies in the surrounding area.',
+        effect: () => [],
+    },
+    'Napalm Beat': {
+        desc: 'Deals ghost-element magic damage in a 3x3 area.',
+        effect: (lv) => [
+            { label: 'MATK', value: `${100 + 10 * lv}%`, next: lv < 10 ? `${100 + 10*(lv+1)}%` : null },
+        ],
+    },
+    'Cold Bolt': {
+        desc: 'Deals water-element magic damage with multiple hits.',
+        effect: (lv) => [
+            { label: 'Hits',  value: `${lv}`,     next: lv < 10 ? `${lv+1}` : null },
+            { label: 'MATK',  value: `${100}% × ${lv}` },
+        ],
+    },
+    'Stone Curse': {
+        desc: 'Attempts to inflict Stone Curse status on a target.',
+        effect: (lv) => [
+            { label: 'Success Rate', value: `${14 + 2 * lv}%`, next: lv < 10 ? `${14 + 2*(lv+1)}%` : null },
+        ],
+    },
+    'Fire Bolt': {
+        desc: 'Deals fire-element magic damage with multiple hits.',
+        effect: (lv) => [
+            { label: 'Hits', value: `${lv}`, next: lv < 10 ? `${lv+1}` : null },
+            { label: 'MATK', value: `${100}% × ${lv}` },
+        ],
+    },
+    'Lightning Bolt': {
+        desc: 'Deals wind-element magic damage with multiple hits.',
+        effect: (lv) => [
+            { label: 'Hits', value: `${lv}`, next: lv < 10 ? `${lv+1}` : null },
+            { label: 'MATK', value: `${100}% × ${lv}` },
+        ],
+    },
+    'Energy Coat': {
+        desc: 'Uses SP to reduce incoming physical damage based on remaining SP%.',
+        effect: () => [],
+    },
+    'Soul Strike': {
+        desc: 'Deals ghost-element damage; extra hits against undead.',
+        effect: (lv) => [
+            { label: 'Hits', value: `${Math.ceil(lv / 2)}`, next: lv < 10 ? `${Math.ceil((lv+1)/2)}` : null },
+        ],
+    },
+    'Frost Diver': {
+        desc: 'Deals water-element damage and attempts to freeze the target.',
+        effect: (lv) => [
+            { label: 'MATK',        value: `${100 + 10 * lv}%`, next: lv < 10 ? `${100 + 10*(lv+1)}%` : null },
+            { label: 'Freeze Chance', value: `${30 + lv}%`,     next: lv < 10 ? `${30 + lv+1}%` : null },
+        ],
+    },
+    'Fire Ball': {
+        desc: 'Deals fire-element AoE damage in a 5x5 area.',
+        effect: (lv) => [
+            { label: 'MATK', value: `${100 + 20 * lv}%`, next: lv < 10 ? `${100 + 20*(lv+1)}%` : null },
+        ],
+    },
+    'Fire Wall': {
+        desc: 'Creates a wall of fire that burns enemies passing through.',
+        effect: (lv) => [
+            { label: 'Hits',     value: `${lv + 1}`,       next: lv < 10 ? `${lv+2}` : null },
+            { label: 'Duration', value: `${5 + 5 * lv}s`,  next: lv < 10 ? `${5 + 5*(lv+1)}s` : null },
+        ],
+    },
+    'Thunder Storm': {
+        desc: 'Deals wind-element AoE magic damage in a 5x5 area.',
+        effect: (lv) => [
+            { label: 'MATK', value: `${100 + 40 * lv}%`, next: lv < 10 ? `${100 + 40*(lv+1)}%` : null },
+        ],
+    },
+    'Safety Wall': {
+        desc: 'Creates a shield on a cell that absorbs melee attacks.',
+        effect: (lv) => [
+            { label: 'Hits Blocked', value: `${lv + 1}`,   next: lv < 10 ? `${lv+2}` : null },
+            { label: 'Duration',     value: `${lv * 5}s`,  next: lv < 10 ? `${(lv+1)*5}s` : null },
+        ],
+    },
+
+    // ── ARCHER ───────────────────────────────────────────────────────
+    "Owl's Eye": {
+        desc: 'Increases DEX, improving HIT, ranged ATK, and cast times.',
+        effect: (lv) => [
+            { label: 'DEX +', value: `+${lv}`, next: lv < 10 ? `+${lv+1}` : null },
+        ],
+    },
+    'Double Strafing': {
+        desc: 'Fires two arrows at once dealing heavy damage.',
+        effect: (lv) => [
+            { label: 'ATK', value: `${180 + 20 * lv}%`, next: lv < 10 ? `${180 + 20*(lv+1)}%` : null },
+        ],
+    },
+    'Making Arrow': {
+        desc: 'Allows crafting of arrows from various materials.',
+        effect: () => [],
+    },
+    'Charge Arrow': {
+        desc: 'Fires a powerful arrow that pushes the target back.',
+        effect: () => [{ label: 'ATK', value: '150%' }],
+    },
+    "Vulture's Eye": {
+        desc: 'Increases bow range and HIT when a bow is equipped.',
+        effect: (lv) => [
+            { label: 'Range +',  value: `+${lv}`,  next: lv < 10 ? `+${lv+1}` : null },
+            { label: 'HIT Bonus',value: `+${lv}`,  next: lv < 10 ? `+${lv+1}` : null },
+        ],
+    },
+    'Attention Concentrate': {
+        desc: 'Temporarily increases HIT and flee rate.',
+        effect: (lv) => [
+            { label: 'HIT +',  value: `+${4 + 2 * lv}%`, next: lv < 10 ? `+${4 + 2*(lv+1)}%` : null },
+            { label: 'FLEE +', value: `+${4 + 2 * lv}%`, next: lv < 10 ? `+${4 + 2*(lv+1)}%` : null },
+        ],
+    },
+    'Arrow Shower': {
+        desc: 'Fires a volley of arrows in a 3x3 AoE.',
+        effect: (lv) => [
+            { label: 'ATK', value: `${150 + 10 * lv}%`, next: lv < 10 ? `${150 + 10*(lv+1)}%` : null },
+        ],
+    },
+
+    // ── ACOLYTE ──────────────────────────────────────────────────────
+    'Divine Protection': {
+        desc: 'Increases defense against Demon and Undead enemies.',
+        effect: (lv) => [
+            { label: 'DEF vs Demons/Undead', value: `+${3 * lv}`, next: lv < 10 ? `+${3*(lv+1)}` : null },
+        ],
+    },
+    'Ruwach': {
+        desc: 'Reveals hidden enemies and deals holy damage to them.',
+        effect: () => [],
+    },
+    'Heal': {
+        desc: 'Restores HP to yourself or a nearby ally.',
+        effect: (lv) => [
+            { label: 'Base Heal', value: `${(lv * 10) + (lv * 10)}–${(lv * 10) + (lv * 12)}` },
+        ],
+    },
+    'Aqua Benedicta': {
+        desc: 'Blesses water to create Holy Water.',
+        effect: () => [],
+    },
+    'Holy Light': {
+        desc: 'Deals holy damage to a single target.',
+        effect: () => [{ label: 'MATK', value: '125%' }],
+    },
+    'Demon Bane': {
+        desc: 'Increases ATK against Demon and Undead enemies.',
+        effect: (lv) => [
+            { label: 'ATK vs Demons/Undead', value: `+${3 * lv}`, next: lv < 10 ? `+${3*(lv+1)}` : null },
+        ],
+    },
+    'Teleportation': {
+        desc: 'Teleports to a random location or back to your save point.',
+        effect: (lv) => [
+            { label: 'Lv 1', value: 'Random teleport' },
+            { label: 'Lv 2', value: '+ Return to save point' },
+        ],
+    },
+    'Warp Portal': {
+        desc: 'Creates a portal to a previously visited map.',
+        effect: (lv) => [
+            { label: 'Saved Locations', value: `${lv}`, next: lv < 4 ? `${lv+1}` : null },
+        ],
+    },
+    'Pneuma': {
+        desc: 'Creates a barrier that blocks all ranged physical attacks.',
+        effect: () => [{ label: 'Duration', value: '10s' }],
+    },
+    'Increase Agility': {
+        desc: 'Temporarily increases AGI and movement speed.',
+        effect: (lv) => [
+            { label: 'AGI +', value: `+${3 + lv}`, next: lv < 10 ? `+${3+(lv+1)}` : null },
+        ],
+    },
+    'Decrease Agility': {
+        desc: 'Reduces an enemy\'s AGI and movement speed.',
+        effect: (lv) => [
+            { label: 'AGI −', value: `${3 + lv}`, next: lv < 10 ? `${3+(lv+1)}` : null },
+        ],
+    },
+    'Signum Crucis': {
+        desc: 'Reduces the DEF of Demon and Undead enemies in range.',
+        effect: (lv) => [
+            { label: 'DEF Reduction', value: `${10 + 4 * lv}%`, next: lv < 10 ? `${10 + 4*(lv+1)}%` : null },
+        ],
+    },
+    'Angelus': {
+        desc: 'Increases VIT defense for all party members.',
+        effect: (lv) => [
+            { label: 'Soft DEF +', value: `${5 + 5 * lv}%`, next: lv < 10 ? `${5 + 5*(lv+1)}%` : null },
+        ],
+    },
+    'Blessing': {
+        desc: 'Increases STR, DEX, and INT of a target.',
+        effect: (lv) => [
+            { label: 'STR / DEX / INT +', value: `+${lv}`, next: lv < 10 ? `+${lv+1}` : null },
+        ],
+    },
+    'Cure': {
+        desc: 'Removes Silence, Confusion, and Blindness from a target.',
+        effect: () => [],
+    },
+
+    // ── MERCHANT ─────────────────────────────────────────────────────
+    'Enlarge Weight Limit': {
+        desc: 'Increases your maximum weight capacity.',
+        effect: (lv) => [
+            { label: 'Weight +', value: `+${200 * lv}`, next: lv < 10 ? `+${200*(lv+1)}` : null },
+        ],
+    },
+    'Identify': {
+        desc: 'Identifies unidentified items without using a magnifier.',
+        effect: () => [],
+    },
+    'Mammonite': {
+        desc: 'Throws zeny at the enemy to deal damage proportional to amount spent.',
+        effect: (lv) => [
+            { label: 'ATK',      value: `${100 + 100 * lv}%`, next: lv < 10 ? `${100 + 100*(lv+1)}%` : null },
+            { label: 'Zeny Cost',value: `${100 * lv}z`,       next: lv < 10 ? `${100*(lv+1)}z` : null },
+        ],
+    },
+    'Cart Revolution': {
+        desc: 'Uses your cart to deal AoE damage to surrounding enemies.',
+        effect: () => [{ label: 'ATK', value: '150%' }],
+    },
+    'Change Cart': {
+        desc: 'Allows you to change the appearance of your cart.',
+        effect: () => [],
+    },
+    'Loud Exclamation': {
+        desc: 'Permanently increases STR by 4.',
+        effect: () => [{ label: 'STR +', value: '+4' }],
+    },
+    'Cart Decoration': {
+        desc: 'Decorates your cart.',
+        effect: () => [],
+    },
+    'Discount': {
+        desc: 'Reduces the purchase price of items from NPC shops.',
+        effect: (lv) => [
+            { label: 'Price Reduction', value: `${3 + 3 * lv}%`, next: lv < 10 ? `${3 + 3*(lv+1)}%` : null },
+        ],
+    },
+    'Overcharge': {
+        desc: 'Increases the sell price of items to NPC shops.',
+        effect: (lv) => [
+            { label: 'Sell Bonus', value: `${5 + 2 * lv}%`, next: lv < 10 ? `${5 + 2*(lv+1)}%` : null },
+        ],
+    },
+    'Pushcart': {
+        desc: 'Allows you to use a cart for carrying extra items.',
+        effect: (lv) => [
+            { label: 'Cart Capacity', value: `${3000 + 500 * lv}`, next: lv < 10 ? `${3000 + 500*(lv+1)}` : null },
+        ],
+    },
+    'Vending': {
+        desc: 'Opens a shop to sell items to other players.',
+        effect: (lv) => [
+            { label: 'Item Slots', value: `${2 + lv}`, next: lv < 10 ? `${2+(lv+1)}` : null },
+        ],
+    },
+    'Buying Store': {
+        desc: 'Opens a shop to buy items from other players.',
+        effect: () => [{ label: 'Item Slots', value: '5' }],
+    },
+
+    // ── THIEF ────────────────────────────────────────────────────────
+    'Double Attack': {
+        desc: 'Gives a chance to attack twice when equipped with a dagger.',
+        effect: (lv) => [
+            { label: 'Trigger Chance', value: `${5 * lv}%`, next: lv < 10 ? `${5*(lv+1)}%` : null },
+        ],
+    },
+    'Increase Dodge': {
+        desc: 'Permanently increases FLEE.',
+        effect: (lv) => [
+            { label: 'FLEE +', value: `+${3 * lv}`, next: lv < 10 ? `+${3*(lv+1)}` : null },
+        ],
+    },
+    'Steal': {
+        desc: 'Attempts to steal an item from a monster.',
+        effect: (lv) => [
+            { label: 'Success Rate', value: `${10 + 6 * lv}%`, next: lv < 10 ? `${10 + 6*(lv+1)}%` : null },
+        ],
+    },
+    'Envenom': {
+        desc: 'Deals poison-element damage and attempts to poison the target.',
+        effect: (lv) => [
+            { label: 'ATK',          value: `+${15 * lv}`,     next: lv < 10 ? `+${15*(lv+1)}` : null },
+            { label: 'Poison Chance',value: `${5 + 4 * lv}%`,  next: lv < 10 ? `${5 + 4*(lv+1)}%` : null },
+        ],
+    },
+    'Sprinkle Sand': {
+        desc: 'Throws sand at an enemy reducing its HIT.',
+        effect: () => [{ label: 'HIT Reduction', value: '−10' }],
+    },
+    'Back Sliding': {
+        desc: 'Instantly moves the character back 5 cells.',
+        effect: () => [],
+    },
+    'Pick Stone': {
+        desc: 'Picks up a stone from the ground.',
+        effect: () => [],
+    },
+    'Throw Stone': {
+        desc: 'Throws a stone at an enemy, dealing minor damage.',
+        effect: () => [{ label: 'Damage', value: '50' }],
+    },
+    'Hiding': {
+        desc: 'Conceals the character from enemies.',
+        effect: (lv) => [
+            { label: 'Duration', value: `${30 + 30 * lv}s`, next: lv < 10 ? `${30 + 30*(lv+1)}s` : null },
+        ],
+    },
+    'Detoxify': {
+        desc: 'Removes poison from yourself or a nearby ally.',
+        effect: () => [],
+    },
+};
+
+// ===================================================================
 // HELPER — returns an <img> tag if the skill has a mapped icon,
 // otherwise falls back to the empty placeholder div.
 // ===================================================================
@@ -321,6 +765,10 @@ const SKILL_EFFECTS = {
         bonus: (level) => ({ flee: 3 * level }),
     },
    
+    'Double Attack':{
+        condition: (char) => char.weaponKey === 'dagger',
+        bonus: (level) => ({hit: 1 * level}),
+    }
 
 
 };
@@ -473,7 +921,117 @@ function buildLockedTypeTag(s) {
 }
 
 // ===================================================================
-// RENDER BOTH TABLES
+// SKILL POPUP
+// ===================================================================
+
+let _popupTimeout = null;
+
+function showSkillPopup(skillName, anchorEl, isLocked = false) {
+    
+    closeSkillPopup(false); // close instantly, no fade
+
+    const desc  = SKILL_DESCRIPTIONS[skillName];
+    const icon  = SKILL_ICONS[skillName];
+    const maxHP = (typeof calculateCombatStats === 'function')
+        ? calculateCombatStats(character).maxHP : 0;
+    const maxSP = (typeof calculateCombatStats === 'function')
+        ? calculateCombatStats(character).maxSP : 0;
+
+    // Current level
+    let curLv = 0;
+    if (activeSkillData) {
+        const found = activeSkillData.unlocked.find(s => s.name === skillName)
+                   ?? activeSkillData.locked.find(s => s.name === skillName);
+        curLv = found?.cur ?? 0;
+    }
+
+    // Effect rows 
+    let effectHTML = '';
+    if (desc?.effect) {
+        const rows = desc.effect(curLv, character, maxHP, maxSP);
+        if (rows.length > 0) {
+            effectHTML = `<div class="sp-effects">` + rows.map(r => {
+                const nextSpan = (r.next != null && r.next !== r.value)
+                    ? ` <span class="sp-next">(→ ${r.next})</span>` : '';
+
+                // Locked rows (not yet reached) render dimmed
+                const rowClass = r.locked ? ' sp-effect-row-locked' : '';
+
+                return `<div class="sp-effect-row${rowClass}">
+                    <span class="sp-effect-label">${r.label}</span>
+                    <span class="sp-effect-value">${r.value}${nextSpan}</span>
+                </div>`;
+            }).join('') + `</div>`;
+        }
+    }
+
+    const iconHTML = icon
+        ? `<img src="${icon}" class="sp-icon" alt="${skillName}" onerror="this.style.display='none'">`
+        : `<div class="sp-icon sp-icon-placeholder"></div>`;
+
+    // ── Overlay ───────────────────────────────────────────────────────
+    const overlay = document.createElement('div');
+    overlay.id        = 'skill-popup-overlay';
+    overlay.className = 'skill-popup-overlay';
+    overlay.addEventListener('click', () => closeSkillPopup(true));
+
+    // ── Popup card ────────────────────────────────────────────────────
+    const popup = document.createElement('div');
+    popup.id        = 'skill-popup';
+    popup.className = 'skill-popup';
+    // Stop clicks inside the card from closing the overlay
+    popup.addEventListener('click', e => e.stopPropagation());
+
+    popup.innerHTML = `
+    <div class="sp-header">
+        ${iconHTML}
+        <div class="sp-title-block">
+            <div class="sp-name">${skillName}</div>
+            ${curLv > 0 ? `<div class="sp-level">Level ${curLv}</div>` : ''}
+        </div>
+        <button class="sp-close" onclick="closeSkillPopup(true)">✕</button>
+    </div>
+    <div class="sp-divider"></div>
+    <div class="sp-body">
+        ${desc?.desc ? `<p class="sp-desc">${desc.desc}</p>` : ''}
+        ${effectHTML}
+        ${!effectHTML && !desc?.desc
+            ? `<p class="sp-desc sp-no-effect">No additional effects.</p>`
+            : ''}
+    </div>
+`;
+
+    document.body.appendChild(overlay);
+    document.body.appendChild(popup);
+
+    // Trigger enter animation on next frame
+    requestAnimationFrame(() => {
+        overlay.classList.add('sp-visible');
+        popup.classList.add('sp-visible');
+    });
+}
+
+function closeSkillPopup(fade = true) {
+    const overlay = document.getElementById('skill-popup-overlay');
+    const popup   = document.getElementById('skill-popup');
+    if (!overlay && !popup) return;
+
+    if (fade) {
+        // Add fade-out class then remove after transition
+        overlay?.classList.add('sp-hiding');
+        popup?.classList.add('sp-hiding');
+        setTimeout(() => {
+            overlay?.remove();
+            popup?.remove();
+        }, 200); // matches CSS transition duration
+    } else {
+        overlay?.remove();
+        popup?.remove();
+    }
+}
+
+// ===================================================================
+// RENDER BOTH TABLES  (updated — skill names are clickable)
 // ===================================================================
 
 function renderSkillTables() {
@@ -489,10 +1047,12 @@ function renderSkillTables() {
         const isQuest = s.type === 'quest';
         const minBtn  = `<button class="skill-adj-btn minus" ${isQuest ? 'disabled' : `onclick="adjustSkill(${idx}, -1)"`}>${SVG_MINUS}</button>`;
         const addBtn  = `<button class="skill-adj-btn add"   ${isQuest ? 'disabled' : `onclick="adjustSkill(${idx},  1)"`}>${SVG_ADD}</button>`;
+        // Escaped name for inline onclick
+        const eName   = skillName => skillName.replace(/'/g, "\\'");
         uHTML += `
         <tr data-skill-idx="${idx}">
             <td><div class="skill-icon-wrap">${getSkillIcon(s.name)}</div></td>
-            <td><span class="skill-name-link">${s.name}</span></td>
+            <td><span class="skill-name-link" onclick="showSkillPopup('${eName(s.name)}', this)">${s.name}</span></td>
             <td><div class="skill-lvl-cell">${minBtn}<span class="skill-level-badge">${s.cur} / ${s.max}</span>${addBtn}</div></td>
             <td>${buildTypeTags(s)}</td>
         </tr>`;
@@ -504,10 +1064,11 @@ function renderSkillTables() {
         lHTML += `<tr><td colspan="4" class="skills-sub-label" style="padding:10px 0;">—</td></tr>`;
     } else {
         activeSkillData.locked.forEach(s => {
+            const eName = s.name.replace(/'/g, "\\'");
             lHTML += `
             <tr>
                 <td><div class="skill-icon-wrap">${getSkillIcon(s.name)}</div></td>
-                <td><span class="skill-name-link">${s.name}</span></td>
+                <td><span class="skill-name-link" onclick="showSkillPopup('${eName}', this, true)">${s.name}</span></td>
                 <td><span class="skill-level-badge">${s.max}</span></td>
                 <td>${buildLockedTypeTag(s)}<span class="skill-req">${s.req}</span></td>
             </tr>`;
