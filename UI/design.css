@@ -38,6 +38,7 @@ body {
    MAIN LAYOUT — character + panel in ONE card
 ══════════════════════════════════════════════════ */
 .main-layout-container {
+    height: 650px;
     display: inline-flex;
     height: 700px;
     flex-direction: row;

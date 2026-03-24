@@ -47,7 +47,7 @@ const JOB_MAP = {
 };
 
 const JOB_MAX_LEVEL = {
-  novice: 9, swordsman: 50, magician: 50,
+  novice: 10, swordsman: 50, magician: 50,
   archer: 50, acolyte: 50, merchant: 50, thief: 50,
 };
 
@@ -205,7 +205,7 @@ function updateJobLevelOptions(job) {
   if (visualList) {
     visualList.innerHTML = "";
     const liNone = document.createElement("li");
-    liNone.textContent = "—";
+    liNone.textContent = "0";
     liNone.onclick = () => selectJobLevel(0);
     visualList.appendChild(liNone);
     for (let i = 1; i <= max; i++) {
@@ -237,18 +237,26 @@ function selectJob(displayName, fileName, selectVal) {
   const img = document.getElementById("character-img");
   if (img) img.src = `../images/${fileName}`;
 
-  character.job      = JOB_MAP[selectVal] ?? "novice";
-  character.jobLevel = 0;
+  const newJob = JOB_MAP[selectVal] ?? "novice";
+  character.job = newJob;
+  // Do NOT reset jobLevel — preserve it across class changes
 
+  // Clamp job level to new class max if it exceeds it
+  const newMax = JOB_MAX_LEVEL[newJob] ?? 0;
+  if (character.jobLevel > newMax) {
+    character.jobLevel = newMax;
+  }
+
+  // Sync the displayed job level
   const curJL = document.getElementById("current-jl");
-  if (curJL) curJL.textContent = "—";
+  if (curJL) curJL.textContent = character.jobLevel > 0 ? character.jobLevel : "0";
 
   document.getElementById("jobDropdown")?.classList.remove("active");
   updateJobLevelOptions(character.job);
   populateWeaponSelect(character.job);
   updateUI();
+  if (typeof updateFooter === "function") updateFooter();
 }
-
 // ===================================================================
 // WEAPON SELECT
 // ===================================================================
@@ -260,7 +268,7 @@ function selectWeapon(weaponLabel) {
   const curW = document.getElementById("current-weapon");
   if (curW) curW.textContent = WEAPON_LABELS[weaponKey] ?? weaponLabel;
   document.getElementById("weaponDropdown")?.classList.remove("active");
-  updateASPD(character);
+  updateUI();  // ← was updateASPD(character)
 }
 
 function populateWeaponSelect(job) {
@@ -286,7 +294,7 @@ function populateWeaponSelect(job) {
         const curW = document.getElementById("current-weapon");
         if (curW) curW.textContent = label;
         document.getElementById("weaponDropdown")?.classList.remove("active");
-        updateASPD(character);
+        updateUI();  // ← was updateASPD(character), now full UI update
       };
       visualList.appendChild(li);
     }
