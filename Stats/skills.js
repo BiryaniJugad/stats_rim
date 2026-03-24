@@ -355,7 +355,7 @@ const SKILL_DESCRIPTIONS = {
         ],
     },
     'Aqua Benedicta': {
-        desc: 'Blesses water to create Holy Water.',
+        desc: 'Create 1 Holy Water while standing in shallow water. Each use consumes an Empty Bottle.',
         effect: () => [],
     },
     'Holy Light': {
@@ -621,7 +621,7 @@ const JOB_SKILLS = {
         ],
         locked: [
             { name: "Vulture's Eye",         max: 10, req: "Owl's Eye Lv 3",       lockedType: 'passive' },
-            { name: 'Attention Concentrate', max: 10, req: "Vulture's Eye Lv 1",   lockedType: 'active' },
+            { name: 'Attention Concentrate', max: 10, req: "Vulture's Eye Lv 1",   lockedType: 'active'  },
             { name: 'Arrow Shower',          max: 10, req: 'Double Strafing Lv 5', lockedType: 'active'  },
         ],
     },
@@ -1018,8 +1018,7 @@ function buildLockedTypeTag(s) {
 let _popupTimeout = null;
 
 function showSkillPopup(skillName, anchorEl, isLocked = false) {
-    
-    closeSkillPopup(false); // close instantly, no fade
+    closeSkillPopup(false);
 
     const desc  = SKILL_DESCRIPTIONS[skillName];
     const icon  = SKILL_ICONS[skillName];
@@ -1028,7 +1027,6 @@ function showSkillPopup(skillName, anchorEl, isLocked = false) {
     const maxSP = (typeof calculateCombatStats === 'function')
         ? calculateCombatStats(character).maxSP : 0;
 
-    // Current level
     let curLv = 0;
     if (activeSkillData) {
         const found = activeSkillData.unlocked.find(s => s.name === skillName)
@@ -1036,7 +1034,6 @@ function showSkillPopup(skillName, anchorEl, isLocked = false) {
         curLv = found?.cur ?? 0;
     }
 
-    // Effect rows 
     let effectHTML = '';
     if (desc?.effect) {
         const rows = desc.effect(curLv, character, maxHP, maxSP);
@@ -1044,10 +1041,7 @@ function showSkillPopup(skillName, anchorEl, isLocked = false) {
             effectHTML = `<div class="sp-effects">` + rows.map(r => {
                 const nextSpan = (r.next != null && r.next !== r.value)
                     ? ` <span class="sp-next">(→ ${r.next})</span>` : '';
-
-                // Locked rows (not yet reached) render dimmed
                 const rowClass = r.locked ? ' sp-effect-row-locked' : '';
-
                 return `<div class="sp-effect-row${rowClass}">
                     <span class="sp-effect-label">${r.label}</span>
                     <span class="sp-effect-value">${r.value}${nextSpan}</span>
@@ -1060,42 +1054,38 @@ function showSkillPopup(skillName, anchorEl, isLocked = false) {
         ? `<img src="${icon}" class="sp-icon" alt="${skillName}" onerror="this.style.display='none'">`
         : `<div class="sp-icon sp-icon-placeholder"></div>`;
 
-    // ── Overlay ───────────────────────────────────────────────────────
     const overlay = document.createElement('div');
     overlay.id        = 'skill-popup-overlay';
     overlay.className = 'skill-popup-overlay';
     overlay.addEventListener('click', () => closeSkillPopup(true));
 
-    // ── Popup card ────────────────────────────────────────────────────
     const popup = document.createElement('div');
     popup.id        = 'skill-popup';
     popup.className = 'skill-popup';
-    // Stop clicks inside the card from closing the overlay
     popup.addEventListener('click', e => e.stopPropagation());
 
     popup.innerHTML = `
-    <div class="sp-header">
-        ${iconHTML}
-        <div class="sp-title-block">
-            <div class="sp-name">${skillName}</div>
-            ${curLv > 0 ? `<div class="sp-level">Level ${curLv}</div>` : ''}
+        <div class="sp-header">
+            ${iconHTML}
+            <div class="sp-title-block">
+                <div class="sp-name">${skillName}</div>
+                ${curLv > 0 ? `<div class="sp-level">Level ${curLv}</div>` : ''}
+            </div>
+            <button class="sp-close" onclick="closeSkillPopup(true)">✕</button>
         </div>
-        <button class="sp-close" onclick="closeSkillPopup(true)">✕</button>
-    </div>
-    <div class="sp-divider"></div>
-    <div class="sp-body">
-        ${desc?.desc ? `<p class="sp-desc">${desc.desc}</p>` : ''}
-        ${effectHTML}
-        ${!effectHTML && !desc?.desc
-            ? `<p class="sp-desc sp-no-effect">No additional effects.</p>`
-            : ''}
-    </div>
-`;
+        <div class="sp-divider"></div>
+        <div class="sp-body">
+            ${desc?.desc ? `<p class="sp-desc">${desc.desc}</p>` : ''}
+            ${effectHTML}
+            ${!effectHTML && !desc?.desc
+                ? `<p class="sp-desc sp-no-effect">No additional effects.</p>`
+                : ''}
+        </div>
+    `;
 
     document.body.appendChild(overlay);
     document.body.appendChild(popup);
 
-    // Trigger enter animation on next frame
     requestAnimationFrame(() => {
         overlay.classList.add('sp-visible');
         popup.classList.add('sp-visible');
@@ -1193,6 +1183,14 @@ function renderSkillTables() {
         });
     }
     lockedBody.innerHTML = lHTML;
+
+    // Delegated click listeners for skill name popups
+    unlockedBody.querySelectorAll('.skill-name-link').forEach(el => {
+        el.addEventListener('click', () => showSkillPopup(el.textContent.trim()));
+    });
+    lockedBody.querySelectorAll('.skill-name-link').forEach(el => {
+        el.addEventListener('click', () => showSkillPopup(el.textContent.trim(), null, true));
+    });
 }
 
 // ===================================================================
