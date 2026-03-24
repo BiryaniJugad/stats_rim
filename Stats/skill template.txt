@@ -1,0 +1,54 @@
+
+Each entry key is the exact skill name from JOB_SKILLS.
+
+SIGNATURE:
+condition(char, level)        — optional, return false to suppress
+                                level is the skill's current level (s.cur)
+bonus(level, char, maxHP, maxSP) — return any subset of bonus fields
+
+BONUS FIELDS (all optional, default 0):
+
+── BASE STAT BONUSES (applied before all derived stats) ──────────
+str / agi / vit / int / dex / luk
+    Flat additions to effective stat. Because they feed into the
+    stat formulas in combat.js, they automatically affect ATK (STR),
+    FLEE (AGI), DEF (VIT), MATK/MDEF (INT), HIT (DEX), CRIT (LUK),
+    maxHP (VIT), maxSP (INT), and ASPD (AGI, DEX).
+
+── DIRECT COMBAT STAT BONUSES ────────────────────────────────────
+atk          flat bonus added directly to ATK (weapon/buff bonus)
+matk         flat bonus added to MATK min and max
+def          flat bonus added to soft DEF (without going through VIT)
+mdef         flat bonus added to MDEF
+flee         flat bonus added to FLEE
+hit          flat bonus added to HIT
+aspdFlat     flat ASPD added after all stat calculations
+
+── NATURAL REGEN (tick bonuses) ──────────────────────────────────
+hprMod       % multiplier on natural HP regen tick  (e.g. 20 = ×1.20)
+sprMod       % multiplier on natural SP regen tick
+flatHPRegen  HP added on a separate +10s standing-still tick
+flatSPRegen  SP added on a separate +10s standing-still tick
+                e.g. floor((maxSP / 500 + 3) * level)
+
+── ITEM EFFICIENCY ───────────────────────────────────────────────
+healItemMod  % increase to HP-restoring item effectiveness
+spItemMod    % increase to SP-restoring item effectiveness
+
+
+QUICK RECIPES:
+
+Stat buff:
+    bonus: (level) => ({ str: 3 * level, agi: level })
+
+Weapon-gated ATK buff:
+    condition: (char, level) => char.weaponKey === 'bow',
+
+Level-threshold bonus (only active at Lv5+):
+    condition: (char, level) => level >= 5,
+    bonus: (level) => ({ atk: 5 * level })
+
+Pool-based flat regen:
+    bonus: (level, char, maxHP, maxSP) => ({
+        flatSPRegen: Math.floor((maxSP / 500 + 3) * level)
+    })
