@@ -144,7 +144,7 @@ const SKILL_DESCRIPTIONS = {
     'Trick Dead': {
         desc: 'Pretend to fall dead on the ground, becoming immune from all attacks from Players and monsters. Skill can be toggled on and off',
         effect: () => [
-            {label: 'Skill can be toggled On and Off', value: ''}
+            {label: 'Skill can be toggled On and Off', value: ''},
         ],
     },
 
