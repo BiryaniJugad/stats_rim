@@ -424,9 +424,7 @@
 .job-btn[data-color="red"].active .jname {
     color: var(--orange-dark, #c07808);
 }
-/* ══════════════════════════════════════════════════
-   SKILLS TAB — layout & containment
-══════════════════════════════════════════════════ */
+
 #skills-tab.tab-pane {
     display: none;
     flex-direction: column;
@@ -578,6 +576,7 @@
     cursor: pointer;
     white-space: nowrap;
     overflow: hidden;
+    text-decoration: underline;
     text-overflow: ellipsis;
     display: block;
     max-width: 100%;
