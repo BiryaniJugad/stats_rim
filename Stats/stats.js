@@ -85,48 +85,36 @@ const JOB_INFO = {
     expBase: "100%", expJob: "100%",
   },
   magician: {
-    badge: "1st Class — Magician",
+    badge: "1st Class — Mage",
     desc: "The <strong>Magician</strong> wields devastating elemental magic. With the highest INT growth, they deal massive MATK at the cost of low HP.",
     traits: [["🔥","Highest INT bonus"],["💥","Powerful AOE spells"],["🧪","SP-hungry caster"],["📈","Advances to Wizard / Sage"]],
     expBase: "100%", expJob: "100%",
   },
   archer: {
-    badge: "1st Class — Archer",
+    badge: "1st Class — Ranger",
     desc: "The <strong>Archer</strong> attacks from range with exceptional DEX, making them reliable damage-dealers with high HIT and FLEE.",
-    traits: [["🏹","Highest DEX bonus"],["👟","Strong AGI & FLEE"],["🎯","High HIT accuracy"],["📈","Advances to Hunter / Bard"]],
+    traits: [["🏹","Highest DEX bonus"],["👟","Strong AGI & FLEE"],["🎯","High HIT accuracy"],["📈","Advances to Hunter / Bard / Dancer"]],
     expBase: "100%", expJob: "100%",
   },
   acolyte: {
-    badge: "1st Class — Acolyte",
+    badge: "1st Class — Healer",
     desc: "The <strong>Acolyte</strong> serves as healer and support. Their INT and SP pool give them strong recovery skills.",
     traits: [["💚","Strong HP and SP regen"],["🙏","Support & heal focused"],["📿","High LUK growth"],["📈","Advances to Priest / Monk"]],
     expBase: "100%", expJob: "100%",
   },
   merchant: {
-    badge: "1st Class — Merchant",
+    badge: "1st Class — Trader",
     desc: "The <strong>Merchant</strong> combines combat skill with economic prowess. High STR and a large weight limit make them self-sufficient.",
     traits: [["💪","High STR & carry weight"],["🪙","Best weight limit"],["🔨","Axe & mace specialist"],["📈","Advances to Blacksmith / Alchemist"]],
     expBase: "100%", expJob: "100%",
   },
   thief: {
-    badge: "1st Class — Thief",
+    badge: "1st Class — Rogue",
     desc: "The <strong>Thief</strong> relies on speed and cunning. High AGI gives them exceptional FLEE and attack speed.",
     traits: [["💨","Highest AGI bonus"],["🗡️","Fast attack speed"],["👻","High FLEE & dodge"],["📈","Advances to Assassin / Rogue"]],
     expBase: "100%", expJob: "100%",
   },
 };
-
-// ===================================================================
-// BASIC SKILL LEVEL HELPER
-// Returns the current level of "Basic Skill" from activeSkillData,
-// or 0 if not available (e.g. non-novice job with no such skill).
-// ===================================================================
-
-function getBasicSkillLevel() {
-  if (typeof activeSkillData === "undefined" || !activeSkillData) return 0;
-  const skill = activeSkillData.unlocked.find(s => s.name === "Basic Skill");
-  return skill ? (skill.cur || 0) : 0;
-}
 
 // ===================================================================
 // ASPD BRIDGE
@@ -141,6 +129,32 @@ function getCurrentWeapon() { return character.weaponKey || "bare_handed"; }
 function getPotionASPDBonus() {
   const POTION_MAP = { "": 0, "1": 6, "2": 12, "3": 17 };
   return POTION_MAP[character.potionVal ?? ""] ?? 0;
+}
+
+// Skill AGI/DEX/ASPD bonuses — written by updateUI() before calling updateASPD()
+// so the ASPD formula sees skill-boosted stats (e.g. Increase Agility, Blessing).
+let _skillAgi      = 0;
+let _skillDex      = 0;
+let _skillAspdFlat = 0;
+
+// Full override of aspd.js updateASPD — uses effective stats including skill bonuses.
+function updateASPD(char) {
+  const job    = char.job;
+  const weapon = char.weaponKey || "bare_handed";
+
+  const jb  = calculateJobBonuses(char.job, char.jobLevel || 0);
+  const agi = char.stats.agi + (jb.agi || 0) + _skillAgi;
+  const dex = char.stats.dex + (jb.dex || 0) + _skillDex;
+
+  const POTION_MAP = { "": 0, "1": 6, "2": 12, "3": 17 };
+  const potionBonus = POTION_MAP[char.potionVal ?? ""] ?? 0;
+
+  const aspd  = calculateASPD(job, weapon, agi, dex, potionBonus);
+  const final = aspd !== null ? Math.min(190, aspd + _skillAspdFlat) : null;
+
+  const aspdEl = document.getElementById("aspd-value");
+  if (aspdEl) aspdEl.value = final !== null ? final : "—";
+  return final;
 }
 
 // ===================================================================
@@ -191,7 +205,7 @@ function updateJobLevelOptions(job) {
   if (visualList) {
     visualList.innerHTML = "";
     const liNone = document.createElement("li");
-    liNone.textContent = "0";
+    liNone.textContent = "—";
     liNone.onclick = () => selectJobLevel(0);
     visualList.appendChild(liNone);
     for (let i = 1; i <= max; i++) {
@@ -206,7 +220,7 @@ function updateJobLevelOptions(job) {
 function selectJobLevel(numVal) {
   character.jobLevel = numVal;
   const display = document.getElementById("current-jl");
-  if (display) display.textContent = numVal > 0 ? numVal : "0";
+  if (display) display.textContent = numVal > 0 ? numVal : "—";
   document.getElementById("jobLevelDropdown")?.classList.remove("active");
   updateUI();
   if (typeof updateFooter === "function") updateFooter();
@@ -227,7 +241,7 @@ function selectJob(displayName, fileName, selectVal) {
   character.jobLevel = 0;
 
   const curJL = document.getElementById("current-jl");
-  if (curJL) curJL.textContent = "0";
+  if (curJL) curJL.textContent = "—";
 
   document.getElementById("jobDropdown")?.classList.remove("active");
   updateJobLevelOptions(character.job);
@@ -399,6 +413,11 @@ function updateUI() {
   ));
 
   // ── ASPD ──────────────────────────────────────────────────────────
+  // Push skill stat bonuses into the module-level vars so our updateASPD
+  // override uses fully skill-boosted AGI/DEX and adds aspdFlat on top.
+  _skillAgi      = cs.skillAgi   || 0;
+  _skillDex      = cs.skillDex   || 0;
+  _skillAspdFlat = cs.aspdFlat   || 0;
   updateASPD(character);
 
   // ── Status Points ─────────────────────────────────────────────────
@@ -445,7 +464,7 @@ function updateUI() {
 
   // ── Weight ────────────────────────────────────────────────────────
   const baseWeight  = getWeightLimit(character.job);
-  const totalWeight = baseWeight + character.stats.str * 30;
+  const totalWeight = baseWeight + character.stats.str * 30 + (cs.weightBonus || 0);
   const wDisplay    = document.getElementById("weight-display");
   if (wDisplay) wDisplay.textContent = totalWeight.toLocaleString();
 
@@ -456,24 +475,31 @@ function updateUI() {
   }
 
   // ── HP / SP Regen ─────────────────────────────────────────────────
-  // Basic Skill Lv 3+ (Novice): sitting tick is halved
-  //   HP: standing 6s, sitting 3s → 1.5s at Lv3+
-  //   SP: standing 8s, sitting 4s → 2s   at Lv3+
-  const basicSkillLv = getBasicSkillLevel();
-  const fastSit      = basicSkillLv >= 3;
-
   const effVIT = character.stats.vit + (jobBonuses.vit || 0);
   const effINT = character.stats.int + (jobBonuses.int || 0);
-  const hpr = calculateHPRegen(maxHP, effVIT);
-  const spr = calculateSPRegen(maxSP, effINT);
 
-  const hpSitInterval = fastSit ? "1.5s" : "3s";
-  const spSitInterval = fastSit ? "2s"   : "4s";
+  // Natural tick — pass skill % modifiers so hprMod/sprMod multiply the tick
+  const hpr = calculateHPRegen(maxHP, effVIT, cs.hprMod ?? 0);
+  const spr = calculateSPRegen(maxSP, effINT, cs.sprMod ?? 0);
+
+  // Flat skill regen lines (e.g. Increase Recuperative Power, Increase Spiritual Power)
+  const flatHP = cs.flatHPRegen ?? 0;
+  const flatSP = cs.flatSPRegen ?? 0;
+  const flatHPLine = flatHP > 0 ? ` · +${flatHP} per 10s still` : '';
+  const flatSPLine = flatSP > 0 ? ` · +${flatSP} per 10s still` : '';
+
+  // Item efficiency lines
+  const healMod = cs.healItemMod ?? 0;
+  const spMod   = cs.spItemMod   ?? 0;
+  const healModLine = healMod > 0 ? ` · HP items +${healMod}%` : '';
+  const spModLine   = spMod   > 0 ? ` · SP items +${spMod}%`  : '';
 
   const hpRegenEl = document.getElementById("hp-regen-val");
   const spRegenEl = document.getElementById("sp-regen-val");
-  if (hpRegenEl) hpRegenEl.textContent = `${hpr} per 6s standing · ${hpr} per ${hpSitInterval} sitting`;
-  if (spRegenEl) spRegenEl.textContent = `${spr} per 8s standing · ${spr} per ${spSitInterval} sitting`;
+  if (hpRegenEl) hpRegenEl.textContent =
+    `${hpr} per 6s standing · ${hpr} per 3s sitting${flatHPLine}${healModLine}`;
+  if (spRegenEl) spRegenEl.textContent =
+    `${spr} per 8s standing · ${spr} per 4s sitting${flatSPLine}${spModLine}`;
 
   // ── Info tab ──────────────────────────────────────────────────────
   updateInfoTab(character.job);
