@@ -576,13 +576,15 @@
     font-weight: 600;
     font-size: 11px;
     cursor: pointer;
-    white-space: nowrap;
+    display: -webkit-box;
+    -webkit-line-clamp: 2; 
+    -webkit-box-orient: vertical;  
     overflow: hidden;
-    text-overflow: ellipsis;
-    display: block;
+    white-space: normal;
+    word-break: break-word; 
+    
     max-width: 100%;
 }
-
 /* ── Level cell: [−] 0/10 [+] ── */
 .skill-lvl-cell {
     display: flex;
@@ -941,4 +943,78 @@
 .sp-effect-row-locked .sp-effect-value {
     color: var(--text-light);
     font-weight: 600;
+}
+
+/* ══════════════════════════════════════════════════
+   SKILL UNLOCK BUTTON  (locked table, 3rd column)
+══════════════════════════════════════════════════ */
+
+/* Wrapper that holds the max-level badge + unlock button side by side */
+.skill-unlock-cell {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    white-space: nowrap;
+}
+
+/* The button itself */
+.skill-unlock-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+    padding: 2px 7px;
+    border-radius: 5px;
+    border: 1px solid rgba(74, 158, 232, 0.35);
+    background: rgba(74, 158, 232, 0.08);
+    color: #2a6aaa;
+    font-size: 9px;
+    font-weight: 700;
+    font-family: var(--font-main);
+    cursor: pointer;
+    letter-spacing: 0.03em;
+    white-space: nowrap;
+    transition: background 0.12s, border-color 0.12s, transform 0.08s, color 0.12s;
+}
+.skill-unlock-btn svg {
+    width: 10px;
+    height: 10px;
+    flex-shrink: 0;
+}
+.skill-unlock-btn:hover {
+    background: rgba(74, 158, 232, 0.18);
+    border-color: rgba(74, 158, 232, 0.60);
+    color: #1a4a8a;
+    transform: scale(1.05);
+}
+.skill-unlock-btn:active {
+    transform: scale(0.95);
+}
+.skill-unlock-btn[disabled] {
+    opacity: 0.30;
+    cursor: not-allowed;
+    pointer-events: none;
+    filter: grayscale(0.5);
+}
+
+/* ══════════════════════════════════════════════════
+   SKILL ICON IMAGE  (renders inside the icon cell)
+══════════════════════════════════════════════════ */
+
+/* The <td> that holds the icon — centres content */
+.skill-icon-cell {
+    text-align: center;
+    width: 34px;
+    vertical-align: middle;
+}
+
+/* The actual <img> tag — same dimensions as the placeholder div */
+.skill-icon-img {
+    width: 26px;
+    height: 26px;
+    border-radius: 6px;
+    border: 1px solid var(--border-light);
+    object-fit: contain;
+    display: block;
+    margin: 0 auto;
+    background: var(--bg-badge);
 }
