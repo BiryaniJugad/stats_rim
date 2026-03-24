@@ -1,0 +1,9 @@
+Skills affects stats.
+
+Skill auto sort
+quest skills to bot and skills unlocked then locked return to previous position and not on bottom.
+
+Skill types Active and Passive. Quest Skills, another identifier.
+
+Skill tab have scroll bar and not overlap.
+
