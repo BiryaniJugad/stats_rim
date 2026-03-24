@@ -1,0 +1,739 @@
+/* ═══════════════════════════════════════
+   tabs.css — Stat / Info / Details styles
+   ═══════════════════════════════════════ */
+
+/* ── STAT TAB ── */
+.tab-stat-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 6px 0;
+}
+
+.tab-stat-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.tab-stat-label {
+    min-width: 36px;
+    font-size: 11px;
+    font-weight: 800;
+    color: var(--text-mid);
+    background: var(--bg-badge);
+    border-radius: 6px;
+    padding: 3px 6px;
+    text-align: center;
+    font-family: var(--font-main);
+}
+
+.tab-stat-bar-wrap {
+    flex: 1;
+    height: 10px;
+    background: var(--bar-track);
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: inset 0 1px 3px rgba(0,0,0,0.08);
+}
+
+.tab-stat-bar {
+    display: block;
+    height: 100%;
+    border-radius: 10px;
+    background: linear-gradient(90deg, #f0a010, #f8c040);
+    transition: width 0.5s ease;
+}
+.tab-stat-bar.agi { background: linear-gradient(90deg, #4a9ee8, #80c8ff); }
+.tab-stat-bar.vit { background: linear-gradient(90deg, #50a840, #80d860); }
+.tab-stat-bar.int { background: linear-gradient(90deg, #9060d0, #c090ff); }
+.tab-stat-bar.dex { background: linear-gradient(90deg, #e05080, #f090a0); }
+.tab-stat-bar.luk { background: linear-gradient(90deg, #30c0a0, #60e8c8); }
+
+.tab-stat-val {
+    min-width: 24px;
+    font-size: 13px;
+    font-weight: 800;
+    color: var(--text-value);
+    text-align: right;
+    font-family: var(--font-main);
+}
+
+/* ── INFO TAB ── */
+.info-hero-card {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding: 4px 0;
+}
+
+.info-hero-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.info-hero-title {
+    font-size: 20px;
+    font-weight: 800;
+    color: var(--text-value);
+    letter-spacing: 2px;
+    font-family: var(--font-main);
+}
+
+.info-hero-class-badge {
+    font-size: 10px;
+    font-weight: 700;
+    color: var(--orange-dark);
+    background: rgba(240,160,16,0.12);
+    border: 1px solid rgba(240,160,16,0.3);
+    border-radius: 20px;
+    padding: 3px 10px;
+    letter-spacing: 0.5px;
+    font-family: var(--font-main);
+}
+
+.info-hero-divider {
+    height: 1.5px;
+    background: var(--border-light);
+    border-radius: 2px;
+}
+
+.info-hero-desc {
+    font-size: 12.5px;
+    line-height: 1.75;
+    color: var(--text-mid);
+    margin: 0;
+    font-family: var(--font-main);
+}
+
+.info-hero-desc strong {
+    color: var(--text-value);
+    font-weight: 700;
+}
+
+.info-hero-traits {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+}
+
+.info-trait {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 12px;
+    color: var(--text-mid);
+    font-family: var(--font-main);
+}
+
+.info-trait-icon {
+    font-size: 14px;
+    width: 22px;
+    text-align: center;
+}
+
+.info-hero-footer {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.info-footer-label {
+    font-size: 10px;
+    font-weight: 700;
+    color: var(--text-light);
+    font-family: var(--font-main);
+}
+
+.info-footer-val {
+    font-size: 12px;
+    font-weight: 800;
+    color: var(--blue-text);
+    background: var(--bg-badge);
+    border-radius: 6px;
+    padding: 2px 8px;
+    margin-right: 6px;
+    font-family: var(--font-main);
+}
+
+/* ── JOB ROW ── */
+.job-row {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    padding: 8px 0;
+    border-bottom: 1.5px solid var(--border-light);
+    margin-bottom: 4px;
+}
+
+.job-select-group,
+.job-current-group {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.job-label {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--text-mid);
+    font-family: var(--font-main);
+    white-space: nowrap;
+}
+
+.job-select {
+    background: linear-gradient(180deg, #f8fbff 0%, #eef4fc 100%);
+    border: 1.5px solid var(--border);
+    border-radius: 8px;
+    color: var(--text-value);
+    font-family: var(--font-main);
+    font-size: 12px;
+    font-weight: 600;
+    padding: 3px 8px;
+    cursor: pointer;
+    outline: none;
+    transition: border-color 0.2s;
+}
+
+.job-select:focus { border-color: var(--orange-text); }
+
+.job-current-val {
+    font-size: 13px;
+    font-weight: 800;
+    color: var(--orange-text);
+    background: rgba(240,160,16,0.1);
+    border: 1.5px solid rgba(240,160,16,0.3);
+    border-radius: 8px;
+    padding: 2px 10px;
+    font-family: var(--font-main);
+    min-width: 70px;
+    text-align: center;
+}
+
+/* ── DETAILS INFO BLOCK ── */
+.details-info-block {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding: 8px 0;
+    border-bottom: 1.5px solid var(--border-light);
+    margin-bottom: 4px;
+}
+
+/* Row 1: HP · SP · Base Level · Job Level · Weight — all in one line */
+.dib-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 35px;
+    margin-left: 15px;
+}
+
+.dib-item {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    background: var(--bg-badge);
+    border-radius: 8px;
+    padding: 7px 24px;
+}
+
+.dib-label {
+    font-size: 10px;
+    font-weight: 700;
+    color: var(--text-light);
+    font-family: var(--font-main);
+}
+
+.dib-val {
+    font-size: 12px;
+    font-weight: 800;
+    color: var(--text-value);
+    font-family: var(--font-main);
+}
+
+.dib-hp { color: #d05020; }
+.dib-sp { color: var(--blue-text); }
+
+/* Row 2: Regen — each item stacks label on top of value */
+.dib-regen-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6px;
+}
+
+.dib-regen-item {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    background: rgba(80,168,64,0.07);
+    border: 1px solid rgba(80,168,64,0.2);
+    border-radius: 8px;
+    padding: 6px 10px;
+}
+
+.dib-regen-item .dib-label {
+    font-size: 10px;
+    color: var(--text-light);
+}
+
+.dib-regen {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--green-text);
+    font-family: var(--font-main);
+    white-space: nowrap;
+}
+
+/* ══════════════════════════════════════════
+   Job Class Sidebar — matches light UI theme
+   ══════════════════════════════════════════ */
+.job-sidebar {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    padding: 14px 8px;
+    background: rgba(255, 255, 255, 0.72);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-right: 1.5px solid rgba(200, 210, 225, 0.55);
+    z-index: 2;
+}
+
+.job-sidebar-label {
+    font-size: 9px;
+    font-weight: 700;
+    color: var(--text-light);
+    text-transform: uppercase;
+    letter-spacing: 0.13em;
+    margin-bottom: 4px;
+    font-family: var(--font-main);
+}
+
+.job-btn {
+    width: 54px;
+    height: 54px;
+    border-radius: 12px;
+    border: 1.5px solid var(--border-light);
+    background: var(--bg-badge);
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 3px;
+    position: relative;
+    transition: transform 0.13s ease, border-color 0.15s ease, background 0.15s ease, box-shadow 0.15s ease;
+    padding: 0;
+}
+
+.job-btn:hover {
+    transform: scale(1.07);
+    border-color: var(--border);
+    background: #ffffff;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.10);
+}
+
+.job-btn img {
+    width: 30px;
+    height: 30px;
+    object-fit: contain;
+    display: block;
+    filter: grayscale(0.6) opacity(0.5);
+    transition: filter 0.15s ease;
+}
+
+.job-btn:hover img {
+    filter: grayscale(0.2) opacity(0.8);
+}
+
+.job-btn.active img {
+    filter: grayscale(0) opacity(1);
+}
+
+.job-btn .jname {
+    font-size: 8px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    color: var(--text-light);
+    line-height: 1;
+    font-family: var(--font-main);
+    transition: color 0.15s ease;
+}
+
+.job-btn .pip {
+    position: absolute;
+    top: 4px;
+    right: 4px;
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    display: none;
+}
+
+.job-btn.active .pip { display: block; }
+
+/* ── Active state: warm orange/gold — matches the UI's accent color ── */
+.job-btn.active {
+    border-color: rgba(240, 160, 16, 0.55);
+    background: rgba(240, 160, 16, 0.08);
+    box-shadow: 0 0 0 2px rgba(240, 160, 16, 0.18);
+}
+
+.job-btn.active .pip {
+    background: #f0a010;
+}
+
+.job-btn.active .jname {
+    color: var(--orange-dark, #c07808);
+}
+
+/* Override per-class colors with the unified warm orange to match UI theme */
+.job-btn[data-color="gold"].active,
+.job-btn[data-color="blue"].active,
+.job-btn[data-color="purple"].active,
+.job-btn[data-color="green"].active,
+.job-btn[data-color="teal"].active,
+.job-btn[data-color="orange"].active,
+.job-btn[data-color="red"].active {
+    border-color: rgba(240, 160, 16, 0.55);
+    background: rgba(240, 160, 16, 0.08);
+    box-shadow: 0 0 0 2px rgba(240, 160, 16, 0.18);
+}
+
+.job-btn[data-color="gold"].active .pip,
+.job-btn[data-color="blue"].active .pip,
+.job-btn[data-color="purple"].active .pip,
+.job-btn[data-color="green"].active .pip,
+.job-btn[data-color="teal"].active .pip,
+.job-btn[data-color="orange"].active .pip,
+.job-btn[data-color="red"].active .pip {
+    background: #f0a010;
+}
+
+.job-btn[data-color="gold"].active .jname,
+.job-btn[data-color="blue"].active .jname,
+.job-btn[data-color="purple"].active .jname,
+.job-btn[data-color="green"].active .jname,
+.job-btn[data-color="teal"].active .jname,
+.job-btn[data-color="orange"].active .jname,
+.job-btn[data-color="red"].active .jname {
+    color: var(--orange-dark, #c07808);
+}
+/* ══════════════════════════════════════════════════
+   SKILLS TAB — layout & containment
+══════════════════════════════════════════════════ */
+#skills-tab.tab-pane {
+    display: none;
+    flex-direction: column;
+    flex: 1;
+    min-height: 0;
+    padding: 8px 0 0 0;
+    overflow: hidden;
+}
+#skills-tab.tab-pane.active {
+    display: flex;
+}
+
+.skills-section {
+    display: flex;
+    gap: 8px;
+    flex: 1;
+    min-height: 0;
+    overflow: hidden;
+}
+
+.skills-panel {
+    flex: 1;
+    min-width: 0;
+    border-radius: 10px;
+    border: 1px solid var(--border-light);
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+    overflow: hidden;
+}
+
+/* ── Panel header ── */
+.skills-panel-header {
+    background: rgba(240, 160, 16, 0.10);
+    border-bottom: 1.5px solid rgba(240, 160, 16, 0.22);
+    padding: 5px 10px;
+    text-align: center;
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--orange-dark);
+    font-family: var(--font-main);
+    letter-spacing: 0.04em;
+    flex-shrink: 0;
+    white-space: nowrap;
+}
+
+/* ── Scrollable body — vertical only ── */
+.skills-table-wrap {
+    flex: 1;
+    overflow-x: hidden;
+    overflow-y: auto;
+    min-height: 0;
+    scrollbar-width: thin;
+    scrollbar-color: var(--border) transparent;
+}
+.skills-table-wrap::-webkit-scrollbar {
+    width: 4px;
+    height: 0;        /* kill horizontal bar */
+}
+.skills-table-wrap::-webkit-scrollbar-track {
+    background: transparent;
+}
+.skills-table-wrap::-webkit-scrollbar-thumb {
+    background: var(--border);
+    border-radius: 4px;
+}
+.skills-table-wrap::-webkit-scrollbar-thumb:hover {
+    background: var(--text-light);
+}
+
+/* ── Table ── */
+.skills-table {
+    width: 100%;
+    table-layout: fixed;       /* prevents columns from blowing out */
+    border-collapse: collapse;
+    font-family: var(--font-main);
+}
+
+/* Column widths — tweak if needed */
+.skills-table colgroup,
+.skills-table col { }
+.skills-table thead th:nth-child(1) { width: 34px; }   /* Icon      */
+.skills-table thead th:nth-child(2) { width: auto; }   /* Skill Name — takes remaining */
+.skills-table thead th:nth-child(3) { width: 80px; }   /* Cur/Max   */
+.skills-table thead th:nth-child(4) { width: 62px; }   /* Type / Req */
+
+/* Sticky header */
+.skills-table thead {
+    position: sticky;
+    top: 0;
+    z-index: 2;
+}
+.skills-table thead tr { background: var(--bg-badge); }
+.skills-table thead th {
+    font-size: 10px;
+    font-weight: 700;
+    color: var(--text-light);
+    padding: 5px 5px;
+    text-align: left;
+    border-bottom: 1px solid var(--border-light);
+    white-space: nowrap;
+    overflow: hidden;
+    background: var(--bg-badge);
+}
+.skills-table thead th:first-child { text-align: center; }
+.skills-table thead th.th-level    { text-align: center; }
+
+/* Body rows */
+.skills-table tbody tr {
+    border-bottom: 1px solid var(--border-light);
+    transition: background 0.1s;
+}
+.skills-table tbody tr:last-child { border-bottom: none; }
+.skills-table tbody tr:hover      { background: rgba(240,160,16,0.04); }
+
+.skills-table tbody td {
+    font-size: 11px;
+    color: var(--text-mid);
+    padding: 4px 5px;
+    vertical-align: middle;
+    overflow: hidden;
+}
+.skills-table tbody td:first-child {
+    text-align: center;
+    width: 34px;
+}
+
+/* ── Skill icon ── */
+.skill-icon {
+    width: 26px;
+    height: 26px;
+    border-radius: 6px;
+    background: var(--bg-badge);
+    border: 1px solid var(--border-light);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto;
+    overflow: hidden;
+    flex-shrink: 0;
+}
+.skill-icon img { width: 22px; height: 22px; object-fit: contain; }
+
+/* ── Skill name ── */
+.skill-name-link {
+    color: var(--blue-text);
+    font-weight: 600;
+    font-size: 11px;
+    cursor: pointer;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: block;
+    max-width: 100%;
+}
+
+/* ── Level cell: [−] 0/10 [+] ── */
+.skill-lvl-cell {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    white-space: nowrap;
+}
+
+.skill-level-badge {
+    font-size: 10px;
+    font-weight: 700;
+    color: var(--orange-text);
+    background: rgba(240,160,16,0.10);
+    border: 1px solid rgba(240,160,16,0.25);
+    border-radius: 5px;
+    text-align: center;
+    white-space: nowrap;
+    display: inline-block;
+    min-width: 38px;
+    padding: 1px 3px;
+}
+
+/* ── +/− buttons ── */
+.skill-adj-btn {
+    width: 18px;
+    height: 18px;
+    border-radius: 5px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    flex-shrink: 0;
+    transition: background 0.12s, border-color 0.12s, transform 0.08s;
+    border: 1px solid transparent;
+}
+.skill-adj-btn:active { transform: scale(0.90); }
+.skill-adj-btn svg    { width: 10px; height: 10px; display: block; }
+
+.skill-adj-btn.add {
+    color: #3a8030;
+    border-color: rgba(80,168,64,0.38);
+    background: rgba(80,168,64,0.08);
+}
+.skill-adj-btn.add:hover {
+    background: rgba(80,168,64,0.18);
+    border-color: rgba(80,168,64,0.60);
+    transform: scale(1.10);
+}
+
+.skill-adj-btn.minus {
+    color: #b03020;
+    border-color: rgba(200,60,40,0.32);
+    background: rgba(200,60,40,0.07);
+}
+.skill-adj-btn.minus:hover {
+    background: rgba(200,60,40,0.15);
+    border-color: rgba(200,60,40,0.52);
+    transform: scale(1.10);
+}
+
+.skill-adj-btn[disabled] {
+    opacity: 0.25;
+    cursor: default;
+    pointer-events: none;
+}
+
+/* ══════════════════════════════════════════════════
+   SKILL TYPE TAGS
+══════════════════════════════════════════════════ */
+.skill-tag-group {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    align-items: flex-start;
+}
+
+.skill-tag {
+    display: inline-block;
+    font-size: 8px;
+    font-weight: 700;
+    padding: 1px 5px;
+    border-radius: 4px;
+    white-space: nowrap;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    font-family: var(--font-main);
+    line-height: 1.5;
+}
+
+/* Active — warm gold */
+.skill-tag.active {
+    background: rgba(240, 160, 16, 0.10);
+    color: #a07008;
+    border: 1px solid rgba(240, 160, 16, 0.28);
+}
+
+/* Passive — soft blue */
+.skill-tag.passive {
+    background: rgba(74, 158, 232, 0.10);
+    color: #2a6aaa;
+    border: 1px solid rgba(74, 158, 232, 0.26);
+}
+
+/* Quest — muted green */
+.skill-tag.quest {
+    background: rgba(80, 168, 64, 0.10);
+    color: #2a7a20;
+    border: 1px solid rgba(80, 168, 64, 0.26);
+}
+
+/* Locked table: type tag above req text */
+.skill-req {
+    display: block;
+    font-size: 9px;
+    color: var(--text-light);
+    font-style: italic;
+    font-family: var(--font-main);
+    margin-top: 2px;
+    white-space: normal;
+    overflow-wrap: break-word;
+    word-break: break-word;
+}
+
+/* ══════════════════════════════════════════════════
+   SKILLS FOOTER
+══════════════════════════════════════════════════ */
+.skills-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 5px 10px;
+    background: var(--bg-badge);
+    border-top: 1px solid var(--border-light);
+    font-size: 10px;
+    font-weight: 700;
+    color: var(--text-mid);
+    font-family: var(--font-main);
+    flex-shrink: 0;
+    white-space: nowrap;
+}
+.skills-footer .pts-val { color: var(--orange-text); }
+
+/* ── Section divider row ── */
+.skills-sub-label {
+    text-align: center;
+    font-size: 10px;
+    font-style: italic;
+    color: var(--text-light);
+    padding: 4px 0;
+    font-family: var(--font-main);
+    background: rgba(238, 243, 248, 0.6);
+}
