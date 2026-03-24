@@ -40,6 +40,7 @@ body {
 .main-layout-container {
     height: 650px;
     display: inline-flex;
+    height: 700px;
     flex-direction: row;
     align-items: stretch;
     background: rgba(255, 255, 255, 0.85);

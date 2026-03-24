@@ -5,12 +5,6 @@
 const SVG_ADD   = `<svg viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M6 2v8M2 6h8" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>`;
 const SVG_MINUS = `<svg viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M2 6h8" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>`;
 
-// ===================================================================
-// SKILL ICON IMAGE MAP
-// Keys must exactly match skill names in JOB_SKILLS.
-// Paths are relative to your project root (adjust if needed).
-// ===================================================================
-
 const SKILL_ICONS = {
     // ── Novice ──────────────────────────────────────────────────────
     'Basic Skill':  '../images/skills/n_basicSkills.png',
@@ -1137,3 +1131,4 @@ function selectJobBtn(btn) {
 // ===================================================================
 
 document.addEventListener('DOMContentLoaded', () => renderSkills('Novice'));
+
