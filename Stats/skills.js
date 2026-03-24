@@ -6,6 +6,113 @@ const SVG_ADD   = `<svg viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org
 const SVG_MINUS = `<svg viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M2 6h8" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>`;
 
 // ===================================================================
+// SKILL ICON IMAGE MAP
+// Keys must exactly match skill names in JOB_SKILLS.
+// Paths are relative to your project root (adjust if needed).
+// ===================================================================
+
+const SKILL_ICONS = {
+    // ── Novice ──────────────────────────────────────────────────────
+    'Basic Skill':  '../images/skills/n_basicSkills.png',
+    'First Aid':    '../images/skills/n_firstAid.png',
+    'Trick Dead':   '../images/skills/n_playDead.png',
+
+    // ── Swordsman ───────────────────────────────────────────────────
+    'Sword Mastery':               '../images/skills/sw_swordMastery.png',
+    'Increase Recuperative Power': '../images/skills/sw_increaseRecuperativePower.png',
+    'Bash':                        '../images/skills/sw_bash.png',
+    'Provoke':                     '../images/skills/sw_provoke.png',
+    'Moving HP Recovery':          '../images/skills/sw_movingHpRecovery.png',
+    'Fatal Blow':                  '../images/skills/sw_fatalBlow.png',
+    'Auto Berserk':                '../images/skills/sw_autoBerserk.png',
+    'Two-Handed Sword Mastery':    '../images/skills/sw_twoHandedSwordMastery.png',
+    'Magnum Break':                '../images/skills/sw_magnumBreak.png',
+    'Endure':                      '../images/skills/sw_endure.png',
+
+    // ── Magician ────────────────────────────────────────────────────
+    'Increase Spiritual Power': 'images/skills/mg_increaseSpiritualPower.png',
+    'Sight':                    'images/skills/mg_sight.png',
+    'Napalm Beat':              'images/skills/mg_napalmBeat.png',
+    'Cold Bolt':                'images/skills/mg_coldBolt.png',
+    'Stone Curse':              'images/skills/mg_stoneCurse.png',
+    'Fire Bolt':                'images/skills/mg_fireBolt.png',
+    'Lightning Bolt':           'images/skills/mg_lightningBolt.png',
+    'Energy Coat':              'images/skills/mg_energyCoat.png',
+    'Soul Strike':              'images/skills/mg_soulStrike.png',
+    'Frost Diver':              'images/skills/mg_frostDiver.png',
+    'Fire Ball':                'images/skills/mg_fireBall.png',
+    'Fire Wall':                'images/skills/mg_fireWall.png',
+    'Thunder Storm':            'images/skills/mg_thunderStorm.png',
+    'Safety Wall':              'images/skills/mg_safetyWall.png',
+
+    // ── Archer ──────────────────────────────────────────────────────
+    "Owl's Eye":               'images/skills/ac_owlsEye.png',
+    'Double Strafing':         'images/skills/ac_doubleStrafing.png',
+    'Making Arrow':            'images/skills/ac_makingArrow.png',
+    'Charge Arrow':            'images/skills/ac_chargeArrow.png',
+    "Vulture's Eye":           'images/skills/ac_vulturesEye.png',
+    'Attention Concentrate':   'images/skills/ac_attentionConcentrate.png',
+    'Arrow Shower':            'images/skills/ac_arrowShower.png',
+
+    // ── Acolyte ─────────────────────────────────────────────────────
+    'Divine Protection': 'images/skills/al_divineProtection.png',
+    'Ruwach':            'images/skills/al_ruwach.png',
+    'Heal':              'images/skills/al_heal.png',
+    'Aqua Benedicta':    'images/skills/al_aquaBenedicta.png',
+    'Holy Light':        'images/skills/al_holyLight.png',
+    'Demon Bane':        'images/skills/al_demonBane.png',
+    'Teleportation':     'images/skills/al_teleportation.png',
+    'Warp Portal':       'images/skills/al_warpPortal.png',
+    'Pneuma':            'images/skills/al_pneuma.png',
+    'Increase Agility':  'images/skills/al_increaseAgility.png',
+    'Decrease Agility':  'images/skills/al_decreaseAgility.png',
+    'Signum Crucis':     'images/skills/al_signumCrucis.png',
+    'Angelus':           'images/skills/al_angelus.png',
+    'Blessing':          'images/skills/al_blessing.png',
+    'Cure':              'images/skills/al_cure.png',
+
+    // ── Merchant ────────────────────────────────────────────────────
+    'Enlarge Weight Limit': 'images/skills/mc_enlargeWeightLimit.png',
+    'Identify':             'images/skills/mc_identify.png',
+    'Mammonite':            'images/skills/mc_mammonite.png',
+    'Cart Revolution':      'images/skills/mc_cartRevolution.png',
+    'Change Cart':          'images/skills/mc_changeCart.png',
+    'Loud Exclamation':     'images/skills/mc_loudExclamation.png',
+    'Cart Decoration':      'images/skills/mc_cartDecoration.png',
+    'Discount':             'images/skills/mc_discount.png',
+    'Overcharge':           'images/skills/mc_overcharge.png',
+    'Pushcart':             'images/skills/mc_pushcart.png',
+    'Vending':              'images/skills/mc_vending.png',
+    'Buying Store':         'images/skills/mc_buyingStore.png',
+
+    // ── Thief ───────────────────────────────────────────────────────
+    'Double Attack':  'images/skills/tf_doubleAttack.png',
+    'Increase Dodge': 'images/skills/tf_increaseDodge.png',
+    'Steal':          'images/skills/tf_steal.png',
+    'Envenom':        'images/skills/tf_envenom.png',
+    'Sprinkle Sand':  'images/skills/tf_sprinkleSand.png',
+    'Back Sliding':   'images/skills/tf_backSliding.png',
+    'Pick Stone':     'images/skills/tf_pickStone.png',
+    'Throw Stone':    'images/skills/tf_throwStone.png',
+    'Hiding':         'images/skills/tf_hiding.png',
+    'Detoxify':       'images/skills/tf_detoxify.png',
+};
+
+// ===================================================================
+// HELPER — returns an <img> tag if the skill has a mapped icon,
+// otherwise falls back to the empty placeholder div.
+// ===================================================================
+
+function getSkillIcon(skillName) {
+    const src = SKILL_ICONS[skillName];
+    if (src) {
+        return `<img src="${src}" alt="${skillName}" class="skill-icon-img" onerror="this.style.display='none';this.nextElementSibling.style.display=''">
+                <div class="skill-icon" style="display:none"></div>`;
+    }
+    return `<div class="skill-icon"></div>`;
+}
+
+// ===================================================================
 // SKILL DATA
 // type: 'active'  — spendable, active use skill
 // type: 'passive' — spendable, passive skill
@@ -384,7 +491,7 @@ function renderSkillTables() {
         const addBtn  = `<button class="skill-adj-btn add"   ${isQuest ? 'disabled' : `onclick="adjustSkill(${idx},  1)"`}>${SVG_ADD}</button>`;
         uHTML += `
         <tr data-skill-idx="${idx}">
-            <td><div class="skill-icon"></div></td>
+            <td><div class="skill-icon-wrap">${getSkillIcon(s.name)}</div></td>
             <td><span class="skill-name-link">${s.name}</span></td>
             <td><div class="skill-lvl-cell">${minBtn}<span class="skill-level-badge">${s.cur} / ${s.max}</span>${addBtn}</div></td>
             <td>${buildTypeTags(s)}</td>
@@ -399,7 +506,7 @@ function renderSkillTables() {
         activeSkillData.locked.forEach(s => {
             lHTML += `
             <tr>
-                <td><div class="skill-icon"></div></td>
+                <td><div class="skill-icon-wrap">${getSkillIcon(s.name)}</div></td>
                 <td><span class="skill-name-link">${s.name}</span></td>
                 <td><span class="skill-level-badge">${s.max}</span></td>
                 <td>${buildLockedTypeTag(s)}<span class="skill-req">${s.req}</span></td>
