@@ -796,6 +796,8 @@ function buildLevelMap() {
 // ===================================================================
 
 function checkUnlocks() {
+    // Auto-promotes any locked skill whose prerequisites are now fully met.
+    // Called after every + click so manual levelling triggers unlocks instantly.
     let anyPromoted = true;
     while (anyPromoted) {
         anyPromoted = false;
@@ -838,6 +840,75 @@ function checkLocks() {
         });
         activeSkillData.unlocked = remainUnlocked;
     }
+}
+
+// ===================================================================
+// HELPER — returns remaining skill points
+// ===================================================================
+
+function getSkillPointsLeft() {
+    if (!activeSkillData) return 0;
+    const pts  = Math.max(0, (character.jobLevel || 0) - 1);
+    const used = activeSkillData.unlocked.reduce(
+        (sum, s) => sum + (s.type !== 'quest' ? s.cur : 0), 0
+    );
+    return Math.max(0, pts - used);
+}
+
+// ===================================================================
+// TRY UNLOCK A SINGLE LOCKED SKILL BY NAME
+// Requires at least 1 skill point remaining.
+// Automatically spends points on any prerequisite skills that are
+// not yet at the required level, then moves the skill to unlocked.
+// ===================================================================
+
+function tryUnlockSkill(skillName) {
+    if (!activeSkillData) return;
+
+    const lockedIdx = activeSkillData.locked.findIndex(s => s.name === skillName);
+    if (lockedIdx === -1) return;
+
+    // Must have at least 1 point to do anything
+    if (getSkillPointsLeft() <= 0) return;
+
+    const lockedSkill = activeSkillData.locked[lockedIdx];
+    const reqs = parseReqs(lockedSkill.req);
+
+    // Auto-spend points to satisfy each prerequisite
+    for (const req of reqs) {
+        const unlockedSkill = activeSkillData.unlocked.find(s => s.name === req.skillName);
+        if (!unlockedSkill) continue; // prereq skill not even in unlocked list — skip
+
+        // Level it up until the requirement is met, spending points each step
+        while (unlockedSkill.cur < req.level) {
+            if (getSkillPointsLeft() <= 0) break; // ran out of points mid-way
+            unlockedSkill.cur++;
+        }
+    }
+
+    // Check if all prereqs are now satisfied after auto-spending
+    const levels = buildLevelMap();
+    const prereqsMet = reqs.every(r => (levels[r.skillName] ?? 0) >= r.level);
+    if (!prereqsMet) {
+        // Not enough points to fully satisfy prereqs — re-render to reflect partial spend
+        renderSkillTables();
+        updateFooter();
+        if (typeof updateUI === 'function') updateUI();
+        return;
+    }
+
+    // Move from locked → unlocked at level 0
+    activeSkillData.unlocked.push({
+        name: lockedSkill.name,
+        cur:  0,
+        max:  lockedSkill.max,
+        type: lockedSkill.lockedType ?? 'active',
+    });
+    activeSkillData.locked.splice(lockedIdx, 1);
+
+    renderSkillTables();
+    updateFooter();
+    if (typeof updateUI === 'function') updateUI();
 }
 
 // ===================================================================
@@ -1025,7 +1096,7 @@ function closeSkillPopup(fade = true) {
 }
 
 // ===================================================================
-// RENDER BOTH TABLES  (updated — skill names are clickable)
+// RENDER BOTH TABLES
 // ===================================================================
 
 function renderSkillTables() {
@@ -1057,13 +1128,32 @@ function renderSkillTables() {
     if (activeSkillData.locked.length === 0) {
         lHTML += `<tr><td colspan="4" class="skills-sub-label" style="padding:10px 0;">—</td></tr>`;
     } else {
+        const pointsLeft = getSkillPointsLeft();
         activeSkillData.locked.forEach(s => {
-            const eName = s.name.replace(/'/g, "\\'");
+            const eName      = s.name.replace(/'/g, "\\'");
+            const levels     = buildLevelMap();
+            const prereqsMet = parseReqs(s.req).every(r => (levels[r.skillName] ?? 0) >= r.level);
+            // Button active whenever points remain — prereqs get auto-filled on click
+            const canUnlock  = pointsLeft > 0;
+            const tipText    = pointsLeft <= 0
+                ? 'No skill points remaining'
+                : prereqsMet
+                    ? 'Click to unlock'
+                    : 'Click to auto-fill prerequisites and unlock';
             lHTML += `
             <tr>
                 <td><div class="skill-icon-wrap">${getSkillIcon(s.name)}</div></td>
                 <td><span class="skill-name-link" onclick="showSkillPopup('${eName}', this, true)">${s.name}</span></td>
-                <td><span class="skill-level-badge">${s.max}</span></td>
+                <td>
+                    <div class="skill-locked-lvl-cell">
+                        <span class="skill-level-badge">${s.max}</span>
+                        <button
+                            class="skill-unlock-btn ${canUnlock ? 'unlock-ready' : 'unlock-blocked'}"
+                            onclick="tryUnlockSkill('${eName}')"
+                            title="${tipText}"
+                        >${canUnlock ? '🔓' : '🔒'}</button>
+                    </div>
+                </td>
                 <td>${buildLockedTypeTag(s)}<span class="skill-req">${s.req}</span></td>
             </tr>`;
         });
@@ -1131,4 +1221,3 @@ function selectJobBtn(btn) {
 // ===================================================================
 
 document.addEventListener('DOMContentLoaded', () => renderSkills('Novice'));
-

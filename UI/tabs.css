@@ -591,7 +591,11 @@
     gap: 4px;
     white-space: nowrap;
 }
-
+.skill-locked-lvl-cell {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
 .skill-level-badge {
     font-size: 10px;
     font-weight: 700;
@@ -1015,4 +1019,29 @@
     display: block;
     margin: 0 auto;
     background: var(--bg-badge);
+}
+/* Unlock button on locked skills */
+.skill-unlock-btn {
+    background: none;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    padding: 2px 5px;
+    transition: transform 0.15s, border-color 0.15s;
+}
+
+.skill-unlock-btn.unlock-ready {
+    border-color: #a8c060;
+    background: rgba(168, 192, 96, 0.15);
+    cursor: pointer;
+}
+.skill-unlock-btn.unlock-ready:hover {
+    transform: scale(1.2);
+    background: rgba(168, 192, 96, 0.3);
+}
+
+.skill-unlock-btn.unlock-blocked {
+    opacity: 0.35;
+    cursor: not-allowed;
 }
