@@ -6,6 +6,113 @@ const SVG_ADD   = `<svg viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org
 const SVG_MINUS = `<svg viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M2 6h8" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>`;
 
 // ===================================================================
+// SKILL ICON IMAGE MAP
+// Keys must exactly match skill names in JOB_SKILLS.
+// Paths are relative to your project root (adjust if needed).
+// ===================================================================
+
+const SKILL_ICONS = {
+    // ── Novice ──────────────────────────────────────────────────────
+    'Basic Skill':  '../images/skills/n_basicSkills.png',
+    'First Aid':    '../images/skills/n_firstAid.png',
+    'Trick Dead':   '../images/skills/n_playDead.png',
+
+    // ── Swordsman ───────────────────────────────────────────────────
+    'Sword Mastery':               '../images/skills/sw_swordMastery.png',
+    'Increase Recuperative Power': '../images/skills/sw_increaseRecuperativePower.png',
+    'Bash':                        '../images/skills/sw_bash.png',
+    'Provoke':                     '../images/skills/sw_provoke.png',
+    'Moving HP Recovery':          '../images/skills/sw_movingHpRecovery.png',
+    'Fatal Blow':                  '../images/skills/sw_fatalBlow.png',
+    'Auto Berserk':                '../images/skills/sw_autoBerserk.png',
+    'Two-Handed Sword Mastery':    '../images/skills/sw_twoHandedSwordMastery.png',
+    'Magnum Break':                '../images/skills/sw_magnumBreak.png',
+    'Endure':                      '../images/skills/sw_endure.png',
+
+    // ── Magician ────────────────────────────────────────────────────
+    'Increase Spiritual Power': 'images/skills/mg_increaseSpiritualPower.png',
+    'Sight':                    'images/skills/mg_sight.png',
+    'Napalm Beat':              'images/skills/mg_napalmBeat.png',
+    'Cold Bolt':                'images/skills/mg_coldBolt.png',
+    'Stone Curse':              'images/skills/mg_stoneCurse.png',
+    'Fire Bolt':                'images/skills/mg_fireBolt.png',
+    'Lightning Bolt':           'images/skills/mg_lightningBolt.png',
+    'Energy Coat':              'images/skills/mg_energyCoat.png',
+    'Soul Strike':              'images/skills/mg_soulStrike.png',
+    'Frost Diver':              'images/skills/mg_frostDiver.png',
+    'Fire Ball':                'images/skills/mg_fireBall.png',
+    'Fire Wall':                'images/skills/mg_fireWall.png',
+    'Thunder Storm':            'images/skills/mg_thunderStorm.png',
+    'Safety Wall':              'images/skills/mg_safetyWall.png',
+
+    // ── Archer ──────────────────────────────────────────────────────
+    "Owl's Eye":               'images/skills/ac_owlsEye.png',
+    'Double Strafing':         'images/skills/ac_doubleStrafing.png',
+    'Making Arrow':            'images/skills/ac_makingArrow.png',
+    'Charge Arrow':            'images/skills/ac_chargeArrow.png',
+    "Vulture's Eye":           'images/skills/ac_vulturesEye.png',
+    'Attention Concentrate':   'images/skills/ac_attentionConcentrate.png',
+    'Arrow Shower':            'images/skills/ac_arrowShower.png',
+
+    // ── Acolyte ─────────────────────────────────────────────────────
+    'Divine Protection': 'images/skills/al_divineProtection.png',
+    'Ruwach':            'images/skills/al_ruwach.png',
+    'Heal':              'images/skills/al_heal.png',
+    'Aqua Benedicta':    'images/skills/al_aquaBenedicta.png',
+    'Holy Light':        'images/skills/al_holyLight.png',
+    'Demon Bane':        'images/skills/al_demonBane.png',
+    'Teleportation':     'images/skills/al_teleportation.png',
+    'Warp Portal':       'images/skills/al_warpPortal.png',
+    'Pneuma':            'images/skills/al_pneuma.png',
+    'Increase Agility':  'images/skills/al_increaseAgility.png',
+    'Decrease Agility':  'images/skills/al_decreaseAgility.png',
+    'Signum Crucis':     'images/skills/al_signumCrucis.png',
+    'Angelus':           'images/skills/al_angelus.png',
+    'Blessing':          'images/skills/al_blessing.png',
+    'Cure':              'images/skills/al_cure.png',
+
+    // ── Merchant ────────────────────────────────────────────────────
+    'Enlarge Weight Limit': 'images/skills/mc_enlargeWeightLimit.png',
+    'Identify':             'images/skills/mc_identify.png',
+    'Mammonite':            'images/skills/mc_mammonite.png',
+    'Cart Revolution':      'images/skills/mc_cartRevolution.png',
+    'Change Cart':          'images/skills/mc_changeCart.png',
+    'Loud Exclamation':     'images/skills/mc_loudExclamation.png',
+    'Cart Decoration':      'images/skills/mc_cartDecoration.png',
+    'Discount':             'images/skills/mc_discount.png',
+    'Overcharge':           'images/skills/mc_overcharge.png',
+    'Pushcart':             'images/skills/mc_pushcart.png',
+    'Vending':              'images/skills/mc_vending.png',
+    'Buying Store':         'images/skills/mc_buyingStore.png',
+
+    // ── Thief ───────────────────────────────────────────────────────
+    'Double Attack':  'images/skills/tf_doubleAttack.png',
+    'Increase Dodge': 'images/skills/tf_increaseDodge.png',
+    'Steal':          'images/skills/tf_steal.png',
+    'Envenom':        'images/skills/tf_envenom.png',
+    'Sprinkle Sand':  'images/skills/tf_sprinkleSand.png',
+    'Back Sliding':   'images/skills/tf_backSliding.png',
+    'Pick Stone':     'images/skills/tf_pickStone.png',
+    'Throw Stone':    'images/skills/tf_throwStone.png',
+    'Hiding':         'images/skills/tf_hiding.png',
+    'Detoxify':       'images/skills/tf_detoxify.png',
+};
+
+// ===================================================================
+// HELPER — returns an <img> tag if the skill has a mapped icon,
+// otherwise falls back to the empty placeholder div.
+// ===================================================================
+
+function getSkillIcon(skillName) {
+    const src = SKILL_ICONS[skillName];
+    if (src) {
+        return `<img src="${src}" alt="${skillName}" class="skill-icon-img" onerror="this.style.display='none';this.nextElementSibling.style.display=''">
+                <div class="skill-icon" style="display:none"></div>`;
+    }
+    return `<div class="skill-icon"></div>`;
+}
+
+// ===================================================================
 // SKILL DATA
 // ===================================================================
 
@@ -15,7 +122,7 @@ const JOB_SKILLS = {
         label: 'Novice',
         unlocked: [
             { name: 'Basic Skill', cur: 0, max: 9, type: 'active' },
-            { name: 'First Aid',   cur: 1, max: 1, type: 'quest'  }, //active but quest
+            { name: 'First Aid',   cur: 1, max: 1, type: 'quest'  },
             { name: 'Trick Dead',  cur: 1, max: 1, type: 'quest'  },
         ],
         locked: [],
@@ -24,16 +131,16 @@ const JOB_SKILLS = {
     'Swordsman': {
         label: 'Swordsman',
         unlocked: [
-            { name: 'Sword Mastery',               cur: 0, max: 10, type: 'active' }, //passive
-            { name: 'Increase Recuperative Power', cur: 0, max: 10, type: 'active' }, //passive
+            { name: 'Sword Mastery',               cur: 0, max: 10, type: 'active' },
+            { name: 'Increase Recuperative Power', cur: 0, max: 10, type: 'active' },
             { name: 'Bash',                        cur: 0, max: 10, type: 'active' },
-            { name: 'Provoke',                     cur: 0, max: 10, type: 'active' }, 
-            { name: 'Moving HP Recovery',          cur: 1, max: 1,  type: 'quest'  }, //passive but quest
-            { name: 'Fatal Blow',                  cur: 1, max: 1,  type: 'quest'  }, //passive but quest
-            { name: 'Auto Berserk',                cur: 1, max: 1,  type: 'quest'  }, //active but quest
+            { name: 'Provoke',                     cur: 0, max: 10, type: 'active' },
+            { name: 'Moving HP Recovery',          cur: 1, max: 1,  type: 'quest'  },
+            { name: 'Fatal Blow',                  cur: 1, max: 1,  type: 'quest'  },
+            { name: 'Auto Berserk',                cur: 1, max: 1,  type: 'quest'  },
         ],
         locked: [
-            { name: 'Two-Handed Sword Mastery', max: 10, req: 'Sword Mastery Lv 1' },//passive
+            { name: 'Two-Handed Sword Mastery', max: 10, req: 'Sword Mastery Lv 1' },
             { name: 'Magnum Break',             max: 10, req: 'Bash Lv 5'          },
             { name: 'Endure',                   max: 10, req: 'Provoke Lv 5'       },
         ],
@@ -42,9 +149,9 @@ const JOB_SKILLS = {
     'Magician': {
         label: 'Magician',
         unlocked: [
-            { name: 'Increase Spiritual Power', cur: 0, max: 10, type: 'active' }, //passive
+            { name: 'Increase Spiritual Power', cur: 0, max: 10, type: 'active' },
             { name: 'Sight',                    cur: 0, max: 1,  type: 'active' },
-            { name: 'Napalm Beat',              cur: 0, max: 10, type: 'active' }, 
+            { name: 'Napalm Beat',              cur: 0, max: 10, type: 'active' },
             { name: 'Cold Bolt',                cur: 0, max: 10, type: 'active' },
             { name: 'Stone Curse',              cur: 0, max: 10, type: 'active' },
             { name: 'Fire Bolt',                cur: 0, max: 10, type: 'active' },
@@ -64,8 +171,8 @@ const JOB_SKILLS = {
     'Archer': {
         label: 'Archer',
         unlocked: [
-            { name: "Owl's Eye",       cur: 0, max: 10, type: 'active' }, //passive
-            { name: 'Double Strafing', cur: 0, max: 10, type: 'active' }, //passive
+            { name: "Owl's Eye",       cur: 0, max: 10, type: 'active' },
+            { name: 'Double Strafing', cur: 0, max: 10, type: 'active' },
             { name: 'Making Arrow',    cur: 1, max: 1,  type: 'quest'  },
             { name: 'Charge Arrow',    cur: 1, max: 1,  type: 'quest'  },
         ],
@@ -79,14 +186,14 @@ const JOB_SKILLS = {
     'Acolyte': {
         label: 'Acolyte',
         unlocked: [
-            { name: 'Divine Protection', cur: 0, max: 10, type: 'active' }, //passive
-            { name: 'Ruwach',            cur: 0, max: 1,  type: 'active' }, 
+            { name: 'Divine Protection', cur: 0, max: 10, type: 'active' },
+            { name: 'Ruwach',            cur: 0, max: 1,  type: 'active' },
             { name: 'Heal',              cur: 0, max: 10, type: 'active' },
             { name: 'Aqua Benedicta',    cur: 0, max: 1,  type: 'active' },
             { name: 'Holy Light',        cur: 1, max: 1,  type: 'quest'  },
         ],
         locked: [
-            { name: 'Demon Bane',       max: 10, req: 'Divine Protection Lv 3'  }, //passive
+            { name: 'Demon Bane',       max: 10, req: 'Divine Protection Lv 3'  },
             { name: 'Teleportation',    max: 2,  req: 'Ruwach Lv 1'             },
             { name: 'Warp Portal',      max: 4,  req: 'Teleportation Lv 2'      },
             { name: 'Pneuma',           max: 1,  req: 'Warp Portal Lv 4'        },
@@ -102,7 +209,7 @@ const JOB_SKILLS = {
     'Merchant': {
         label: 'Merchant',
         unlocked: [
-            { name: 'Enlarge Weight Limit', cur: 0, max: 10, type: 'active' }, //passive
+            { name: 'Enlarge Weight Limit', cur: 0, max: 10, type: 'active' },
             { name: 'Identify',             cur: 0, max: 1,  type: 'active' },
             { name: 'Mammonite',            cur: 0, max: 10, type: 'active' },
             { name: 'Cart Revolution',      cur: 1, max: 1,  type: 'quest'  },
@@ -111,9 +218,9 @@ const JOB_SKILLS = {
             { name: 'Cart Decoration',      cur: 1, max: 1,  type: 'quest'  },
         ],
         locked: [
-            { name: 'Discount',     max: 10, req: 'Enlarge Weight Limit Lv 3' }, //passive
-            { name: 'Overcharge',   max: 10, req: 'Discount Lv 3'             }, //passive
-            { name: 'Pushcart',     max: 10, req: 'Enlarge Weight Limit Lv 5' }, //passive
+            { name: 'Discount',     max: 10, req: 'Enlarge Weight Limit Lv 3' },
+            { name: 'Overcharge',   max: 10, req: 'Discount Lv 3'             },
+            { name: 'Pushcart',     max: 10, req: 'Enlarge Weight Limit Lv 5' },
             { name: 'Vending',      max: 10, req: 'Pushcart Lv 3'             },
             { name: 'Buying Store', max: 1,  req: 'Vending Lv 1'              },
         ],
@@ -122,9 +229,9 @@ const JOB_SKILLS = {
     'Thief': {
         label: 'Thief',
         unlocked: [
-            { name: 'Double Attack',  cur: 0, max: 10, type: 'active' }, //passive
-            { name: 'Increase Dodge', cur: 0, max: 10, type: 'active' }, //passive
-            { name: 'Steal',          cur: 0, max: 10, type: 'active' }, 
+            { name: 'Double Attack',  cur: 0, max: 10, type: 'active' },
+            { name: 'Increase Dodge', cur: 0, max: 10, type: 'active' },
+            { name: 'Steal',          cur: 0, max: 10, type: 'active' },
             { name: 'Envenom',        cur: 0, max: 10, type: 'active' },
             { name: 'Sprinkle Sand',  cur: 1, max: 1,  type: 'quest'  },
             { name: 'Back Sliding',   cur: 1, max: 1,  type: 'quest'  },
@@ -140,18 +247,12 @@ const JOB_SKILLS = {
 
 // ===================================================================
 // RUNTIME STATE
-// activeSkillData holds the live (deep-cloned) skill state.
-// _allLocked is a frozen copy of the original locked list so we can
-// restore req strings when re-locking skills on level reduction.
 // ===================================================================
 
 let activeSkillData = null;
 
 // ===================================================================
 // PREREQUISITE PARSER
-// "Bash Lv 5"                    → [{ skillName:"Bash", level:5 }]
-// "Sight Lv 1, Fire Ball Lv 5"  → [{ skillName:"Sight", level:1 },
-//                                    { skillName:"Fire Ball", level:5 }]
 // ===================================================================
 
 function parseReqs(reqStr) {
@@ -163,7 +264,7 @@ function parseReqs(reqStr) {
 }
 
 // ===================================================================
-// LEVEL LOOKUP MAP  (name → cur level, from unlocked[])
+// LEVEL LOOKUP MAP
 // ===================================================================
 
 function buildLevelMap() {
@@ -174,16 +275,13 @@ function buildLevelMap() {
 
 // ===================================================================
 // CHECK UNLOCKS
-// Promotes any locked skill whose every prerequisite is now satisfied.
-// Runs repeatedly until no more promotions happen (handles chains:
-// e.g. Ruwach → Teleportation → Warp Portal → Pneuma).
 // ===================================================================
 
 function checkUnlocks() {
     let anyPromoted = true;
     while (anyPromoted) {
         anyPromoted = false;
-        const levels     = buildLevelMap();
+        const levels      = buildLevelMap();
         const stillLocked = [];
 
         activeSkillData.locked.forEach(s => {
@@ -203,30 +301,22 @@ function checkUnlocks() {
 
 // ===================================================================
 // CHECK LOCKS
-// When a skill's level drops, any promoted skill that no longer meets
-// its prerequisites moves back to the locked table.
-// Runs repeatedly to handle cascading de-promotions (e.g. if Ruwach
-// drops to 0, Teleportation goes back, and then Warp Portal and Pneuma
-// must also go back).
 // ===================================================================
 
 function checkLocks() {
     let anyDemoted = true;
     while (anyDemoted) {
         anyDemoted = false;
-        const levels        = buildLevelMap();
+        const levels         = buildLevelMap();
         const remainUnlocked = [];
 
         activeSkillData.unlocked.forEach(s => {
-            // Find original locked entry (has the req string)
             const orig = activeSkillData._allLocked.find(l => l.name === s.name);
             if (!orig) {
-                // Always-available skill — never demote
                 remainUnlocked.push(s);
                 return;
             }
 
-            // Check prereqs without counting this skill itself
             const levelsWithout = { ...levels };
             delete levelsWithout[s.name];
 
@@ -236,7 +326,6 @@ function checkLocks() {
             if (met) {
                 remainUnlocked.push(s);
             } else {
-                // Return to locked list with original req intact
                 activeSkillData.locked.push({ name: orig.name, max: orig.max, req: orig.req });
                 anyDemoted = true;
             }
@@ -264,7 +353,6 @@ function updateFooter() {
 
 // ===================================================================
 // RENDER BOTH TABLES
-// Called after any state change so both sides stay in sync.
 // ===================================================================
 
 function renderSkillTables() {
@@ -288,7 +376,7 @@ function renderSkillTables() {
 
         uHTML += `
         <tr data-skill-idx="${idx}">
-            <td><div class="skill-icon"></div></td>
+            <td><div class="skill-icon-wrap">${getSkillIcon(s.name)}</div></td>
             <td><span class="skill-name-link">${s.name}</span></td>
             <td>
                 <div class="skill-lvl-cell">
@@ -312,7 +400,7 @@ function renderSkillTables() {
         activeSkillData.locked.forEach(s => {
             lHTML += `
             <tr>
-                <td><div class="skill-icon"></div></td>
+                <td><div class="skill-icon-wrap">${getSkillIcon(s.name)}</div></td>
                 <td><span class="skill-name-link">${s.name}</span></td>
                 <td><span class="skill-level-badge">${s.max}</span></td>
                 <td><span class="skill-req">${s.req}</span></td>
@@ -343,11 +431,8 @@ function adjustSkill(idx, delta) {
     s.cur += delta;
 
     if (delta > 0) {
-        // Level up — check if any locked skills are now available
         checkUnlocks();
     } else {
-        // Level down — check if any promoted skills must go back,
-        // then re-check if anything newly satisfies prereqs
         checkLocks();
         checkUnlocks();
     }
@@ -366,11 +451,7 @@ function renderSkills(jobName) {
     const raw = JOB_SKILLS[jobName];
     if (!raw) return;
 
-    // Deep clone so edits don't mutate master data
     activeSkillData = JSON.parse(JSON.stringify(raw));
-
-    // Freeze a copy of the original locked list so checkLocks() can
-    // always look up req strings even after skills are promoted
     activeSkillData._allLocked = JSON.parse(JSON.stringify(raw.locked));
 
     renderSkillTables();
