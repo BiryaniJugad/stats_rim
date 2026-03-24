@@ -220,7 +220,7 @@ function updateJobLevelOptions(job) {
 function selectJobLevel(numVal) {
   character.jobLevel = numVal;
   const display = document.getElementById("current-jl");
-  if (display) display.textContent = numVal > 0 ? numVal : "—";
+  if (display) display.textContent = numVal > 0 ? numVal : "0";
   document.getElementById("jobLevelDropdown")?.classList.remove("active");
   updateUI();
   if (typeof updateFooter === "function") updateFooter();

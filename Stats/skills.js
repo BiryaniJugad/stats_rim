@@ -2,6 +2,7 @@
 // RAGNAROK SKILL SYSTEM — skills.js
 // ===================================================================
 
+const SVG_UNLOCK = `<svg viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="2" y="5.5" width="8" height="5.5" rx="1.5" stroke="currentColor" stroke-width="1.5"/><path d="M4 5.5V3.5a2 2 0 0 1 4 0" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>`;
 const SVG_ADD   = `<svg viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M6 2v8M2 6h8" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>`;
 const SVG_MINUS = `<svg viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M2 6h8" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>`;
 
@@ -839,6 +840,95 @@ function checkLocks() {
         activeSkillData.unlocked = remainUnlocked;
     }
 }
+// ===================================================================
+// CALC UNLOCK COST
+// Returns the number of extra skill points that would be consumed by
+// force-unlocking a locked skill — i.e. the sum of levels that need
+// to be raised on each prerequisite (recursively) beyond what they
+// already have.  Used to show/hide/disable the Unlock button.
+// ===================================================================
+ 
+function calcUnlockCost(lockedSkillName) {
+    // Collect the MAXIMUM level required for each prereq skill across all
+    // dependency paths. Taking the max avoids double-counting when one
+    // prereq is needed at different levels by different skills in the chain
+    // (e.g. Safety Wall needs Napalm Beat Lv 7 directly AND Lv 4 via Soul
+    // Strike — the actual cost is just the max: 7, not 7+4=11).
+    const requirements = new Map(); // skillName → max required level
+ 
+    function collect(name, visited = new Set()) {
+        if (visited.has(name)) return;
+        visited.add(name);
+        const entry = activeSkillData._allLocked.find(l => l.name === name);
+        if (!entry) return;
+        parseReqs(entry.req).forEach(r => {
+            const prev = requirements.get(r.skillName) ?? 0;
+            requirements.set(r.skillName, Math.max(prev, r.level));
+            // If this prereq is itself locked, recurse to collect its prereqs too
+            const inUnlocked = activeSkillData.unlocked.find(s => s.name === r.skillName);
+            if (!inUnlocked) collect(r.skillName, visited);
+        });
+    }
+ 
+    collect(lockedSkillName);
+ 
+    let cost = 0;
+    for (const [skillName, neededLevel] of requirements) {
+        const existing = activeSkillData.unlocked.find(s => s.name === skillName);
+        if (existing) {
+            // Skill already unlocked — only pay for the gap above current level
+            cost += Math.max(0, neededLevel - existing.cur);
+        } else {
+            // Skill is locked — will enter at cur:0, costs neededLevel points
+            cost += neededLevel;
+        }
+    }
+    return cost;
+}
+ 
+// ===================================================================
+// FORCE UNLOCK
+// Called when the user clicks the "↑ Unlock" button on a locked skill.
+// Walks the req chain recursively, raising prerequisite skill levels
+// to exactly what is needed, then promotes the target skill.
+// ===================================================================
+ 
+function forceUnlock(lockedSkillName) {
+    // Find the locked entry
+    const lockedEntry = activeSkillData._allLocked.find(l => l.name === lockedSkillName);
+    if (!lockedEntry) return;
+ 
+    // Guard: only proceed if enough points are available
+    const pts  = Math.max(0, (character.jobLevel || 0) - 1);
+    const used = activeSkillData.unlocked.reduce(
+        (sum, sk) => sum + (sk.type !== 'quest' ? sk.cur : 0), 0
+    );
+    const left = pts - used;
+    const cost = calcUnlockCost(lockedSkillName);
+    if (cost > left) return;  // not enough points — button should already be disabled
+ 
+    const reqs = parseReqs(lockedEntry.req);
+ 
+    reqs.forEach(r => {
+        // Check if the prereq is already in unlocked at the required level
+        const existing = activeSkillData.unlocked.find(s => s.name === r.skillName);
+        if (existing) {
+            if (existing.cur < r.level) existing.cur = r.level;
+        } else {
+            // Prereq is itself locked — force-unlock it first (recursively)
+            forceUnlock(r.skillName);
+            // After recursive unlock, find it in unlocked and set level
+            const nowUnlocked = activeSkillData.unlocked.find(s => s.name === r.skillName);
+            if (nowUnlocked && nowUnlocked.cur < r.level) nowUnlocked.cur = r.level;
+        }
+    });
+ 
+    // Now that all prereqs are satisfied, promote this skill
+    checkUnlocks();
+    renderSkillTables();
+    updateFooter();
+    if (typeof updateUI === "function") updateUI();
+}
 
 // ===================================================================
 // CALCULATE ACTIVE SKILL BONUSES
@@ -880,6 +970,7 @@ function calculateSkillBonuses(character, maxHP = 0, maxSP = 0) {
 // ===================================================================
 // FOOTER
 // ===================================================================
+let _renderingSkills = false;
 
 function updateFooter() {
     if (!activeSkillData) return;
@@ -891,6 +982,12 @@ function updateFooter() {
     const leftEl = document.getElementById('skill-pts-left');
     if (usedEl) usedEl.textContent = used;
     if (leftEl) leftEl.textContent = Math.max(0, pts - used);
+
+    if (!_renderingSkills) {
+        _renderingSkills = true;
+        renderSkillTables();
+        _renderingSkills = false;
+    }
 }
 
 // ===================================================================
@@ -1027,7 +1124,6 @@ function closeSkillPopup(fade = true) {
 // ===================================================================
 // RENDER BOTH TABLES  (updated — skill names are clickable)
 // ===================================================================
-
 function renderSkillTables() {
     if (!activeSkillData) return;
 
@@ -1036,34 +1132,62 @@ function renderSkillTables() {
     const lockedBody   = document.getElementById('skills-locked-body');
     if (!unlockedBody || !lockedBody) return;
 
+    // Sort: passive upgradable → active upgradable → quest skills
+    const sortOrder = (s) => {
+        if (s.type === 'quest') return 2;
+        if (s.type === 'passive') return 0;
+        return 1; // active
+    };
+    const sorted = [...activeSkillData.unlocked].sort((a, b) => sortOrder(a) - sortOrder(b));
+
     let uHTML = `<tr><td colspan="4" class="skills-sub-label">~ ${label} Skills ~</td></tr>`;
-    activeSkillData.unlocked.forEach((s, idx) => {
+    sorted.forEach((s) => {
+        // Index must still point into the ORIGINAL array for adjustSkill()
+        const idx = activeSkillData.unlocked.indexOf(s);
         const isQuest = s.type === 'quest';
         const minBtn  = `<button class="skill-adj-btn minus" ${isQuest ? 'disabled' : `onclick="adjustSkill(${idx}, -1)"`}>${SVG_MINUS}</button>`;
         const addBtn  = `<button class="skill-adj-btn add"   ${isQuest ? 'disabled' : `onclick="adjustSkill(${idx},  1)"`}>${SVG_ADD}</button>`;
-        // Escaped name for inline onclick
-        const eName   = skillName => skillName.replace(/'/g, "\\'");
         uHTML += `
         <tr data-skill-idx="${idx}">
-            <td><div class="skill-icon-wrap">${getSkillIcon(s.name)}</div></td>
-            <td><span class="skill-name-link" onclick="showSkillPopup('${eName(s.name)}', this)">${s.name}</span></td>
+            <td class="skill-icon-cell">${getSkillIcon(s.name)}</td>
+            <td><span class="skill-name-link">${s.name}</span></td>
             <td><div class="skill-lvl-cell">${minBtn}<span class="skill-level-badge">${s.cur} / ${s.max}</span>${addBtn}</div></td>
             <td>${buildTypeTags(s)}</td>
         </tr>`;
     });
     unlockedBody.innerHTML = uHTML;
 
+    // ... rest of locked table unchanged
+ 
     let lHTML = `<tr><td colspan="4" class="skills-sub-label">~ ${label} Skills ~</td></tr>`;
     if (activeSkillData.locked.length === 0) {
         lHTML += `<tr><td colspan="4" class="skills-sub-label" style="padding:10px 0;">—</td></tr>`;
     } else {
+        const pts  = Math.max(0, (character.jobLevel || 0) - 1);
+        const used = activeSkillData.unlocked.reduce(
+            (sum, sk) => sum + (sk.type !== 'quest' ? sk.cur : 0), 0
+        );
+        const ptsLeft = pts - used;
+ 
         activeSkillData.locked.forEach(s => {
             const eName = s.name.replace(/'/g, "\\'");
+            const cost  = calcUnlockCost(s.name);
+            const canAfford = cost <= ptsLeft;
+            const disabledAttr = canAfford ? '' : 'disabled';
+            const titleText   = canAfford
+                ? `Needs ${cost} point${cost !== 1 ? 's' : ''} — click to unlock`
+                : `Needs ${cost} point${cost !== 1 ? 's' : ''} — not enough points`;
             lHTML += `
             <tr>
-                <td><div class="skill-icon-wrap">${getSkillIcon(s.name)}</div></td>
-                <td><span class="skill-name-link" onclick="showSkillPopup('${eName}', this, true)">${s.name}</span></td>
-                <td><span class="skill-level-badge">${s.max}</span></td>
+                <td class="skill-icon-cell">${getSkillIcon(s.name)}</td>
+                <td><span class="skill-name-link">${s.name}</span></td>
+                <td>
+                    <div class="skill-unlock-cell">
+                        <span class="skill-level-badge">${s.max}</span>
+                        <button class="skill-unlock-btn" ${disabledAttr} title="${titleText}"
+                            onclick="forceUnlock('${eName}')">${SVG_UNLOCK}</button>
+                    </div>
+                </td>
                 <td>${buildLockedTypeTag(s)}<span class="skill-req">${s.req}</span></td>
             </tr>`;
         });
