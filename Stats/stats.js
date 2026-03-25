@@ -1,4 +1,4 @@
-﻿// ===================================================================
+// ===================================================================
 // RAGNAROK STAT SYSTEM  —  stats.js
 // Wired to new index.html
 // Depends on: HPCalc.js, jobBonus.js, aspd.js, regen.js, combat.js
@@ -47,7 +47,7 @@ const JOB_MAP = {
 };
 
 const JOB_MAX_LEVEL = {
-  novice: 10, swordsman: 50, magician: 50,
+  novice: 9, swordsman: 50, magician: 50,
   archer: 50, acolyte: 50, merchant: 50, thief: 50,
 };
 
@@ -57,7 +57,7 @@ const JOB_MAX_LEVEL = {
 
 const character = {
   baseLevel:       1,
-  jobLevel:        0,
+  jobLevel:        1,
   job:             "novice",
   weaponKey:       "bare_handed",
   potionVal:       "",
@@ -204,10 +204,6 @@ function updateJobLevelOptions(job) {
   const visualList = document.getElementById("jl-menu-list");
   if (visualList) {
     visualList.innerHTML = "";
-    const liNone = document.createElement("li");
-    liNone.textContent = "0";
-    liNone.onclick = () => selectJobLevel(0);
-    visualList.appendChild(liNone);
     for (let i = 1; i <= max; i++) {
       const li = document.createElement("li");
       li.textContent = i;
@@ -220,7 +216,7 @@ function updateJobLevelOptions(job) {
 function selectJobLevel(numVal) {
   character.jobLevel = numVal;
   const display = document.getElementById("current-jl");
-  if (display) display.textContent = numVal > 0 ? numVal : "0";
+  if (display) display.textContent = numVal;
   document.getElementById("jobLevelDropdown")?.classList.remove("active");
   updateUI();
   if (typeof updateFooter === "function") updateFooter();
@@ -237,26 +233,18 @@ function selectJob(displayName, fileName, selectVal) {
   const img = document.getElementById("character-img");
   if (img) img.src = `../images/${fileName}`;
 
-  const newJob = JOB_MAP[selectVal] ?? "novice";
-  character.job = newJob;
-  // Do NOT reset jobLevel — preserve it across class changes
+  character.job      = JOB_MAP[selectVal] ?? "novice";
+  character.jobLevel = 1;
 
-  // Clamp job level to new class max if it exceeds it
-  const newMax = JOB_MAX_LEVEL[newJob] ?? 0;
-  if (character.jobLevel > newMax) {
-    character.jobLevel = newMax;
-  }
-
-  // Sync the displayed job level
   const curJL = document.getElementById("current-jl");
-  if (curJL) curJL.textContent = character.jobLevel > 0 ? character.jobLevel : "0";
+  if (curJL) curJL.textContent = "1";
 
   document.getElementById("jobDropdown")?.classList.remove("active");
   updateJobLevelOptions(character.job);
   populateWeaponSelect(character.job);
   updateUI();
-  if (typeof updateFooter === "function") updateFooter();
 }
+
 // ===================================================================
 // WEAPON SELECT
 // ===================================================================
@@ -268,7 +256,7 @@ function selectWeapon(weaponLabel) {
   const curW = document.getElementById("current-weapon");
   if (curW) curW.textContent = WEAPON_LABELS[weaponKey] ?? weaponLabel;
   document.getElementById("weaponDropdown")?.classList.remove("active");
-  updateUI();  // ← was updateASPD(character)
+  updateASPD(character);
 }
 
 function populateWeaponSelect(job) {
@@ -294,7 +282,7 @@ function populateWeaponSelect(job) {
         const curW = document.getElementById("current-weapon");
         if (curW) curW.textContent = label;
         document.getElementById("weaponDropdown")?.classList.remove("active");
-        updateUI();  // ← was updateASPD(character), now full UI update
+        updateASPD(character);
       };
       visualList.appendChild(li);
     }
