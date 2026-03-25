@@ -482,7 +482,7 @@
 }
 .skills-table-wrap::-webkit-scrollbar {
     width: 4px;
-    height: 0;        /* kill horizontal bar */
+    height: 0;
 }
 .skills-table-wrap::-webkit-scrollbar-track {
     background: transparent;
@@ -498,20 +498,16 @@
 /* ── Table ── */
 .skills-table {
     width: 100%;
-    table-layout: fixed;       /* prevents columns from blowing out */
+    table-layout: fixed;
     border-collapse: collapse;
     font-family: var(--font-main);
 }
 
-/* Column widths — tweak if needed */
-.skills-table colgroup,
-.skills-table col { }
-.skills-table thead th:nth-child(1) { width: 34px; }   /* Icon      */
-.skills-table thead th:nth-child(2) { width: auto; }   /* Skill Name — takes remaining */
-.skills-table thead th:nth-child(3) { width: 80px; }   /* Cur/Max   */
-.skills-table thead th:nth-child(4) { width: 62px; }   /* Type / Req */
+.skills-table thead th:nth-child(1) { width: 34px; }
+.skills-table thead th:nth-child(2) { width: auto; }
+.skills-table thead th:nth-child(3) { width: 80px; }
+.skills-table thead th:nth-child(4) { width: 62px; }
 
-/* Sticky header */
 .skills-table thead {
     position: sticky;
     top: 0;
@@ -532,7 +528,6 @@
 .skills-table thead th:first-child { text-align: center; }
 .skills-table thead th.th-level    { text-align: center; }
 
-/* Body rows */
 .skills-table tbody tr {
     border-bottom: 1px solid var(--border-light);
     transition: background 0.1s;
@@ -568,6 +563,23 @@
 }
 .skill-icon img { width: 22px; height: 22px; object-fit: contain; }
 
+/* ── Skill icon image (renders inside the icon cell) ── */
+.skill-icon-cell {
+    text-align: center;
+    width: 34px;
+    vertical-align: middle;
+}
+.skill-icon-img {
+    width: 26px;
+    height: 26px;
+    border-radius: 6px;
+    border: 1px solid var(--border-light);
+    object-fit: contain;
+    display: block;
+    margin: 0 auto;
+    background: var(--bg-badge);
+}
+
 /* ── Skill name ── */
 .skill-name-link {
     color: var(--blue-text);
@@ -575,14 +587,13 @@
     font-size: 11px;
     cursor: pointer;
     display: -webkit-box;
-    -webkit-line-clamp: 2; 
-    -webkit-box-orient: vertical;  
+    -webkit-box-orient: vertical;
     overflow: hidden;
     white-space: normal;
-    word-break: break-word; 
-    
+    word-break: break-word;
     max-width: 100%;
 }
+
 /* ── Level cell: [−] 0/10 [+] ── */
 .skill-lvl-cell {
     display: flex;
@@ -674,28 +685,22 @@
     line-height: 1.5;
 }
 
-/* Active — warm gold */
 .skill-tag.active {
     background: rgba(240, 160, 16, 0.10);
     color: #a07008;
     border: 1px solid rgba(240, 160, 16, 0.28);
 }
-
-/* Passive — soft blue */
 .skill-tag.passive {
     background: rgba(74, 158, 232, 0.10);
     color: #2a6aaa;
     border: 1px solid rgba(74, 158, 232, 0.26);
 }
-
-/* Quest — muted green */
 .skill-tag.quest {
     background: rgba(80, 168, 64, 0.10);
     color: #2a7a20;
     border: 1px solid rgba(80, 168, 64, 0.26);
 }
 
-/* Locked table: type tag above req text */
 .skill-req {
     display: block;
     font-size: 9px;
@@ -727,7 +732,6 @@
 }
 .skills-footer .pts-val { color: var(--orange-text); }
 
-/* ── Section divider row ── */
 .skills-sub-label {
     text-align: center;
     font-size: 10px;
@@ -739,215 +743,8 @@
 }
 
 /* ══════════════════════════════════════════════════
-   SKILL POPUP — centered overlay
+   SKILL UNLOCK BUTTON
 ══════════════════════════════════════════════════ */
-
-/* Backdrop */
-.skill-popup-overlay {
-    position: fixed;
-    inset: 0;
-    z-index: 9998;
-    background: rgba(0, 0, 0, 0);
-    transition: background 0.2s ease;
-    cursor: pointer;
-}
-.skill-popup-overlay.sp-visible  { background: rgba(0, 0, 0, 0.35); }
-.skill-popup-overlay.sp-hiding   { background: rgba(0, 0, 0, 0) !important; }
-
-/* Card */
-.skill-popup {
-    position: fixed;
-    z-index: 9999;
-    width: 280px;
-    max-width: calc(100vw - 32px);
-    max-height: 80vh;               /* never taller than 80% of screen */
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -46%) scale(0.96);
-    opacity: 0;
-    display: flex;
-    flex-direction: column;         /* header fixed, body scrolls */
-    background: #ffffff;
-    border: 1.5px solid var(--border-light);
-    border-radius: 14px;
-    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.18);
-    font-family: var(--font-main);
-    transition: opacity 0.2s ease, transform 0.2s ease;
-    overflow: hidden;               /* clip rounded corners */
-}
-.skill-popup.sp-visible {
-    opacity: 1;
-    transform: translate(-50%, -50%) scale(1);
-}
-.skill-popup.sp-hiding {
-    opacity: 0 !important;
-    transform: translate(-50%, -46%) scale(0.96) !important;
-}
-
-/* ── Fixed header (never scrolls) ── */
-.sp-header {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    padding: 14px 14px 0;
-    flex-shrink: 0;
-}
-
-.sp-icon {
-    width: 40px;
-    height: 40px;
-    border-radius: 8px;
-    border: 1px solid var(--border-light);
-    background: var(--bg-badge);
-    flex-shrink: 0;
-    object-fit: contain;
-}
-.sp-icon-placeholder {
-    width: 40px;
-    height: 40px;
-    border-radius: 8px;
-    border: 1px solid var(--border-light);
-    background: var(--bg-badge);
-    flex-shrink: 0;
-}
-
-.sp-title-block { flex: 1; min-width: 0; }
-
-.sp-name {
-    font-size: 13px;
-    font-weight: 800;
-    color: var(--text-value);
-    line-height: 1.3;
-    white-space: normal;      /* allow long names to wrap */
-    word-break: break-word;
-}
-
-.sp-level {
-    font-size: 10px;
-    font-weight: 600;
-    color: var(--orange-text);
-    margin-top: 2px;
-}
-
-.sp-close {
-    background: none;
-    border: none;
-    font-size: 13px;
-    color: var(--text-light);
-    cursor: pointer;
-    padding: 2px 5px;
-    border-radius: 5px;
-    flex-shrink: 0;
-    align-self: flex-start;
-    line-height: 1;
-    transition: background 0.12s, color 0.12s;
-}
-.sp-close:hover {
-    background: var(--bg-badge);
-    color: var(--text-value);
-}
-
-/* ── Divider ── */
-.sp-divider {
-    height: 1px;
-    background: var(--border-light);
-    margin: 10px 14px 0;
-    flex-shrink: 0;
-}
-
-/* ── Scrollable body ── */
-.sp-body {
-    flex: 1;
-    overflow-y: auto;
-    padding: 10px 14px 14px;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    scrollbar-width: thin;
-    scrollbar-color: var(--border) transparent;
-}
-.sp-body::-webkit-scrollbar       { width: 4px; }
-.sp-body::-webkit-scrollbar-track { background: transparent; }
-.sp-body::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
-
-/* Description — multiline */
-.sp-desc {
-    font-size: 11.5px;
-    line-height: 1.7;
-    color: var(--text-mid);
-    margin: 0;
-    white-space: normal;
-    word-break: break-word;
-}
-.sp-no-effect {
-    color: var(--text-light);
-    font-style: italic;
-}
-
-/* ── Effect rows — stacked, each full width ── */
-.sp-effects {
-    display: flex;
-    flex-direction: column;
-    gap: 5px;
-}
-
-.sp-effect-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;   /* top-align for multiline values */
-    gap: 8px;
-    background: var(--bg-badge);
-    border: 1px solid var(--border-light);
-    border-radius: 7px;
-    padding: 5px 10px;
-    font-size: 11px;
-}
-
-.sp-effect-label {
-    color: var(--text-light);
-    font-weight: 600;
-    flex-shrink: 0;
-    padding-top: 1px;
-    white-space: nowrap;
-}
-
-.sp-effect-value {
-    font-weight: 800;
-    color: var(--text-value);
-    text-align: right;
-    word-break: break-word;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: flex-end;
-    align-items: center;
-    gap: 3px;
-}
-
-/* Next-level indicator */
-.sp-next {
-    font-size: 10px;
-    font-weight: 700;
-    color: var(--green-text);
-    white-space: nowrap;
-}
-
-/* Locked (not yet reached) effect row */
-.sp-effect-row-locked {
-    opacity: 0.35;
-    filter: grayscale(0.4);
-}
-
-.sp-effect-row-locked .sp-effect-label,
-.sp-effect-row-locked .sp-effect-value {
-    color: var(--text-light);
-    font-weight: 600;
-}
-
-/* ══════════════════════════════════════════════════
-   SKILL UNLOCK BUTTON  (locked table, 3rd column)
-══════════════════════════════════════════════════ */
-
-/* Wrapper that holds the max-level badge + unlock button side by side */
 .skill-unlock-cell {
     display: flex;
     align-items: center;
@@ -955,7 +752,6 @@
     white-space: nowrap;
 }
 
-/* The button itself */
 .skill-unlock-btn {
     display: inline-flex;
     align-items: center;
@@ -984,9 +780,7 @@
     color: #1a4a8a;
     transform: scale(1.05);
 }
-.skill-unlock-btn:active {
-    transform: scale(0.95);
-}
+.skill-unlock-btn:active  { transform: scale(0.95); }
 .skill-unlock-btn[disabled] {
     opacity: 0.30;
     cursor: not-allowed;
@@ -995,24 +789,526 @@
 }
 
 /* ══════════════════════════════════════════════════
-   SKILL ICON IMAGE  (renders inside the icon cell)
+   SKILL POPUP — centered overlay
 ══════════════════════════════════════════════════ */
 
-/* The <td> that holds the icon — centres content */
-.skill-icon-cell {
-    text-align: center;
-    width: 34px;
-    vertical-align: middle;
+/* Backdrop */
+.skill-popup-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 9998;
+    background: rgba(0, 0, 0, 0);
+    transition: background 0.2s ease;
+    cursor: pointer;
+}
+.skill-popup-overlay.sp-visible { background: rgba(0, 0, 0, 0.35); }
+.skill-popup-overlay.sp-hiding  { background: rgba(0, 0, 0, 0) !important; }
+
+/* Card */
+.skill-popup.sp-wiki {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -46%) scale(0.96);
+    z-index: 9999;
+
+    width: min(520px, 94vw);
+    max-height: 82vh;
+    overflow: hidden;
+
+    display: flex;
+    flex-direction: column;
+
+    background: #ffffff;
+    border: 1.5px solid var(--border-light);
+    border-radius: 14px;
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.18);
+    font-family: var(--font-main);
+    color: var(--text-mid);
+
+    opacity: 0;
+    transition: opacity 0.2s ease, transform 0.2s ease;
+}
+.skill-popup.sp-wiki.sp-visible {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+}
+.skill-popup.sp-wiki.sp-hiding {
+    opacity: 0 !important;
+    transform: translate(-50%, -46%) scale(0.96) !important;
 }
 
-/* The actual <img> tag — same dimensions as the placeholder div */
-.skill-icon-img {
-    width: 26px;
-    height: 26px;
-    border-radius: 6px;
+/* ── Title bar ── */
+.sp-title-bar {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 14px 10px;
+    border-bottom: 1.5px solid var(--border-light);
+    background: #ffffff;
+    flex-shrink: 0;
+    flex-wrap: wrap;
+}
+
+/* Icon — mirrors .skill-icon-img */
+.sp-icon {
+    width: 38px;
+    height: 38px;
+    border-radius: 8px;
     border: 1px solid var(--border-light);
-    object-fit: contain;
-    display: block;
-    margin: 0 auto;
     background: var(--bg-badge);
+    object-fit: contain;
+    flex-shrink: 0;
+    image-rendering: pixelated;
+}
+.sp-icon-placeholder {
+    width: 38px;
+    height: 38px;
+    border-radius: 8px;
+    border: 1px solid var(--border-light);
+    background: var(--bg-badge);
+    flex-shrink: 0;
+}
+
+/* Skill name — mirrors .info-hero-title */
+.sp-name {
+    font-size: 14px;
+    font-weight: 800;
+    color: var(--text-value);
+    line-height: 1.3;
+    flex: 1;
+    min-width: 0;
+    word-break: break-word;
+}
+
+/* ID tag — mirrors .info-hero-class-badge */
+.sp-id-tag {
+    font-size: 9px;
+    font-weight: 700;
+    color: var(--orange-dark);
+    background: rgba(240, 160, 16, 0.10);
+    border: 1px solid rgba(240, 160, 16, 0.28);
+    border-radius: 20px;
+    padding: 2px 9px;
+    letter-spacing: 0.4px;
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+
+/* Close button */
+.sp-close {
+    background: none;
+    border: none;
+    font-size: 13px;
+    color: var(--text-light);
+    cursor: pointer;
+    padding: 2px 5px;
+    border-radius: 6px;
+    flex-shrink: 0;
+    align-self: flex-start;
+    line-height: 1;
+    transition: background 0.12s, color 0.12s;
+}
+.sp-close:hover {
+    background: var(--bg-badge);
+    color: var(--text-value);
+}
+
+/* ── Scrollable content area ── */
+.sp-wiki-body {
+    flex: 1;
+    overflow-y: auto;
+    min-height: 0;
+    scrollbar-width: thin;
+    scrollbar-color: var(--border) transparent;
+}
+.sp-wiki-body::-webkit-scrollbar       { width: 4px; }
+.sp-wiki-body::-webkit-scrollbar-track { background: transparent; }
+.sp-wiki-body::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+
+/* ── Main info table ── */
+.sp-info-table {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: auto;
+    font-family: var(--font-main);
+}
+
+.sp-info-table th,
+.sp-info-table td {
+    border: 1px solid var(--border-light);
+    padding: 6px 10px;
+    vertical-align: top;
+    line-height: 1.45;
+}
+
+/* th: Type / Max Lv / Target / Range / Effect / Other Notes */
+.sp-info-table th {
+    background: var(--bg-badge);
+    font-size: 10px;
+    font-weight: 700;
+    color: var(--text-light);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    white-space: nowrap;
+    text-align: left;
+}
+
+/* Type / Max Lv / Target / Range value cells */
+.sp-meta-val {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--text-value);
+    white-space: nowrap;
+    background: #ffffff;
+}
+.sp-meta-center { text-align: center; }
+
+/* Effect description cell */
+.sp-effect-cell {
+    font-size: 11.5px;
+    line-height: 1.7;
+    color: var(--text-mid);
+    background: #ffffff;
+    word-break: break-word;
+}
+
+/* Other Notes th + td */
+.sp-notes-th {
+    vertical-align: top;
+    width: 76px;
+}
+.sp-notes-td {
+    padding: 0 !important;
+    background: #ffffff;
+}
+
+/* ── Level / Description table (inside Other Notes) ── */
+.sp-notes-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 11px;
+    font-family: var(--font-main);
+}
+.sp-notes-table thead th {
+    background: var(--bg-badge);
+    border: none;
+    border-bottom: 1px solid var(--border-light);
+    padding: 5px 10px;
+    font-size: 10px;
+    font-weight: 700;
+    color: var(--text-light);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    text-align: center;
+}
+.sp-tbl-level-hdr {
+    width: 50px;
+    border-right: 1px solid var(--border-light) !important;
+}
+.sp-tbl-desc-hdr { text-align: left !important; }
+
+/* Zebra rows — warm gold tint on even, matches hover accent */
+.sp-notes-table tbody tr:nth-child(even) td { background: rgba(240,160,16,0.04); }
+.sp-notes-table tbody tr:nth-child(odd)  td { background: #ffffff; }
+.sp-notes-table tbody tr:last-child td      { border-bottom: none; }
+
+.sp-tbl-level {
+    text-align: center;
+    font-size: 11px;
+    font-weight: 800;
+    color: var(--orange-text);
+    background: rgba(240,160,16,0.08);
+    width: 50px;
+    border-right: 1px solid var(--border-light);
+    border-bottom: 1px solid var(--border-light);
+    padding: 6px 8px;
+    vertical-align: top;
+    font-family: var(--font-main);
+}
+.sp-tbl-desc {
+    padding: 6px 10px;
+    line-height: 1.6;
+    color: var(--text-mid);
+    vertical-align: top;
+    border-bottom: 1px solid var(--border-light);
+    word-break: break-word;
+}
+
+/* ── Scaled stat effect rows (inside Other Notes) ── */
+.sp-effects-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 11px;
+    font-family: var(--font-main);
+}
+.sp-effects-table tbody tr:nth-child(even) td { background: rgba(240,160,16,0.04); }
+.sp-effects-table tbody tr:nth-child(odd)  td { background: #ffffff; }
+
+.sp-effect-row td {
+    padding: 6px 10px;
+    border-bottom: 1px solid var(--border-light);
+    vertical-align: middle;
+}
+.sp-effect-row:last-child td { border-bottom: none; }
+
+/* Label — mirrors .tab-stat-label */
+.sp-effect-label {
+    font-size: 10px;
+    font-weight: 700;
+    color: var(--text-light);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    width: 44%;
+    white-space: nowrap;
+}
+
+/* Value — mirrors .dib-val */
+.sp-effect-value {
+    font-size: 12px;
+    font-weight: 800;
+    color: var(--text-value);
+    font-family: var(--font-main);
+}
+
+/* Next-level arrow — green accent */
+.sp-next {
+    font-size: 10px;
+    font-weight: 700;
+    color: var(--green-text);
+    margin-left: 4px;
+    white-space: nowrap;
+}
+
+/* Locked (level not yet reached) rows */
+.sp-effect-row-locked td {
+    opacity: 0.35;
+    font-style: italic;
+}
+
+/* Empty / no-detail state */
+.sp-no-effect {
+    margin: 0;
+    padding: 8px 10px;
+    font-style: italic;
+    font-size: 11px;
+    color: var(--text-light);
+    font-family: var(--font-main);
+}
+/* ══════════════════════════════════════════════════
+   SKILL POPUP — info table row design patches
+   Add these rules to your existing tabs.css
+══════════════════════════════════════════════════ */
+
+/* ── Property value — red/fire accent ── */
+.sp-fire {
+    color: #c03020;
+    font-weight: 800;
+}
+
+/* ── Requirements / Required For th ── */
+.sp-notes-th {
+    background: var(--bg-badge);
+    font-size: 10px;
+    font-weight: 700;
+    color: var(--text-light);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    white-space: nowrap;
+    vertical-align: top;
+    width: 76px;
+    border: 1px solid var(--border-light);
+    padding: 7px 10px;
+}
+
+/* ── Requirements td ── */
+.sp-notes-td {
+    font-size: 11px;
+    color: var(--text-mid);
+    background: #ffffff;
+    line-height: 1.7;
+    padding: 7px 10px !important;
+    border: 1px solid var(--border-light);
+    word-break: break-word;
+}
+
+/* Underlined skill links inside req cells */
+.sp-notes-td u {
+    color: var(--blue-text);
+    font-weight: 600;
+    text-decoration-color: rgba(74,158,232,0.4);
+    text-underline-offset: 2px;
+}
+
+/* ── Effect description cell ── */
+.sp-effect-cell {
+    font-size: 11.5px;
+    line-height: 1.75;
+    color: var(--text-mid);
+    background: rgba(240,160,16,0.03);
+    word-break: break-word;
+    padding: 8px 12px !important;
+    border: 1px solid var(--border-light);
+}
+
+/* ── Other Notes td — remove padding so inner tables bleed edge-to-edge ── */
+.sp-notes-td.sp-notes-flush {
+    padding: 0 !important;
+}
+
+/* ── Footer bar: Cast Delay · Effect Duration · SP Cost ── */
+.sp-footer-bar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0;
+    border-top: 1.5px solid var(--border-light);
+    background: var(--bg-badge);
+    flex-shrink: 0;
+}
+
+.sp-footer-item {
+    flex: 1;
+    min-width: 120px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1px;
+    padding: 7px 12px;
+    border-right: 1px solid var(--border-light);
+    font-size: 11px;
+    color: var(--text-mid);
+    font-family: var(--font-main);
+    text-align: center;
+}
+.sp-footer-item:last-child { border-right: none; }
+
+.sp-footer-item strong {
+    display: block;
+    font-size: 9px;
+    font-weight: 700;
+    color: var(--text-light);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 2px;
+}
+
+/* SP Cost value — blue accent */
+.sp-footer-item:last-child {
+    color: var(--blue-text);
+    font-weight: 800;
+}
+
+/* Cast Delay — orange accent */
+.sp-footer-item:first-child {
+    color: var(--orange-text);
+    font-weight: 800;
+}
+
+/* Effect Duration — green accent */
+.sp-footer-item:nth-child(2) {
+    color: var(--green-text);
+    font-weight: 800;
+}
+
+/* ── Per-level cost table ── */
+.sp-cost-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 10px;
+    font-family: var(--font-main);
+    border-top: 1.5px solid var(--border-light);
+}
+
+.sp-cost-table thead th {
+    background: var(--bg-badge);
+    border: 1px solid var(--border-light);
+    padding: 4px 6px;
+    font-size: 9px;
+    font-weight: 700;
+    color: var(--text-light);
+    text-align: center;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    white-space: nowrap;
+}
+.sp-cost-table thead th:first-child {
+    text-align: left;
+    width: 70px;
+}
+
+.sp-cost-table tbody td {
+    border: 1px solid var(--border-light);
+    padding: 5px 6px;
+    text-align: center;
+    font-size: 10px;
+    font-weight: 700;
+    color: var(--text-value);
+    background: #ffffff;
+}
+.sp-cost-table tbody tr:nth-child(even) td { background: rgba(240,160,16,0.04); }
+
+.sp-cost-row-label {
+    text-align: left !important;
+    font-size: 9px !important;
+    font-weight: 700 !important;
+    color: var(--text-light) !important;
+    background: var(--bg-badge) !important;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    white-space: nowrap;
+}
+
+/* ── Copyable / Interruptible / Related meta footer ── */
+.sp-meta-footer {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0;
+    border-top: 1px solid var(--border-light);
+    background: #fafbfc;
+    padding: 6px 10px;
+    flex-shrink: 0;
+}
+
+.sp-meta-footer-item {
+    font-size: 10px;
+    font-weight: 600;
+    color: var(--text-light);
+    font-family: var(--font-main);
+    padding: 2px 10px 2px 0;
+    margin-right: 10px;
+    border-right: 1px solid var(--border-light);
+    white-space: nowrap;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+.sp-meta-footer-item:last-child {
+    border-right: none;
+    margin-right: 0;
+}
+
+/* Bool icons */
+.sp-bool {
+    font-size: 11px;
+    font-weight: 800;
+    line-height: 1;
+}
+.sp-bool-yes { color: #3a9030; }
+.sp-bool-no  { color: #c03020; }
+
+/* Bullet notes list above inner tables */
+.sp-bullet-notes {
+    margin: 0;
+    padding: 6px 10px 6px 24px;
+    border-bottom: 1px solid var(--border-light);
+    background: rgba(74,158,232,0.04);
+}
+.sp-bullet-notes li {
+    font-size: 11px;
+    color: var(--blue-text);
+    font-weight: 600;
+    font-family: var(--font-main);
+    padding: 2px 0;
+    line-height: 1.5;
 }
