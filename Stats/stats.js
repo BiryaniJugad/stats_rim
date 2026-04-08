@@ -233,11 +233,15 @@ function selectJob(displayName, fileName, selectVal) {
   const img = document.getElementById("character-img");
   if (img) img.src = `../images/${fileName}`;
 
-  character.job      = JOB_MAP[selectVal] ?? "novice";
-  character.jobLevel = 1;
+  character.job = JOB_MAP[selectVal] ?? "novice";
 
+  // Clamp job level to new job's max, but don't reset it
+  const maxJL = JOB_MAX_LEVEL[character.job] ?? 50;
+  if (character.jobLevel > maxJL) character.jobLevel = maxJL;
+
+  // Sync the dropdown display to current job level
   const curJL = document.getElementById("current-jl");
-  if (curJL) curJL.textContent = "1";
+  if (curJL) curJL.textContent = character.jobLevel;
 
   document.getElementById("jobDropdown")?.classList.remove("active");
   updateJobLevelOptions(character.job);
@@ -403,60 +407,71 @@ function updateUI() {
   set("d-mdef",      cs.mdefBase);
   set("d-flee",      cs.flee);
 
-  const jobBonuses = calculateJobBonuses(character.job, character.jobLevel);
-  set("d-flee-luk", Math.floor(
-    (character.stats.luk + (jobBonuses.luk || 0) + 10) * 10 / 100
-  ));
+const jobBonuses   = calculateJobBonuses(character.job, character.jobLevel);
+const skillBonuses = (typeof calculateSkillBonuses === "function")
+  ? calculateSkillBonuses(character, cs.maxHP, cs.maxSP)
+  : {};
 
-  // ── ASPD ──────────────────────────────────────────────────────────
-  // Push skill stat bonuses into the module-level vars so our updateASPD
-  // override uses fully skill-boosted AGI/DEX and adds aspdFlat on top.
-  _skillAgi      = cs.skillAgi   || 0;
-  _skillDex      = cs.skillDex   || 0;
-  _skillAspdFlat = cs.aspdFlat   || 0;
-  updateASPD(character);
+set("d-flee-luk", Math.floor(
+  (character.stats.luk + (jobBonuses.luk || 0) + 10) * 10 / 100
+));
 
-  // ── Status Points ─────────────────────────────────────────────────
-  const spDisplay = document.querySelector(".status-value");
-  if (spDisplay) spDisplay.value = character.availablePoints;
+// ── ASPD ──────────────────────────────────────────────────────────
+_skillAgi      = cs.skillAgi   || 0;
+_skillDex      = cs.skillDex   || 0;
+_skillAspdFlat = cs.aspdFlat   || 0;
+updateASPD(character);
 
-  // ── Stat rows ─────────────────────────────────────────────────────
-  const statOrder = ["str", "agi", "vit", "int", "dex", "luk"];
+// ── Status Points ─────────────────────────────────────────────────
+const spDisplay = document.querySelector(".status-value");
+if (spDisplay) spDisplay.value = character.availablePoints;
 
-  statOrder.forEach(s => {
-    const row = document.querySelector(`.table-row[data-stat="${s}"]`);
-    if (!row) return;
+// ── Stat rows ─────────────────────────────────────────────────────
+const statOrder = ["str", "agi", "vit", "int", "dex", "luk"];
 
-    const val       = character.stats[s];
-    const cost      = getStatIncreaseCost(val);
-    const canAfford = character.availablePoints >= cost;
-    const bonus     = jobBonuses[s] || 0;
+statOrder.forEach(s => {
+  const row = document.querySelector(`.table-row[data-stat="${s}"]`);
+  if (!row) return;
 
-    const input    = row.querySelector(".stat-input");
-    const btnPlus  = row.querySelector(".stat-btn.plus");
-    const btnMinus = row.querySelector(".stat-btn.minus");
+  const val        = character.stats[s];
+  const cost       = getStatIncreaseCost(val);
+  const canAfford  = character.availablePoints >= cost;
+  const jobBonus   = jobBonuses[s]   || 0;
+  const skillBonus = skillBonuses[s] || 0;
+  const totalBonus = jobBonus + skillBonus;
 
-    if (input)    input.value       = val;
-    if (btnPlus)  btnPlus.disabled  = !canAfford || val >= 99;
-    if (btnMinus) btnMinus.disabled = val <= 1;
+  const input    = row.querySelector(".stat-input");
+  const btnPlus  = row.querySelector(".stat-btn.plus");
+  const btnMinus = row.querySelector(".stat-btn.minus");
 
-    const allColumns = document.querySelectorAll(".stats-grid .column");
-    const idx        = statOrder.indexOf(s);
+  if (input)    input.value       = val;
+  if (btnPlus)  btnPlus.disabled  = !canAfford || val >= 99;
+  if (btnMinus) btnMinus.disabled = val <= 1;
 
-    // Bonus column (2nd .column)
-    const bonusRow = allColumns[1]?.querySelectorAll(".table-row")[idx];
-    if (bonusRow) {
-      const symSpan = bonusRow.querySelector(".symbol");
-      if (symSpan) symSpan.textContent = `+ ${bonus}`;
+  const allColumns = document.querySelectorAll(".stats-grid .column");
+  const idx        = statOrder.indexOf(s);
+
+  // Bonus column (2nd .column)
+  const bonusRow = allColumns[1]?.querySelectorAll(".table-row")[idx];
+  if (bonusRow) {
+    const symSpan = bonusRow.querySelector(".symbol");
+    if (symSpan) {
+      symSpan.textContent = `+ ${totalBonus}`;
+      symSpan.title = [
+        jobBonus   > 0 ? `Job: +${jobBonus}`     : "",
+        skillBonus > 0 ? `Skill: +${skillBonus}` : "",
+      ].filter(Boolean).join("  |  ");
+      symSpan.style.color = skillBonus > 0 ? "var(--orange-text, #e8a020)" : "";
     }
+  }
 
-    // Points Req. column (3rd .column)
-    const costRow = allColumns[2]?.querySelectorAll(".table-row")[idx];
-    if (costRow) {
-      const valSpan = costRow.querySelector(".value");
-      if (valSpan) valSpan.textContent = cost;
-    }
-  });
+  // Points Req. column (3rd .column)
+  const costRow = allColumns[2]?.querySelectorAll(".table-row")[idx];
+  if (costRow) {
+    const valSpan = costRow.querySelector(".value");
+    if (valSpan) valSpan.textContent = cost;
+  }
+});
 
   // ── Weight ────────────────────────────────────────────────────────
   const baseWeight  = getWeightLimit(character.job);
@@ -597,6 +612,10 @@ function attachEventListeners() {
 // ===================================================================
 
 function initialize() {
+  character.jobLevel = 1;
+
+  const curJL = document.getElementById("current-jl");
+  if (curJL) curJL.textContent = "1";
   populateWeaponSelect(character.job);
   updateJobLevelOptions(character.job);
   updateLevel(1);
